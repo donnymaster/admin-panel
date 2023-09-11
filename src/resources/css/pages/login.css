@@ -1,0 +1,15 @@
+.login-form {
+    width: 400px;
+    @apply
+        rounded-3xl
+        bg-white
+        p-6;
+
+    & .input-group label.label {
+        @apply text-black;
+    }
+
+    & input.input {
+        @apply border-theme-blue border;
+    }
+}

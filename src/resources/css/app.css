@@ -6,6 +6,8 @@
 
 @import 'fonts';
 
+/* --- --- */
+@import './components/scrollbar';
 
 /* --- Components --- */
 
@@ -16,3 +18,9 @@
 @import './components/input';
 @import './components/table';
 @import './components/pagination';
+@import './components/modal';
+
+
+/* --- Pages --- */
+
+@import './pages/login';

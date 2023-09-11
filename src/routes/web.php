@@ -27,7 +27,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/admin/login', [UserController::class, 'login']);
+Route::view('/components-admin', 'admin-components');
+
+Route::get('/admin/login', [UserController::class, 'login'])->middleware('throttle:10,1'); // максимум 10 запросов в минуту
 
 Route::prefix('admin')->group(function() {
     Route::get('/statistics', [StatisticController::class, 'index']);

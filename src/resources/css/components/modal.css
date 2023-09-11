@@ -1,0 +1,43 @@
+body {
+    position: relative;
+}
+
+.modal-container {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+
+    & .modal-overlay {
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, .5);
+        z-index: 10;
+        cursor: pointer;
+    }
+
+    & .modal {
+        position: relative;
+        @apply bg-white p-5 rounded-3xl mx-9;
+        z-index: 100;
+        max-height: 90vh;
+        width: 50%;
+
+        & .modal-header {
+            @apply mb-5 flex justify-between;
+
+            & .close-modal {
+                @apply ml-3 cursor-pointer;
+            }
+        }
+
+        & .modal-content {
+            @apply mb-5;
+            max-height: calc(100vh - 200px);
+            overflow: auto;
+        }
+    }
+}
