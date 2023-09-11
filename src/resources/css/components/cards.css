@@ -1,0 +1,26 @@
+/* --- Statistics card --- */
+
+.statistics-card {
+    @apply
+        flex
+        flex-col
+        items-center
+        bg-white
+        rounded-xl
+        pt-3
+        pb-8;
+    min-width: 220px;
+    min-height: 203px;
+    & .icon, & .value {
+        @apply mb-2;
+    }
+    & .value {
+        @apply
+            text-theme-blue
+            text-4xl
+            font-semibold;
+    }
+    & .name {
+        @apply font-semibold;
+    }
+}

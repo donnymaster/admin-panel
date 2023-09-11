@@ -1,0 +1,28 @@
+
+
+.table-container {
+    @apply w-full px-14 py-7 bg-white;
+    border-radius: 30px;
+    & table.table {
+        @apply w-full;
+        & thead {
+            @apply border-b border-b-theme-blue;
+            & tr {
+                & th {
+                    @apply pb-5 text-start;
+                }
+            }
+        }
+        & tbody {
+            & tr {
+                @apply border-b border-b-theme-grey;
+                & td {
+                    @apply pb-5 pt-5 font-semibold;
+                }
+                &:last-child {
+                    @apply border-none;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,3 @@
+a.link {
+    @apply text-theme-blue border-b border-b-theme-blue hover:text-theme-light-blue hover:border-b-theme-light-blue;
+}

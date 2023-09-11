@@ -1,0 +1,18 @@
+.pagination {
+    @apply
+        flex
+        border
+        border-theme-light-blue
+        bg-white;
+    border-radius: 20px;
+    & .item {
+        @apply
+            p-3
+            cursor-pointer
+            border-r
+            border-r-theme-light-blue;
+        &:last-child {
+            @apply border-none;
+        }
+    }
+}

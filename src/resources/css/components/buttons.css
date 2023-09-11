@@ -1,0 +1,16 @@
+
+.btn {
+    @apply
+        py-2 px-7 rounded-3xl text-xl text-white bg-theme-light-blue cursor-pointer flex items-center active:bg-theme-blue transition-colors duration-300;
+    .icon {
+        @apply mr-2;
+    }
+}
+
+.btn.bg-red {
+    @apply bg-theme-red active:bg-theme-red-active;
+}
+
+.btn.bg-green {
+    @apply bg-theme-green active:bg-theme-green-active;
+}

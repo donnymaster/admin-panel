@@ -1,0 +1,18 @@
+input.input {
+    @apply
+        rounded-2xl
+        p-4
+        font-medium
+        focus:outline-none;
+}
+
+.input-group {
+    @apply
+        flex
+        flex-col;
+
+    & label.label {
+        @apply text-white;
+        margin-bottom: 5px;
+    }
+}
