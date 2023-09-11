@@ -29,4 +29,9 @@ class UserController extends Controller
             return redirect()->to(route('get.login'))->withErrors(trans('auth.failed'));
         }
     }
+
+    public function logout()
+    {
+
+    }
 }

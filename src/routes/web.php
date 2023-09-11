@@ -33,10 +33,8 @@ Route::get('/admin/login', [UserController::class, 'login'])->middleware('guest'
 Route::post('/admin/login', [UserController::class, 'loginHandler'])->middleware('throttle:10,1')->name('post.login'); // максимум 10 запросов в минуту
 
 Route::prefix('admin')->group(function() {
-    Route::get('/statistics', [StatisticController::class, 'index'])->name('admin.page.statistics');
-
     Route::prefix('/statistics')->group(function() {
-        // Route::get('/', [StatisticController::class, 'index']);
+        Route::get('/', [StatisticController::class, 'index'])->name('admin.page.statistics');;
         Route::get('/applications', [ApplicationController::class, 'index']);
         Route::get('/orders', [OrderController::class, 'index']);
         Route::get('/reviews', [ReviewController::class, 'index']);
