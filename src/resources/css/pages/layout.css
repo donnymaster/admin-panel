@@ -1,0 +1,63 @@
+.admin-header {
+    @apply flex items-center;
+    padding-right: 20px;
+
+    & .admin-menu {
+        display: flex;
+        padding-top: 5px;
+        & .admin-menu-item {
+            padding: 0 28px;
+            padding-top: 20px;
+            padding-bottom: 12px;
+            font-weight: 500;
+
+            &.active {
+                @apply bg-theme-blue text-white rounded-t-xl;
+                position: relative;
+                &::after, &::before {
+                    content: "";
+                    position: absolute;
+                    width: 19px;
+                    height: 19px;
+                    bottom: 0;
+                    right: -19px;
+                    transform: rotate(180deg);
+                    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='19' height='19' viewBox='0 0 19 19' fill='none'%3E%3Cpath d='M0.962986 0C15.3926 0 19 12.6667 19 19L19 0L0.962986 0Z' fill='%239900FF'/%3E%3C/svg%3E");
+                }
+                &::before {
+                    bottom: 0;
+                    left: -19px;
+                    transform: rotate(90deg);
+                }
+            }
+
+            &:nth-of-type(1) {
+                &::before {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    & .admin-menu-settings {
+        display: flex;
+        margin-left: auto;
+        & .admin-site-theme {
+            margin-right: 17px;
+            cursor: pointer;
+        }
+        & & .admin-site-settings {
+            cursor: pointer;
+        }
+    }
+}
+
+.logo {
+    width: 260px;
+    padding: 12px 24px;
+    padding-bottom: 34px;
+    & svg path {
+        fill: red;
+        /* @apply fill-theme-blue; */
+    }
+}

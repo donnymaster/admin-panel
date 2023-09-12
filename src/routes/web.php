@@ -23,42 +23,61 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::view('/components-admin', 'admin-components');
-
 Route::get('/admin/login', [UserController::class, 'login'])->middleware('guest')->name('get.login');
 Route::post('/admin/login', [UserController::class, 'loginHandler'])->middleware('throttle:10,1')->name('post.login'); // максимум 10 запросов в минуту
 
-Route::prefix('admin')->group(function() {
+Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
     Route::prefix('/statistics')->group(function() {
-        Route::get('/', [StatisticController::class, 'index'])->name('admin.page.statistics');;
-        Route::get('/applications', [ApplicationController::class, 'index']);
-        Route::get('/orders', [OrderController::class, 'index']);
-        Route::get('/reviews', [ReviewController::class, 'index']);
+        Route::get('/board', [StatisticController::class, 'index'])->name('statistics');
+        Route::get('/applications', [ApplicationController::class, 'index'])->name('applications');
+        Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+        Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews');
     });
 
-    Route::get('/pages', [PagesController::class, 'index']);
-    // other statistic pages
+    Route::get('/pages', [PagesController::class, 'index'])->name('pages');
+    Route::get('/pages/{pageId}', [PagesController::class, 'index'])->name('page');
 
     Route::prefix('/catalog')->group(function() {
-        Route::get('/', [CatalogController::class, 'index']);
+        Route::get('/', [CatalogController::class, 'index'])->name('catalogs');
 
         Route::prefix('/{catalogId}')->group(function() {
-            Route::get('/', [CatalogController::class, 'show'])->where('id', '[0-9]+');
-            Route::get('/product/{productId}', [ProductController::class, 'index'])->where('id', '[0-9]+');
+            Route::get('/', [CatalogController::class, 'show'])->where('id', '[0-9]+')->name('catalog');
+            Route::get('/product/{productId}', [ProductController::class, 'index'])->where('id', '[0-9]+')->name('product');
         });
 
     });
 
-    Route::get('/data-exchange', [DataExchangeController::class, 'index']);
+    Route::get('/data-exchange', [DataExchangeController::class, 'index'])->name('data-exchange');
     // other statistic pages
 
-    Route::get('/settings', [SettingSiteController::class, 'index']);
+    Route::get('/settings', [SettingSiteController::class, 'index'])->name('settings');
     // other statistic pages
 
-    Route::get('/users', [UserController::class, 'index']);
+    Route::get('/users', [UserController::class, 'index'])->name('users');
+
+    Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+});
+
+Route::view('/components-admin', 'admin-components');
+
+Route::get('routes', function () {
+    $routeCollection = Route::getRoutes();
+
+    echo "<table style='width:100%'>";
+    echo "<tr>";
+    echo "<td width='10%'><h4>HTTP Method</h4></td>";
+    echo "<td width='10%'><h4>Route</h4></td>";
+    echo "<td width='10%'><h4>Name</h4></td>";
+    echo "<td width='70%'><h4>Corresponding Action</h4></td>";
+    echo "</tr>";
+    foreach ($routeCollection as $value) {
+        echo "<tr>";
+        echo "<td>" . $value->methods()[0] . "</td>";
+        echo "<td>" . $value->uri() . "</td>";
+        echo "<td>" . $value->getName() . "</td>";
+        echo "<td>" . $value->getActionName() . "</td>";
+        echo "</tr>";
+    }
+    echo "</table>";
 });
 

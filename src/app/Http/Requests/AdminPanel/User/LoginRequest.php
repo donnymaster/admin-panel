@@ -24,6 +24,14 @@ class LoginRequest extends FormRequest
         return [
             'email' => 'required|max:255|email',
             'password' => 'required|min:6|max:255',
+            'remember' => 'boolean',
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'remember' => (boolean) $this->remember,
+        ]);
     }
 }

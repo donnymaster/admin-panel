@@ -9,7 +9,7 @@
         @apply text-black;
     }
 
-    & input.input {
+    & .input {
         @apply border-theme-blue border;
     }
 }

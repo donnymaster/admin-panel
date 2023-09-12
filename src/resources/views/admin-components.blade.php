@@ -188,6 +188,25 @@
             </div>
         </div>
 
+        <div class="text-md m-5 text-theme-blue ml-0 font-bold">Input group with error</div>
+        <div class="flex">
+            <div class="input-group">
+                <label for="email" class="label">
+                    Label
+                </label>
+                <input id="email" type="text" class="input is-invalid" placeholder="Email">
+                <div class="alert-error">Поле Пароль обязательно для заполнения.</div>
+            </div>
+        </div>
+
+        <div class="text-md m-5 text-theme-blue ml-0 font-bold">Checkbox</div>
+        <div class="flex">
+            <div class="checkbox">
+                <input class="custom-checkbox" type="checkbox" id="color-1" name="color-1" value="indigo">
+                <label for="color-1">Indigo</label>
+            </div>
+        </div>
+
         <div class="text-md m-5 text-theme-blue ml-0 font-bold">Table</div>
         <div class="flex">
             <div class="table-container">

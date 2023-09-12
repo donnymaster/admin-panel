@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\AdminPanel;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminPanel\User\LoginRequest;
 use App\Services\AdminPanel\UserService;
@@ -23,15 +24,23 @@ class UserController extends Controller
     {
         $validated = $request->safe()->only(['email', 'password']);
 
-        if (Auth::attempt($validated)) {
-            return redirect()->intended(UserService::redirectTo());
+        $remember = $request->get('remember');
+
+        if (Auth::attempt($validated, $remember)) {
+            return redirect()->intended(UserService::redirectToPanel());
         } else {
-            return redirect()->to(route('get.login'))->withErrors(trans('auth.failed'));
+            return redirect()->to(route('get.login'))->withErrors(['auth' => trans('auth.failed')]);
         }
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
+        Auth::logout();
 
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect(UserService::redirectToLoginPage());
     }
 }

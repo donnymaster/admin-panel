@@ -4,6 +4,10 @@ input.input {
         p-4
         font-medium
         focus:outline-none;
+
+    &.is-invalid {
+        @apply border-theme-red;
+    }
 }
 
 .input-group {
@@ -15,4 +19,8 @@ input.input {
         @apply text-white;
         margin-bottom: 5px;
     }
+}
+
+.alert-error {
+    @apply text-theme-red text-xs pt-2;
 }

@@ -1,0 +1,3 @@
+<div>
+    statistic sidebar
+</div>

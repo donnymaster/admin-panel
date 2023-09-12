@@ -19,8 +19,10 @@
 @import './components/table';
 @import './components/pagination';
 @import './components/modal';
+@import './components/checkbox';
 
 
 /* --- Pages --- */
 
 @import './pages/login';
+@import './pages/layout';
