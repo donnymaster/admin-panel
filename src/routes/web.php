@@ -10,6 +10,7 @@ use App\Http\Controllers\AdminPanel\ReviewController;
 use App\Http\Controllers\AdminPanel\SettingSiteController;
 use App\Http\Controllers\AdminPanel\StatisticController;
 use App\Http\Controllers\AdminPanel\UserController;
+use App\Models\AdminPanel\MenuLink;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,13 +29,14 @@ Route::post('/admin/login', [UserController::class, 'loginHandler'])->middleware
 
 Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
     Route::prefix('/statistics')->group(function() {
-        Route::get('/board', [StatisticController::class, 'index'])->name('statistics');
+        Route::get('/board', [StatisticController::class, 'index'])->name('board');
         Route::get('/applications', [ApplicationController::class, 'index'])->name('applications');
         Route::get('/orders', [OrderController::class, 'index'])->name('orders');
         Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews');
     });
 
     Route::get('/pages', [PagesController::class, 'index'])->name('pages');
+    Route::get('/pages-list', [PagesController::class, 'pageList'])->name('page.list');
     Route::get('/pages/{pageId}', [PagesController::class, 'index'])->name('page');
 
     Route::prefix('/catalog')->group(function() {
@@ -61,6 +63,9 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
 Route::view('/components-admin', 'admin-components');
 
 Route::get('routes', function () {
+
+    dd(MenuLink::where('id', 1)->with('parent')->get());
+
     $routeCollection = Route::getRoutes();
 
     echo "<table style='width:100%'>";

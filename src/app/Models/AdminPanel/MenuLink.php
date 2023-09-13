@@ -17,4 +17,9 @@ class MenuLink extends Model
     {
         return trim(parse_url(route($this->route), PHP_URL_PATH), '/') === request()->path();
     }
+
+    public function parent()
+    {
+        return $this->hasMany(MenuLink::class, 'id', 'parent');
+    }
 }

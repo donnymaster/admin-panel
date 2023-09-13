@@ -57,7 +57,46 @@
     padding: 12px 24px;
     padding-bottom: 34px;
     & svg path {
-        fill: red;
+        /* fill: red; */
         /* @apply fill-theme-blue; */
     }
 }
+
+.sidebar {
+    width: 260px;
+
+    display: flex;
+    flex-direction: column;
+
+    &.static-sidebar {
+        padding-top: 46px;
+        padding-left: 16px;
+    }
+
+    & .static-sidebar-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
+        padding: 14px 17px;
+        border-radius: 50px;
+        border-end-end-radius: 0;
+        /* border-end-top-radius: 0; */
+        border-top-right-radius: 0;
+        color: black;
+        & .icon {
+            margin-right: 12px;
+        }
+
+        &.active {
+            @apply bg-theme-blue;
+            color: white;
+            & .icon {
+                & path {
+                    stroke: white;
+                }
+            }
+        }
+    }
+}
+
+
