@@ -18,14 +18,21 @@ class PagesController extends Controller
     }
     public function index()
     {
-        // return view();
+        $pageName = '1';
+        return view('admin-panel.pages.page', compact('pageName'));
     }
 
     public function store(CreatePageRequest $request)
     {
+
         $page = $this->service->create($request);
 
-        return view('admin.page.create', compact($page));
+        // return view('admin.page.create', compact($page));
+    }
+
+    public function create()
+    {
+        return view('admin-panel.pages.create', ['title' => 'Создание страницы']);
     }
 
     public function pageList(Request $request)

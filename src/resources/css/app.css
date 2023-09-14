@@ -20,9 +20,12 @@
 @import './components/pagination';
 @import './components/modal';
 @import './components/checkbox';
+@import './components/loader';
+@import './components/forms/input-image';
 
 
 /* --- Pages --- */
 
 @import './pages/login';
 @import './pages/layout';
+@import './pages/create-page';

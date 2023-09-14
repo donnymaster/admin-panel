@@ -1,4 +1,4 @@
-input.input {
+input.input, textarea.input {
     @apply
         rounded-2xl
         p-4

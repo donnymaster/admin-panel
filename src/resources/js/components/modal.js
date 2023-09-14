@@ -17,6 +17,10 @@ export default class Modal {
         this.modalOverlay = document.querySelector(this.MODAL_OVERLAY_CLASS);
         this.modalContainer = document.querySelector(this.MODAL_CONTAINER_CLASS);
 
+        if (!this.btns.length) {
+            return;
+        }
+
         this.search();
         this.addEventButtons();
         this.addEventCloseModals();

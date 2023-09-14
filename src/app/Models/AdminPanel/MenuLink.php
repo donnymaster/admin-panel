@@ -15,7 +15,7 @@ class MenuLink extends Model
 
     public function isCurrentPage(): bool
     {
-        return trim(parse_url(route($this->route), PHP_URL_PATH), '/') === request()->path();
+        return str_contains(request()->path(), trim(parse_url(route($this->route), PHP_URL_PATH), '/'));
     }
 
     public function parent()

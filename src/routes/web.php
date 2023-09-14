@@ -36,6 +36,8 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
     });
 
     Route::get('/pages', [PagesController::class, 'index'])->name('pages');
+    Route::get('/pages/create', [PagesController::class, 'create'])->name('page.create');
+    Route::post('/page/store', [PagesController::class, 'store'])->name('page.store');
     Route::get('/pages-list', [PagesController::class, 'pageList'])->name('page.list');
     Route::get('/pages/{pageId}', [PagesController::class, 'index'])->name('page');
 
@@ -63,8 +65,6 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
 Route::view('/components-admin', 'admin-components');
 
 Route::get('routes', function () {
-
-    dd(MenuLink::where('id', 1)->with('parent')->get());
 
     $routeCollection = Route::getRoutes();
 

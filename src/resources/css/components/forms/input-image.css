@@ -1,0 +1,17 @@
+.image-create-page {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    width: auto;
+    height: 150px;
+    border-radius: 15px;
+    cursor: pointer;
+    & svg {
+        width: 100px;
+        height: 100px;
+    }
+}

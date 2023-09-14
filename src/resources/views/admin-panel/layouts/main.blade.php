@@ -61,7 +61,7 @@
     </header>
     <div class="content flex">
         @yield('sidebar')
-        <div class="page">
+        <div class="page scrollbar">
             @yield('content')
         </div>
     </div>
