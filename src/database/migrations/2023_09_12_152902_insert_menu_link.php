@@ -14,29 +14,35 @@ return new class extends Migration
     {
         $links = [
             [
-                'name' => 'Статистика',
-                'route' => 'admin.statistics',
-                'is_show' => true
+                'name' => 'Доска',
+                'route' => 'admin.board',
+                'is_show' => true,
             ],
             [
                 'name' => 'Страницы',
                 'route' => 'admin.pages',
-                'is_show' => true
+                'is_show' => true,
             ],
             [
                 'name' => 'Каталог',
                 'route' => 'admin.catalogs',
-                'is_show' => true
+                'is_show' => true,
             ],
             [
                 'name' => 'Обмен данными',
                 'route' => 'admin.data-exchange',
-                'is_show' => true
+                'is_show' => true,
             ],
             [
                 'name' => 'Настройки',
                 'route' => 'admin.settings',
-                'is_show' => true
+                'is_show' => true,
+            ],
+            [
+                'name' => 'Заявки',
+                'route' => 'admin.applications',
+                'is_show' => true,
+                'parent' => 1,
             ],
         ];
 

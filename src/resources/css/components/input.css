@@ -5,6 +5,8 @@ input.input, textarea.input {
         font-medium
         focus:outline-none;
 
+    border: 1px solid transparent;
+
     &.is-invalid {
         @apply border-theme-red;
     }

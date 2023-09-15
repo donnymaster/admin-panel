@@ -3,6 +3,9 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Models\AdminPanel\AdminRole;
+use App\Services\AdminPanel\UserService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -20,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id',
     ];
 
     /**
@@ -40,4 +44,24 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function role()
+    {
+        return $this->belongsTo(AdminRole::class);
+    }
+
+    public function isAdmin()
+    {
+        return $this->role()->first()->slug === UserService::ROLE_ADMIN;
+    }
+
+    public function isSuperAdmin()
+    {
+        return $this->role()->first()->slug === UserService::ROLE_SUPER_ADMIN;
+    }
+
+    public function isManager()
+    {
+        return $this->role()->first()->slug === UserService::ROLE_MANAGER;
+    }
 }

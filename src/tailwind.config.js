@@ -15,7 +15,8 @@ export default {
         'theme-grey': 'rgba(30, 30, 30, 0.5)',
         'theme-badge-blue':'rgba(121, 148, 253, 0.80)',
         'white': 'rgb(255 255 255)',
-        'black': 'rgb(0, 0, 0)'
+        'black': 'rgb(0, 0, 0)',
+        'red': 'red'
     },
     extend: {},
   },

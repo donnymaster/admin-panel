@@ -12,20 +12,32 @@
             <div class="input-group">
                 <label for="page_name" class="label flex">
                     <span>Название</span>
+                    <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
-                <input id="page_name" name="name" type="text" class="input">
+                <input id="page_name" name="name" type="text" class="input @error('name') is-invalid @enderror">
+                @error('name')
+                    <div class="alert-error">{{ $message }}</div>
+                @enderror
             </div>
             <div class="input-group">
                 <label for="route" class="label">
                     Адрес в сети
+                    <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
-                <input id="route" name="route" type="text" class="input">
+                <input id="route" name="route" type="text" class="input @error('route') is-invalid @enderror">
+                @error('route')
+                    <div class="alert-error">{{ $message }}</div>
+                @enderror
             </div>
             <div class="input-group">
                 <label for="title" class="label">
                     Название в сети
+                    <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
-                <input id="title" name="title" type="text" class="input">
+                <input id="title" name="title" type="text" class="input @error('title') is-invalid @enderror">
+                @error('title')
+                    <div class="alert-error">{{ $message }}</div>
+                @enderror
             </div>
         </div>
         <div class="columns-2 mb-9">
@@ -61,7 +73,7 @@
                 <label for="email" class="label">
                     Описание страницы, сюда TinyMCE
                 </label>
-                <textarea name="page_description" class="input" name="story" rows="5" cols="33"></textarea>
+                <textarea name="page_description" id="page_description" class="input" name="story" rows="5" cols="33"></textarea>
             </div>
         </div>
         <div class="columns-1 mb-9 divide-x pb-2 text-white text-3xl border-b-2 border-b-white">
@@ -142,7 +154,7 @@
                             stroke="#9900FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </div>
-                <input hidden type="file" class="input" name="og_image_vk">
+                <input hidden type="file" class="input" name="og_vk_image">
             </div>
             <div class="input-group">
                 <label for="email" class="label">
@@ -166,7 +178,7 @@
                             stroke="#9900FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </div>
-                <input hidden type="file" class="input" name="og_image_facebook">
+                <input hidden type="file" class="input" name="og_fb_image">
             </div>
             <div class="input-group">
                 <label for="email" class="label">
@@ -190,7 +202,7 @@
                             stroke="#9900FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </div>
-                <input hidden type="file" class="input" name="og_image_twitter">
+                <input hidden type="file" class="input" name="og_twitter_image">
             </div>
         </div>
         <div class="flex">
@@ -219,9 +231,31 @@
                 Добавить
             </button>
         </div>
+        @isSuperAdmin
+            1
+        @endIsSuperAdmin
     </form>
+    <script>
+        tinymce.init({
+          selector: '#page_description',
+          plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
+          toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+          tinycomments_mode: 'embedded',
+          tinycomments_author: 'Author name',
+          mergetags_list: [
+            { value: 'First.Name', title: 'First Name' },
+            { value: 'Email', title: 'Email' },
+          ],
+          ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant"))
+        });
+      </script>
 @endsection
 
 @section('sidebar')
     <x-admin.sidebar.pages />
+@endsection
+
+
+@section('tinymce')
+    <script src="https://cdn.tiny.cloud/1/tz1fd8u9lx48w915c8xaguoxxepnd7d4wwktm70glbgpl72c/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 @endsection

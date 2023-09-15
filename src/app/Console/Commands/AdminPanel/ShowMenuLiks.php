@@ -28,7 +28,7 @@ class ShowMenuLiks extends Command
     {
         $this->table(
             ['Id', 'Name', 'Route', 'Show', 'Parent'],
-            MenuLink::with('parent')->get(['id', 'name', 'route', 'is_show'])->toArray()
+            MenuLink::get(['id', 'name', 'route', 'is_show', 'parent'])->toArray()
         );
     }
 }

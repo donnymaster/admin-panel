@@ -25,6 +25,7 @@ class PagesController extends Controller
     public function store(CreatePageRequest $request)
     {
 
+        dd($request);
         $page = $this->service->create($request);
 
         // return view('admin.page.create', compact($page));

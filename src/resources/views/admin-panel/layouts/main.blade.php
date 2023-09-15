@@ -8,6 +8,9 @@
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
     <title> @yield('title')</title>
+    @hasSection('tinymce')
+        @yield('tinymce')
+    @endif
 </head>
 
 <body>
@@ -41,6 +44,45 @@
                     <path
                         d="M5.22506 6.725C3.33756 9.125 2.30006 12.2 2.53756 15.525C2.98756 21.9625 8.45006 27.2 14.9876 27.4875C19.6001 27.6875 23.7251 25.5375 26.2001 22.15C27.2251 20.7625 26.6751 19.8375 24.9626 20.15C24.1251 20.3 23.2626 20.3625 22.3626 20.325C16.2501 20.075 11.2501 14.9625 11.2251 8.925C11.2126 7.3 11.5501 5.7625 12.1626 4.3625C12.8376 2.8125 12.0251 2.075 10.4626 2.7375"
                         stroke="#9900FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
+            <div class="admin-menu-users">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30"
+                    fill="none">
+                    <path
+                        d="M22.5001 8.95C22.4251 8.9375 22.3376 8.9375 22.2626 8.95C20.5376 8.8875 19.1626 7.475 19.1626 5.725C19.1626 3.9375 20.6001 2.5 22.3876 2.5C24.1751 2.5 25.6126 3.95 25.6126 5.725C25.6001 7.475 24.2251 8.8875 22.5001 8.95Z"
+                        stroke="#9900FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                        d="M21.2126 18.05C22.9251 18.3375 24.8126 18.0375 26.1376 17.15C27.9001 15.975 27.9001 14.05 26.1376 12.875C24.8001 11.9875 22.8875 11.6875 21.175 11.9875"
+                        stroke="#9900FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                        d="M7.4626 8.95C7.5376 8.9375 7.6251 8.9375 7.7001 8.95C9.4251 8.8875 10.8001 7.475 10.8001 5.725C10.8001 3.9375 9.3626 2.5 7.5751 2.5C5.7876 2.5 4.3501 3.95 4.3501 5.725C4.3626 7.475 5.7376 8.8875 7.4626 8.95Z"
+                        stroke="#9900FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                        d="M8.75005 18.05C7.03755 18.3375 5.15005 18.0375 3.82505 17.15C2.06255 15.975 2.06255 14.05 3.82505 12.875C5.16255 11.9875 7.07505 11.6875 8.78755 11.9875"
+                        stroke="#9900FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                        d="M14.9999 18.2874C14.9249 18.2749 14.8374 18.2749 14.7624 18.2874C13.0374 18.2249 11.6624 16.8124 11.6624 15.0624C11.6624 13.2749 13.0999 11.8374 14.8874 11.8374C16.6749 11.8374 18.1124 13.2874 18.1124 15.0624C18.0999 16.8124 16.7249 18.2374 14.9999 18.2874Z"
+                        stroke="#9900FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                        d="M18.6374 22.225C16.6499 20.9 13.3624 20.9 11.3624 22.225C9.5999 23.4 9.5999 25.3249 11.3624 26.4999C13.3624 27.8375 16.6374 27.8375 18.6374 26.4999"
+                        stroke="#9900FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
+            <div class="admin-menu-logout">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30"
+                    fill="none">
+                    <path d="M8.2 11.7999L5 15L8.2 18.2" stroke="#9900FF" stroke-width="1.5" stroke-miterlimit="10"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M11.5499 15H5.0874" stroke="#9900FF" stroke-width="1.5" stroke-miterlimit="10"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M17.8001 15H15.3501" stroke="#9900FF" stroke-width="1.5" stroke-miterlimit="10"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M22.5125 21.8999C24.0625 20.1999 25 17.8624 25 14.9999C25 8.7499 20.525 4.9999 15 4.9999"
+                        stroke="#9900FF" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M15 25C16.3125 25 17.5625 24.7875 18.7125 24.3875" stroke="#9900FF" stroke-width="1.5"
+                        stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </div>
             <div class="admin-site-account">

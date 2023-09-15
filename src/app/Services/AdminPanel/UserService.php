@@ -10,7 +10,7 @@ class UserService
 
     public static function redirectToPanel() : string
     {
-        return route('admin.board');
+        return route('admin.pages');
     }
 
     public static function redirectToLoginPage() : string

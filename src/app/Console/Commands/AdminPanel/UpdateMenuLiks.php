@@ -30,13 +30,23 @@ class UpdateMenuLiks extends Command
     {
         $id = $this->argument('id');
         $type = $this->argument('type');
+        $itemMenu = MenuLink::where('id', $id)->first();
+
+        if (!$itemMenu) {
+            $this->error('Menu item not found!');
+            return;
+        }
 
         if ($type === self::HIDE) {
-            MenuLink::where('id', $id)->update(['is_show' => 0]);
+            $itemMenu->update(['is_show' => 0]);
+            MenuLink::where('parent', $id)->update(['is_show' => 0]);
+            $this->info("The menu item [{$itemMenu->name}] was successfully hidden!");
         }
 
         if ($type === self::SHOW) {
-            MenuLink::where('id', $id)->update(['is_show' => 1]);
+            $itemMenu->update(['is_show' => 1]);
+            MenuLink::where('parent', $id)->update(['is_show' => 1]);
+            $this->info("The menu item [{$itemMenu->name}] was successfully displayed!");
         }
     }
 }

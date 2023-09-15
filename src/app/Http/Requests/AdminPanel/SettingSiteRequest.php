@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\AdminPanel\User;
+namespace App\Http\Requests\AdminPanel;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class SettingSiteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,16 +22,8 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|email|max:255',
-            'password' => 'nullable|required|min:6|max:50',
-            'remember' => 'nullable|boolean',
+            'tinymce_key' => 'nullable|min:1|max:255',
+            'tinymce_link' => 'nullable|min:1|max:255',
         ];
-    }
-
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'remember' => (boolean) $this->remember,
-        ]);
     }
 }

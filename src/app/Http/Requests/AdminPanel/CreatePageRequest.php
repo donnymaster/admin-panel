@@ -36,9 +36,9 @@ class CreatePageRequest extends FormRequest
             'og_image' => 'nullable|file',
             'og_description' => 'nullable|min:1|max:255',
             'og_site_name' => 'nullable|min:1|max:255',
-            'og_vk_image' => 'nullable|min:1|max:255',
-            'og_fb_image' => 'nullable|min:1|max:255',
-            'og_twitter_image' => 'nullable|min:1|max:255',
+            'og_vk_image' => 'nullable|file',
+            'og_fb_image' => 'nullable|file',
+            'og_twitter_image' => 'nullable|file',
             'is_show' => 'nullable|boolean',
         ];
     }

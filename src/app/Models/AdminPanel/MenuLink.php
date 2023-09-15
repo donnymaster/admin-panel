@@ -20,6 +20,6 @@ class MenuLink extends Model
 
     public function parent()
     {
-        return $this->hasMany(MenuLink::class, 'id', 'parent');
+        return $this->hasOne(MenuLink::class, 'id', 'parent');
     }
 }

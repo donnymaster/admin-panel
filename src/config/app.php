@@ -185,4 +185,7 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'tinymce_key' => env('TINYMCE_KEY', ''),
+
+    'tinymce_link' => env('TINYMCE_LINK', ''),
 ];

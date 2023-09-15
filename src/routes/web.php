@@ -10,7 +10,10 @@ use App\Http\Controllers\AdminPanel\ReviewController;
 use App\Http\Controllers\AdminPanel\SettingSiteController;
 use App\Http\Controllers\AdminPanel\StatisticController;
 use App\Http\Controllers\AdminPanel\UserController;
+use App\Models\AdminPanel\AdminRole;
 use App\Models\AdminPanel\MenuLink;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,7 +32,7 @@ Route::post('/admin/login', [UserController::class, 'loginHandler'])->middleware
 
 Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
     Route::prefix('/statistics')->group(function() {
-        Route::get('/board', [StatisticController::class, 'index'])->name('board');
+        Route::get('/board', [StatisticController::class, 'index'])->name('board')->middleware('admin-panel.check-show-page');
         Route::get('/applications', [ApplicationController::class, 'index'])->name('applications');
         Route::get('/orders', [OrderController::class, 'index'])->name('orders');
         Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews');
@@ -54,7 +57,8 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
     Route::get('/data-exchange', [DataExchangeController::class, 'index'])->name('data-exchange');
     // other statistic pages
 
-    Route::get('/settings', [SettingSiteController::class, 'index'])->name('settings');
+    Route::get('/settings', [SettingSiteController::class, 'index'])->name('settings')->middleware('admin-panel.check-show-page');;
+    Route::post('/settings', [SettingSiteController::class, 'store'])->name('settings.store');
     // other statistic pages
 
     Route::get('/users', [UserController::class, 'index'])->name('users');
@@ -67,6 +71,7 @@ Route::view('/components-admin', 'admin-components');
 Route::get('routes', function () {
 
     $routeCollection = Route::getRoutes();
+    // dd(Auth::user()->isSuperAdmin());
 
     echo "<table style='width:100%'>";
     echo "<tr>";
