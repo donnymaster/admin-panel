@@ -256,6 +256,6 @@
 @endsection
 
 
-@section('tinymce')
+@section('scripts')
     <script src="https://cdn.tiny.cloud/1/tz1fd8u9lx48w915c8xaguoxxepnd7d4wwktm70glbgpl72c/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 @endsection

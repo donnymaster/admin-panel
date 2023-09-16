@@ -1,3 +1,5 @@
+@inject('service', 'App\Services\AdminPanel\ApplicationService')
+
 <div class="sidebar static-sidebar">
     <a href="{{route('admin.board')}}" class="static-sidebar-item active">
         <div class="icon">
@@ -15,7 +17,7 @@
         </div>
         Доска
     </a>
-    <a href="{{route('admin.applications')}}" class="static-sidebar-item active">
+    <a href="{{route('admin.applications')}}" class="static-sidebar-item">
         <div class="icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path
@@ -24,7 +26,12 @@
                     stroke-linejoin="round" />
             </svg>
         </div>
-        Заявки
+        <div class="badge">
+            Заявки
+            <div class="value">
+                {{$service->getNumberUnprocessedApplication()}}
+            </div>
+        </div>
     </a>
     <a href="{{route('admin.orders')}}" class="static-sidebar-item">
         <div class="icon">

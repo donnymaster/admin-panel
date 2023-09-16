@@ -13,8 +13,13 @@ use App\Http\Controllers\AdminPanel\UserController;
 use App\Models\AdminPanel\AdminRole;
 use App\Models\AdminPanel\MenuLink;
 use App\Models\User;
+use App\Services\AdminPanel\ApplicationService;
+use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Route;
+use Jenssegers\Agent\Agent;
+use Stevebauman\Location\Facades\Location;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,8 +75,15 @@ Route::view('/components-admin', 'admin-components');
 
 Route::get('routes', function () {
 
+    dd(ApplicationService::getNumberUnprocessedApplication());
+    // dd(FacadesRequest::ip(), FacadesRequest::userAgent());
     $routeCollection = Route::getRoutes();
+    $agent = new Agent();
+    dd($agent->isPhone(), $agent->browser(), $agent->platform(), $agent->version($agent->platform()), $agent->version($agent->browser()), $agent->languages());
     // dd(Auth::user()->isSuperAdmin());
+    dd(Location::get('217.199.231.202'));
+
+
 
     echo "<table style='width:100%'>";
     echo "<tr>";

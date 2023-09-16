@@ -5,7 +5,6 @@ namespace App\Services\AdminPanel;
 use App\Models\AdminPanel\Pages;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 
 class PageService
 {

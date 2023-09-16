@@ -5,11 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    @vite('resources/css/app.css')
-    @vite('resources/js/app.js')
+    @vite(['resources/js/app.js', 'resources/css/app.css'])
     <title> @yield('title')</title>
-    @hasSection('tinymce')
-        @yield('tinymce')
+    @hasSection('scripts')
+        @yield('scripts')
     @endif
 </head>
 
@@ -69,7 +68,7 @@
                         stroke="#9900FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </div>
-            <div class="admin-menu-logout">
+            <div class="admin-menu-logout" onclick="document.getElementById('logout-form').submit();">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30"
                     fill="none">
                     <path d="M8.2 11.7999L5 15L8.2 18.2" stroke="#9900FF" stroke-width="1.5" stroke-miterlimit="10"
@@ -99,6 +98,9 @@
                         stroke="#9900FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </div>
+            <form action="{{route('admin.logout')}}" method="POST" id="logout-form">
+                @csrf
+            </form>
         </div>
     </header>
     <div class="content flex">
