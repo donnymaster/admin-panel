@@ -62,8 +62,10 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
     Route::get('/data-exchange', [DataExchangeController::class, 'index'])->name('data-exchange');
     // other statistic pages
 
-    Route::get('/settings', [SettingSiteController::class, 'index'])->name('settings')->middleware('admin-panel.check-show-page');;
+    Route::get('/settings', [SettingSiteController::class, 'index'])->name('settings')->middleware('admin-panel.check-show-page');
     Route::post('/settings', [SettingSiteController::class, 'store'])->name('settings.store');
+    Route::put('/settings/{setting}', [SettingSiteController::class, 'update'])->name('settings.update');
+
     // other statistic pages
 
     Route::get('/users', [UserController::class, 'index'])->name('users');
@@ -75,13 +77,13 @@ Route::view('/components-admin', 'admin-components');
 
 Route::get('routes', function () {
 
-    dd(ApplicationService::getNumberUnprocessedApplication());
+    // dd(ApplicationService::getNumberUnprocessedApplication());
     // dd(FacadesRequest::ip(), FacadesRequest::userAgent());
     $routeCollection = Route::getRoutes();
-    $agent = new Agent();
-    dd($agent->isPhone(), $agent->browser(), $agent->platform(), $agent->version($agent->platform()), $agent->version($agent->browser()), $agent->languages());
+    // $agent = new Agent();
+    // dd($agent->isPhone(), $agent->browser(), $agent->platform(), $agent->version($agent->platform()), $agent->version($agent->browser()), $agent->languages());
     // dd(Auth::user()->isSuperAdmin());
-    dd(Location::get('217.199.231.202'));
+    // dd(Location::get('217.199.231.202'));
 
 
 

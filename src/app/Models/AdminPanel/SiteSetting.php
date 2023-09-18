@@ -9,5 +9,13 @@ class SiteSetting extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
+    protected $fillable = [
+        'setting_name',
+        'setting_key',
+        'setting_value',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d',
+    ];
 }

@@ -2,7 +2,7 @@
     @apply
         flex
         border
-        border-theme-light-blue
+        border-theme-blue
         bg-white;
     border-radius: 20px;
     & .item {

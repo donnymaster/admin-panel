@@ -169,6 +169,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Jenssegers\Agent\AgentServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -185,8 +186,4 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
     ])->toArray(),
-
-    'tinymce_key' => env('TINYMCE_KEY', ''),
-
-    'tinymce_link' => env('TINYMCE_LINK', ''),
 ];

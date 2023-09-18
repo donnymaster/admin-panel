@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('site_settings', function (Blueprint $table) {
             $table->id();
-            $table->string('tiny_mce_key');
-            $table->string('tiny_mce_link');
+            $table->string('setting_name');
+            $table->string('setting_key');
+            $table->string('setting_value');
             $table->timestamps();
         });
     }

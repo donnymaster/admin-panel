@@ -11,3 +11,6 @@ document.querySelectorAll('.image-create-page').forEach((imageSelector) => {
    const f = new SelectImage(imageSelector);
    console.log(f);
 });
+
+
+import 'laravel-datatables-vite';
