@@ -1,0 +1,19 @@
+.drop-down-list-container {
+    & .drop-down-parent {
+        color: white;
+        & .drop-down-title {
+            display: flex;
+            align-items: center;
+
+            & .icon {
+                cursor: pointer;
+                margin-right: 5px;
+            }
+        }
+
+        & .drop-down-child {
+            margin-left: 15px;
+            margin-bottom: 10px;
+        }
+    }
+}

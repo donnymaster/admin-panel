@@ -76,7 +76,6 @@ export default class Modal {
         this.modalOverlay.classList.toggle(this._CLASS_HIDDEN);
         this.modalContainer.classList.toggle(this._CLASS_HIDDEN);
         this.modalContainer.classList.add('flex');
-
         // показать нужную модалку
         modal.classList.toggle(this._CLASS_HIDDEN);
     }
@@ -87,11 +86,11 @@ export default class Modal {
         this.btns.forEach((btn) => {
             const dataValue = btn.getAttribute(this.MODAL_ATTRIBUTE_NAME);
             const modal = document.querySelector(`.modal[${this.MODAL_ATTRIBUTE_NAME}=${dataValue}]`);
+
             this.modalPair.push([
                 btn,
                 modal,
             ]);
         });
     }
-
 }

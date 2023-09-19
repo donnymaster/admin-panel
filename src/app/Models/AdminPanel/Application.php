@@ -15,4 +15,8 @@ class Application extends Model
         'additional_information',
         'processed',
     ];
+
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d',
+    ];
 }

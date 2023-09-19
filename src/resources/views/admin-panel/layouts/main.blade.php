@@ -109,6 +109,8 @@
             @yield('content')
         </div>
     </div>
+
+    @stack('modals')
 </body>
 
 </html>

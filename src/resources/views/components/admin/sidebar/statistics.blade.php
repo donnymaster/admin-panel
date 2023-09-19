@@ -1,7 +1,10 @@
 @inject('service', 'App\Services\AdminPanel\ApplicationService')
 
 <div class="sidebar static-sidebar">
-    <a href="{{route('admin.board')}}" class="static-sidebar-item active">
+    <a href="{{ route('admin.board') }}" @class([
+        'static-sidebar-item',
+        'active' => $attributes->get('item_show') === 'board',
+    ])>
         <div class="icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path d="M7 13H12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -17,7 +20,10 @@
         </div>
         Доска
     </a>
-    <a href="{{route('admin.applications')}}" class="static-sidebar-item">
+    <a href="{{ route('admin.applications') }}" @class([
+        'static-sidebar-item',
+        'active' => $attributes->get('item_show') === 'applications',
+    ])>
         <div class="icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path
@@ -29,11 +35,14 @@
         <div class="badge">
             Заявки
             <div class="value">
-                {{$service->getNumberUnprocessedApplication()}}
+                {{ $service->getNumberUnprocessedApplication() }}
             </div>
         </div>
     </a>
-    <a href="{{route('admin.orders')}}" class="static-sidebar-item">
+    <a href="{{ route('admin.orders') }}" @class([
+        'static-sidebar-item',
+        'active' => $attributes->get('item_show') === 'orders',
+    ])>
         <div class="icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path
@@ -56,7 +65,10 @@
         </div>
         Заказы
     </a>
-    <a href="{{route('admin.reviews')}}" class="static-sidebar-item">
+    <a href="{{ route('admin.reviews') }}" @class([
+        'static-sidebar-item',
+        'active' => $attributes->get('item_show') === 'reviews',
+    ])>
         <div class="icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path

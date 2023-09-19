@@ -21,10 +21,6 @@ class SettingSiteController extends Controller
 
     public function index(SettingsDataTable $settingsDataTable)
     {
-        // // TODO: добавить возможность пагинации, потому что не известно сколько будет настроек
-        // $settings = SiteSetting::get();
-
-        // return view('admin-panel.site-settings.index', compact('settings'));
         return $settingsDataTable->render('admin-panel.site-settings.index');
     }
 

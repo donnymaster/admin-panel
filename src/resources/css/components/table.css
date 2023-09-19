@@ -66,6 +66,14 @@
                 &:last-child {
                     @apply border-none;
                 }
+
+                &.not-processed {
+                    background-color: rgba(255, 0, 0, .5);
+                }
+
+                &.processed {
+                    background-color: rgba(0, 255, 0, .5);;
+                }
             }
         }
     }

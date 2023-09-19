@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminPanel\ApplicationController;
 use App\Http\Controllers\AdminPanel\Catalog\CatalogController;
 use App\Http\Controllers\AdminPanel\Catalog\ProductController;
+use App\Http\Controllers\AdminPanel\CategoryController;
 use App\Http\Controllers\AdminPanel\DataExchangeController;
 use App\Http\Controllers\AdminPanel\OrderController;
 use App\Http\Controllers\AdminPanel\PagesController;
@@ -50,6 +51,7 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
     Route::get('/pages/{pageId}', [PagesController::class, 'index'])->name('page');
 
     Route::prefix('/catalog')->group(function() {
+        Route::get('/categories', [CategoryController::class, 'index'])->name('catalog.categories.show');
         Route::get('/', [CatalogController::class, 'index'])->name('catalogs');
 
         Route::prefix('/{catalogId}')->group(function() {

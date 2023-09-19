@@ -204,7 +204,7 @@
 @endsection
 
 @section('sidebar')
-    <x-admin.sidebar.statistics />
+    <x-admin.sidebar.statistics item_show="board" />
 @endsection
 
 
