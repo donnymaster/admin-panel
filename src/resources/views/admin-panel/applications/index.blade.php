@@ -15,6 +15,15 @@
     {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
 
     <script>
+
+        const openModal = () => {
+            const modal = document.querySelector('.modal');
+            const modalContainer = document.querySelector('.modal-container');
+            const modalOverlay = document.querySelector('.modal-overlay');
+
+            modalContainer.classList.toggle('.hidden');
+        }
+
         window.addEventListener("load", function() {
             LaravelDataTables.dataTableBuilder.on('init', () => {
                 const table = document.querySelector('#dataTableBuilder_wrapper');
@@ -33,6 +42,8 @@
                     const rowData = data.filter((row) => row.id == id)['0'];
                     console.log(rowData);
                     // open modal
+
+                    openModal();
 
                 });
             });

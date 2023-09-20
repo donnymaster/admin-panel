@@ -52,7 +52,8 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
 
     Route::prefix('/catalog')->group(function() {
         Route::get('/categories', [CategoryController::class, 'index'])->name('catalog.categories.show');
-        Route::get('/', [CatalogController::class, 'index'])->name('catalogs');
+        Route::get('/categories/list', [CategoryController::class, 'list'])->name('catalog.categories.list');
+        Route::get('/', [CategoryController::class, 'index'])->name('catalogs');
 
         Route::prefix('/{catalogId}')->group(function() {
             Route::get('/', [CatalogController::class, 'show'])->where('id', '[0-9]+')->name('catalog');

@@ -1,10 +1,10 @@
-import Modal from "./components/modal";
+import ModalHandler from "./components/modalHandler";
 import PageList from "./components/pageList";
 import SelectImage from "./components/selectImage";
 import DropDownList from "./components/dropDown";
 
 /* --- Init --- */
-new Modal();
+new ModalHandler();
 
 new PageList();
 
