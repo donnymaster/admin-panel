@@ -47,7 +47,7 @@ class PageService
     }
 
     /**
-     * Получить список страниц в зависимости от поиска (q=) с пагинацией
+     * Получить список страниц в зависимости от поиска (query=) с пагинацией
      */
     public function getListPages(Request $request): LengthAwarePaginator
     {

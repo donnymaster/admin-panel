@@ -5,12 +5,56 @@
     .icon {
         @apply mr-2;
     }
+
+    & .loader {
+        display: none;
+    }
+
+    &.disabled {
+        position: relative;
+
+        & .loader {
+            display: block;
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            border-width: 2px;
+        }
+
+        &:active {
+            @apply bg-theme-light-blue;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,.2);
+            left: 0;
+            top: 0;
+            border-radius: 25px;
+            cursor: not-allowed;
+        }
+    }
 }
 
 .btn.bg-red {
     @apply bg-theme-red active:bg-theme-red-active;
+
+    &.disabled {
+        &:active {
+            @apply bg-theme-red;
+        }
+    }
 }
 
 .btn.bg-green {
     @apply bg-theme-green active:bg-theme-green-active;
+
+    &.disabled {
+        &:active {
+            @apply bg-theme-green;
+        }
+    }
 }

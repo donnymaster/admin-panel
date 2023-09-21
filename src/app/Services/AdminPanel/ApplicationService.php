@@ -6,6 +6,10 @@ use App\Models\AdminPanel\Application;
 
 class ApplicationService
 {
+    const LIMIT_MAX_COUNT_APPLICATION = 100;
+
+    const MAX_COUNT_APPLICATION = '+99';
+
     public function create($data)
     {
 
@@ -20,8 +24,8 @@ class ApplicationService
     {
         $count = Application::where('processed', false)->count();
 
-        if ($count >= 100) {
-            return '+99';
+        if ($count >= self::LIMIT_MAX_COUNT_APPLICATION) {
+            return self::MAX_COUNT_APPLICATION;
         }
 
         return $count;

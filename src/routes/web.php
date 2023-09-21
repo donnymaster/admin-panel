@@ -39,7 +39,11 @@ Route::post('/admin/login', [UserController::class, 'loginHandler'])->middleware
 Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
     Route::prefix('/statistics')->group(function() {
         Route::get('/board', [StatisticController::class, 'index'])->name('board')->middleware('admin-panel.check-show-page');
+
         Route::get('/applications', [ApplicationController::class, 'index'])->name('applications');
+        Route::get('/applications/{application}', [ApplicationController::class, 'store'])->name('applications.store')->where('application', '[0-9]+');
+        Route::delete('/applications/{application}', [ApplicationController::class, 'remove'])->name('applications.remove')->where('application', '[0-9]+');
+
         Route::get('/orders', [OrderController::class, 'index'])->name('orders');
         Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews');
     });
