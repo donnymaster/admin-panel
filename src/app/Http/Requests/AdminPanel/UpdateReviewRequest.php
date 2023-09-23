@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests\AdminPanel;
 
+use App\Models\AdminPanel\Review;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateApplicationRequest extends FormRequest
+class UpdateReviewRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,11 +22,12 @@ class UpdateApplicationRequest extends FormRequest
      */
     public function rules(): array
     {
+        $maxPosition = Review::max('position');
+        $minPosition = Review::min('position');
+
         return [
-            'full_name_client' => 'nullable|string|min:1|max:255',
-            'phone_client' => 'nullable|string|min:1|max:255',
-            'additional_information' => 'nullable|string|min:1|max:255',
-            'processed' => 'nullable|boolean',
+            'position' => "nullable|numeric|between:$minPosition,$maxPosition",
+            'is_show' => 'nullable|boolean',
         ];
     }
 }

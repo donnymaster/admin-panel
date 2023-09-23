@@ -23,6 +23,7 @@
 @import './components/loader';
 @import './components/forms/input-image';
 @import './components/drop-down-list';
+@import './components/select';
 
 
 /* --- Pages --- */

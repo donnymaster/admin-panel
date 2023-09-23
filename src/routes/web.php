@@ -13,6 +13,7 @@ use App\Http\Controllers\AdminPanel\StatisticController;
 use App\Http\Controllers\AdminPanel\UserController;
 use App\Models\AdminPanel\AdminRole;
 use App\Models\AdminPanel\MenuLink;
+use App\Models\AdminPanel\Review;
 use App\Models\User;
 use App\Services\AdminPanel\ApplicationService;
 use Illuminate\Http\Client\Request;
@@ -41,11 +42,16 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
         Route::get('/board', [StatisticController::class, 'index'])->name('board')->middleware('admin-panel.check-show-page');
 
         Route::get('/applications', [ApplicationController::class, 'index'])->name('applications');
-        Route::get('/applications/{application}', [ApplicationController::class, 'store'])->name('applications.store')->where('application', '[0-9]+');
+        Route::get('/applications/info', [ApplicationController::class, 'info'])->name('applications.info');
+
+        Route::patch('/applications/{application}', [ApplicationController::class, 'store'])->name('applications.store')->where('application', '[0-9]+');
         Route::delete('/applications/{application}', [ApplicationController::class, 'remove'])->name('applications.remove')->where('application', '[0-9]+');
 
         Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+
         Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews');
+        Route::patch('/reviews/{review}', [ReviewController::class, 'store'])->name('reviews.store')->where('review', '[0-9]+');
+        Route::delete('/reviews/{review}', [ReviewController::class, 'remove'])->name('reviews.remove')->where('review', '[0-9]+');
     });
 
     Route::get('/pages', [PagesController::class, 'index'])->name('pages');
@@ -83,6 +89,8 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
 Route::view('/components-admin', 'admin-components');
 
 Route::get('routes', function () {
+
+    dd(Review::where('position', '>', '4')->increment('position'));
 
     // dd(ApplicationService::getNumberUnprocessedApplication());
     // dd(FacadesRequest::ip(), FacadesRequest::userAgent());

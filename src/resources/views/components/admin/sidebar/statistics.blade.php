@@ -34,7 +34,7 @@
         </div>
         <div class="badge">
             Заявки
-            <div class="value">
+            <div class="value" id="applicationNotProcessedCountSideBar">
                 {{ $service->getNumberUnprocessedApplication() }}
             </div>
         </div>

@@ -30,4 +30,12 @@ class ApplicationService
 
         return $count;
     }
+
+    public function info()
+    {
+        $processed = Application::where('processed', true)->count();
+        $notProcessed = Application::where('processed', false)->count();
+
+        return compact('processed', 'notProcessed');
+    }
 }

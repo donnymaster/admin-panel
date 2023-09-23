@@ -5,8 +5,6 @@ input.input, textarea.input {
         font-medium
         focus:outline-none;
 
-    border: 1px solid transparent;
-
     &.is-invalid {
         @apply border-theme-red;
     }
@@ -20,6 +18,10 @@ input.input, textarea.input {
     & label.label {
         @apply text-white;
         margin-bottom: 5px;
+
+        &.black {
+            color:black;
+        }
     }
 }
 

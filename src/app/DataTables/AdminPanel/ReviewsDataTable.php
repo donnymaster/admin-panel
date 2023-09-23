@@ -2,14 +2,14 @@
 
 namespace App\DataTables\AdminPanel;
 
-use App\Models\AdminPanel\Application;
+use App\Models\AdminPanel\Review;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class ApplicationsDataTable extends DataTable
+class ReviewsDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -19,24 +19,20 @@ class ApplicationsDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->editColumn('processed', function($application) {
-                if ($application->processed) {
-                    return 'Обработан';
+            ->editColumn('is_show', function ($review) {
+                if ($review->is_show) {
+                    return 'Отображен';
                 }
 
-                return 'Не обработан';
+                return 'Скрыт';
             })
-            ->setRowClass(function ($application) {
-                return $application->processed ? 'processed' : 'not-processed';
-            })
-            // ->addColumn('action', 'applications.action')
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(Application $model): QueryBuilder
+    public function query(Review $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -49,12 +45,12 @@ class ApplicationsDataTable extends DataTable
         return $this->builder()
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->orderBy(0, 'asc')
                     ->parameters([
                         'buttons' => [],
                         'language' => [
                             'url' => url('/vendor/datatables/lang/'.app()->getLocale().'.json'),
-                        ]]);
+                        ]])
+                    ->orderBy(0, 'asc');
     }
 
     /**
@@ -64,10 +60,11 @@ class ApplicationsDataTable extends DataTable
     {
         return [
             Column::make('id'),
-            Column::make('full_name_client')->title('Пользователь'),
-            Column::make('phone_client')->title('Номер'),
-            Column::make('processed')->title('Статус'),
-            Column::make('created_at')->title('Создан'),
+            Column::make('client_name')->title('Пользователь'),
+            Column::make('position')->title('Позиция'),
+            Column::make('is_show')->title('Статус'),
+            Column::make('rating')->title('Оценка'),
+            Column::make('created_at')->title('Добавлен'),
         ];
     }
 
@@ -76,6 +73,6 @@ class ApplicationsDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Applications_' . date('YmdHis');
+        return 'Reviews_' . date('YmdHis');
     }
 }

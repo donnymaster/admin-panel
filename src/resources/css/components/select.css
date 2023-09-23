@@ -1,0 +1,6 @@
+select.select {
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 15px;
+    @apply border-theme-blue;
+}
