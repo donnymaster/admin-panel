@@ -16,12 +16,14 @@
     {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
 
     <script>
-        const openModal = () => {
-            const modal = document.querySelector('.modal');
-            const modalContainer = document.querySelector('.modal-container');
-            const modalOverlay = document.querySelector('.modal-overlay');
+        const handleModal = (type) => {
+            document.querySelector('body').style = type === 'open' ? 'overflow: hidden' : 'overflow: auto';
 
-            modalContainer.classList.toggle('.hidden');
+            document.querySelector('.modal-overlay').classList.toggle('hidden');
+            document.querySelector('.modal-container').classList.toggle('hidden');
+            document.querySelector('.modal-container').classList.toggle('flex');
+
+            document.querySelector('.modal').classList.toggle('hidden');
         }
 
         window.addEventListener("load", function() {
@@ -29,7 +31,6 @@
                 const table = document.querySelector('#dataTableBuilder_wrapper');
                 const data = LaravelDataTables.dataTableBuilder.rows().data();
 
-                console.log(data);
                 table.addEventListener('click', (event) => {
                     const row = event.target.closest('tbody tr');
 
@@ -40,12 +41,32 @@
                     const id = row.getAttribute('id');
                     // get data
                     const rowData = data.filter((row) => row.id == id)['0'];
-                    console.log(rowData);
-                    // open modal
 
-                    openModal();
+                    const modal = document.querySelector('.modal');
+
+                    modal.querySelector('.modal-header .title').textContent = `Заявка от: ${rowData.full_name_client}`;
+                    modal.querySelector('.modal-content .phone-number').textContent = rowData.phone_client;
+                    modal.querySelector('.modal-content .phone-number').setAttribute('a', `tel:${rowData.phone_client}`);
+
+                    modal.querySelector('.modal-content .date-add').textContent = rowData.created_at;
+
+                    const message = rowData.additional_information ? rowData.additional_information : 'Отсутсвует';
+
+                    modal.querySelector('.modal-content .message').textContent = message;
+
+                    document.querySelector('input[name="id-application"]').setAttribute('value', id);
+
+                    handleModal('open');
 
                 });
+            });
+
+            document.querySelector('.modal-header .close-modal').addEventListener('click', () => {
+                handleModal('');
+            });
+
+            document.querySelector('.modal-overlay').addEventListener('click', () => {
+                handleModal('');
             });
         });
     </script>
@@ -57,9 +78,9 @@
 
 
 @push('modals')
-    <div class="modal-container">
-        <div class="modal-overlay"></div>
-        <div class="modal" data-modal="update-user">
+    <div class="modal-container hidden">
+        <div class="modal-overlay hidden"></div>
+        <div class="modal hidden" data-modal="update-user">
             <div class="modal-header mb-5 text-2xl">
                 <div class="title">Заявка от: Большакова Вера Романовна</div>
                 <div class="close-modal">
@@ -73,7 +94,7 @@
                             <div class="number-title mr-2">
                                 Номер телефона:
                             </div>
-                            <a href="tel:+(35222) 18-5718">(35222) 18-5718</a>
+                            <a class="phone-number" href="tel:+(35222) 18-5718">(35222) 18-5718</a>
                         </div>
                         <div class="date-add">
                             Добавлен: 2023-09-20
