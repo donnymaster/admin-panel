@@ -8,7 +8,6 @@ use App\Http\Requests\AdminPanel\SettingSiteRequest;
 use App\Http\Requests\AdminPanel\UpdateSiteSettingRequest;
 use App\Models\AdminPanel\SiteSetting;
 use App\Services\AdminPanel\SiteSettingService;
-use Illuminate\Http\Request;
 
 class SettingSiteController extends Controller
 {
@@ -26,9 +25,11 @@ class SettingSiteController extends Controller
 
     public function store(SettingSiteRequest $request)
     {
-        // update tinymce
+        SiteSetting::create($request->safe()->toArray());
 
-        return redirect()->route('admin.settings');
+        return [
+            'message' => 'Переменная создана',
+        ];
     }
 
     public function update(UpdateSiteSettingRequest $request, SiteSetting $setting)
@@ -36,5 +37,14 @@ class SettingSiteController extends Controller
         $this->service->update($request->validated(), $setting);
 
         return back()->with(['message' => 'Данные успешно обновлены!']);
+    }
+
+    public function remove(SiteSetting $setting)
+    {
+        $setting->delete();
+
+        return [
+            'message' => 'Запись была удалена!',
+        ];
     }
 }

@@ -146,4 +146,14 @@
         background-repeat: no-repeat;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M14.6668 5.33334C14.6668 2.66667 13.3335 1.33334 10.6668 1.33334H5.3335C2.66683 1.33334 1.3335 2.66667 1.3335 5.33334V14C1.3335 14.3667 1.6335 14.6667 2.00016 14.6667H10.6668C13.3335 14.6667 14.6668 13.3333 14.6668 10.6667V8' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M10.3402 7.82666L10.7735 7.39333C10.8002 7.36666 10.8269 7.34 10.8535 7.30666C11.3935 6.73333 11.6069 6.06 10.7735 5.22666C9.89352 4.34666 9.20019 4.63333 8.60685 5.22666L5.14685 8.68666C5.01352 8.82 4.88686 9.08 4.86019 9.26666L4.67353 10.5867C4.60686 11.0667 4.94019 11.4 5.42019 11.3333L6.74018 11.1467C6.92684 11.12 7.18686 10.9933 7.32019 10.86L8.61353 9.56666' stroke='white' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M8.11328 5.72C8.40661 6.76667 9.22661 7.59333 10.2799 7.88667' stroke='white' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     }
+
+    & .delete-setting {
+        display: inline-block;
+        padding: 0;
+        width: 36px;
+        height: 36px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M14 3.98666C11.78 3.76666 9.54667 3.65333 7.32 3.65333C6 3.65333 4.68 3.71999 3.36 3.85333L2 3.98666' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M5.6665 3.31333L5.81317 2.44C5.91984 1.80666 5.99984 1.33333 7.1265 1.33333H8.87317C9.99984 1.33333 10.0865 1.83333 10.1865 2.44666L10.3332 3.31333' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M10.1398 14.6667H5.85977C3.99977 14.6667 3.93977 13.8533 3.86644 12.8067L3.43311 6.09333' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M12.5666 6.09333L12.1333 12.8067' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M6.88672 11H9.10672' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M8.54639 8.33333H9.66639' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M6.3335 8.33333H6.88683' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    }
 }

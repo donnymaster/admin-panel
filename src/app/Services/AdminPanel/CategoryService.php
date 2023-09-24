@@ -7,14 +7,14 @@ use App\Models\AdminPanel\ProductCategory;
 
 class CategoryService
 {
-    const PER_PAGE_PRODUCTS = 2;
+    const PER_PAGE_PRODUCTS = 20;
 
-    public function getCategoryWithPaginate()
+    public function getCategory()
     {
-        return ProductCategory::with('products')->select(['id', 'parent_id', 'name', 'slug'])->get();
+        return ProductCategory::select(['id', 'parent_id', 'name', 'slug', 'position'])->get();
     }
 
-    public function getCatgoryWithPaginateWithSearchByProduct(string $search)
+    public function getCatgoryWithSearchByProduct(string $search)
     {
         return ProductCategory::orWhereHas('products', function($query) use ($search) {
             $query->where('name', 'like', "%$search%");

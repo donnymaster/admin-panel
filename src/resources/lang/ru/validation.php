@@ -160,5 +160,6 @@ return [
         'year'                  => 'Год',
         'unauthorized'          => 'Не авторизован',
         'user_logout'           => 'Пользователь успешно вышел из системы',
+        'setting_key'           => 'Slug',
     ],
 ];

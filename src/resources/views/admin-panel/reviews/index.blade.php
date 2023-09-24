@@ -70,6 +70,5 @@
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
         </div>
     </div>
-
     @vite(['resources/js/pages/reviewPage.js'])
 @endpush

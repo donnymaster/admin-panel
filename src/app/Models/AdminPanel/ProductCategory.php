@@ -13,6 +13,7 @@ class ProductCategory extends Model
         'parent_id',
         'name',
         'slug',
+        'position',
         'page_title',
         'keywords',
         'description',

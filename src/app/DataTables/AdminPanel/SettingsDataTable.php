@@ -20,9 +20,23 @@ class SettingsDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->setRowId('id')
+            ->editColumn('setting_value', function($variable) {
+                if (strlen($variable->setting_value)>= 35) {
+                    return substr($variable->setting_value, 0, 35) . '...';
+                }
+
+                return $variable->setting_value;
+            })
+            ->addColumn('full_slug', function($variable) {
+                return $variable->setting_value;
+            })
             ->addColumn('action', function ($setting) {
-                return "<div data-id=\"{$setting->id}\" class=\"btn edit-setting modal-btn\" data-modal=\"update-setting\">
-                </div>";
+                return "
+                <div class=\"flex\">
+                    <div data-id=\"{$setting->id}\" class=\" mr-2 btn edit-setting modal-btn\" data-update=\"update\"></div>
+                    <div data-id=\"{$setting->id}\" class=\"btn delete-setting bg-red\" data-delete=\"delete\">
+                </div>
+                ";
             });
     }
 

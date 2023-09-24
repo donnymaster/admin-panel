@@ -8,6 +8,8 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/js/app.js',
                 'resources/js/pages/reviewPage.js',
+                'resources/js/pages/settingPage.js',
+                'resources/js/pages/categoryPage.js',
             ],
             refresh: true,
         }),

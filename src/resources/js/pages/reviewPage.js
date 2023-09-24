@@ -1,8 +1,9 @@
 
 window.addEventListener('load', () => {
     window.datatables = LaravelDataTables.dataTableBuilder;
-    LaravelDataTables.dataTableBuilder.on('init', () => addEventClickRowTable());
-    LaravelDataTables.dataTableBuilder.on('error', (error) => {
+
+    window.datatables.on('init', () => addEventClickRowTable());
+    window.datatables.on('error', (error) => {
         window.location.reload();
     });
 
@@ -23,7 +24,7 @@ function addEventClickRowTable() {
 
         status.value = review.is_show == 'Скрыт' ? '0' : '1';
         position.setAttribute('placeholder', review.position);
-        position.setAttribute('value', review.position);
+        position.value = review.position;
     }
 
     const changeVisibilityModal = (state = '') => {

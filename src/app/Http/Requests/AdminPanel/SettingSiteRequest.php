@@ -22,8 +22,9 @@ class SettingSiteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'tinymce_key' => 'nullable|min:1|max:255',
-            'tinymce_link' => 'nullable|min:1|max:255',
+            'setting_name' => 'required|min:1|max:255',
+            'setting_key' => 'required|min:1|max:255|unique:site_settings,setting_key',
+            'setting_value' => 'required|min:1|max:255',
         ];
     }
 }

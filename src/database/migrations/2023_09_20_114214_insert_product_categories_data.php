@@ -17,30 +17,35 @@ return new class extends Migration
                 'name' => 'Игрушки',
                 'slug' => 'igrushki',
                 'page_title' => 'Игрушки',
+                'position' => 1,
             ],
             [
                 'parent_id' => 1,
                 'name' => 'Машинки',
                 'slug' => 'mashinki',
                 'page_title' => 'Машинки',
+                'position' => 2,
             ],
             [
                 'parent_id' => 1,
                 'name' => 'Мягкие игрушки',
                 'slug' => 'myagkiye-igrushki',
                 'page_title' => 'Мягкие игрушки',
+                'position' => 3,
             ],
             [
                 'parent_id' => 2,
                 'name' => 'Обычные машинки',
                 'slug' => 'obychnyye-mashinki',
                 'page_title' => 'Обычные машинки',
+                'position' => 4,
             ],
             [
                 'parent_id' => 2,
                 'name' => 'Машинки на пульте управления',
                 'slug' => 'mashinki-na-pulte-upravleniya',
                 'page_title' => 'Машинки на пульте управления',
+                'position' => 5,
             ]
         ];
 

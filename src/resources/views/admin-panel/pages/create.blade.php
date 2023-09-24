@@ -2,6 +2,8 @@
 
 @section('title', $title)
 
+@inject('service', 'App\Services\AdminPanel\SiteSettingService')
+
 @section('content')
     <form enctype="multipart/form-data" action="{{ route('admin.page.store') }}" method="POST" class="form-create-page">
         @csrf
@@ -130,7 +132,7 @@
                             stroke="#9900FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </div>
-                <input hidden id="og_image"  type="file" class="input" name="og_image">
+                <input hidden id="og_image" type="file" class="input" name="og_image">
             </div>
             <div class="input-group">
                 <label for="email" class="label">
@@ -218,8 +220,7 @@
                                     stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 <path id="Vector_3"
                                     d="M18.5701 22H14.0001C11.7101 22 10.5701 20.86 10.5701 18.57V11.43C10.5701 9.14 11.7101 8 14.0001 8H18.5701C20.8601 8 22.0001 9.14 22.0001 11.43V18.57C22.0001 20.86 20.8601 22 18.5701 22Z"
-                                    stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round" />
+                                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 <path id="Vector_4" d="M14.8701 15H18.1301" stroke="white" stroke-width="1.5"
                                     stroke-linecap="round" stroke-linejoin="round" />
                                 <path id="Vector_5" d="M16.5 16.63V13.37" stroke="white" stroke-width="1.5"
@@ -235,20 +236,28 @@
             1
         @endIsSuperAdmin
     </form>
-    <script>
-        tinymce.init({
-          selector: '#page_description',
-          plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
-          toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-          tinycomments_mode: 'embedded',
-          tinycomments_author: 'Author name',
-          mergetags_list: [
-            { value: 'First.Name', title: 'First Name' },
-            { value: 'Email', title: 'Email' },
-          ],
-          ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant"))
-        });
-      </script>
+    @if ($service->getValueVariable('redaktor-tiny-url'))
+        <script>
+            tinymce.init({
+                selector: '#page_description',
+                plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
+                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                tinycomments_mode: 'embedded',
+                tinycomments_author: 'Author name',
+                mergetags_list: [{
+                        value: 'First.Name',
+                        title: 'First Name'
+                    },
+                    {
+                        value: 'Email',
+                        title: 'Email'
+                    },
+                ],
+                ai_request: (request, respondWith) => respondWith.string(() => Promise.reject(
+                    "See docs to implement AI Assistant"))
+            });
+        </script>
+    @endif
 @endsection
 
 @section('sidebar')
@@ -257,5 +266,7 @@
 
 
 @section('scripts')
-    <script src="https://cdn.tiny.cloud/1/tz1fd8u9lx48w915c8xaguoxxepnd7d4wwktm70glbgpl72c/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    @if ($service->getValueVariable('redaktor-tiny-url'))
+        <script src="{{ $service->getValueVariable('redaktor-tiny-url') }}" referrerpolicy="origin"></script>
+    @endif
 @endsection

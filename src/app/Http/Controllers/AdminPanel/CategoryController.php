@@ -24,12 +24,12 @@ class CategoryController extends Controller
     {
         $search = $request->get('search', '');
 
-    //    if ($search) {
-    //         return $this->service->getCatgoryWithPaginateWithSearchByProduct($search);
-    //    }
+       if ($search) {
+            return $this->service->getCatgoryWithSearchByProduct($search);
+       }
 
-    //    return $this->service->getCategoryWithPaginate();
+       return $this->service->getCategory();
 
-        return $this->service->getProductsByCategoryIdWithSearch(1, $search);
+        // return $this->service->getProductsByCategoryIdWithSearch(1, $search);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminPanel\AccountController;
 use App\Http\Controllers\AdminPanel\ApplicationController;
 use App\Http\Controllers\AdminPanel\Catalog\CatalogController;
 use App\Http\Controllers\AdminPanel\Catalog\ProductController;
@@ -16,6 +17,7 @@ use App\Models\AdminPanel\MenuLink;
 use App\Models\AdminPanel\Review;
 use App\Models\User;
 use App\Services\AdminPanel\ApplicationService;
+use App\Services\AdminPanel\SiteSettingService;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request as FacadesRequest;
@@ -78,10 +80,13 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
     Route::get('/settings', [SettingSiteController::class, 'index'])->name('settings')->middleware('admin-panel.check-show-page');
     Route::post('/settings', [SettingSiteController::class, 'store'])->name('settings.store');
     Route::put('/settings/{setting}', [SettingSiteController::class, 'update'])->name('settings.update');
+    Route::delete('/settings/{setting}', [SettingSiteController::class, 'remove'])->name('settings.remove');
 
     // other statistic pages
 
     Route::get('/users', [UserController::class, 'index'])->name('users');
+
+    Route::get('/account', [AccountController::class, 'index'])->name('account');
 
     Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 });
@@ -89,9 +94,8 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
 Route::view('/components-admin', 'admin-components');
 
 Route::get('routes', function () {
-
-    dd(Review::where('position', '>', '4')->increment('position'));
-
+    // $service = new SiteSettingService();
+    // dd($service->getValueVariable('redaktor-tiny-url'));
     // dd(ApplicationService::getNumberUnprocessedApplication());
     // dd(FacadesRequest::ip(), FacadesRequest::userAgent());
     $routeCollection = Route::getRoutes();
