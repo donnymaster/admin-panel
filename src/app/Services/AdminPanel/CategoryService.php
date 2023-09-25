@@ -7,7 +7,7 @@ use App\Models\AdminPanel\ProductCategory;
 
 class CategoryService
 {
-    const PER_PAGE_PRODUCTS = 20;
+    const PER_PAGE_PRODUCTS = 10;
 
     public function getCategory()
     {
@@ -23,7 +23,7 @@ class CategoryService
 
     public function getProductsByCategoryId(int $categoryId)
     {
-        return Product::where('category_id', $categoryId)->simplePaginate(self::PER_PAGE_PRODUCTS);
+        return Product::where('category_id', $categoryId)->paginate(self::PER_PAGE_PRODUCTS);
     }
 
     public function getProductsByCategoryIdWithSearch(int $categoryId, string $search)

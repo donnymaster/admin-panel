@@ -97,7 +97,20 @@
     </div>
 
     <div class="flex text-2xl text-white mb-5">
-        Сводная статистика по Заявкам
+        <div class="title mr-5">
+            Статистика по Заявкам
+        </div>
+        <div class="flex">
+            <div class="date-start mr-4 flex items-center">
+                <span class="mr-2 text-sm">Начало</span>
+                <input type="date" class="date" name="date-start-application" value="{{$applicationPeriod['min']}}" min="{{$applicationPeriod['min']}}" max="{{$applicationPeriod['max']}}">
+            </div>
+            <div class="date-end mr-4 flex items-center">
+                <span class="mr-2 text-sm">Конец</span>
+                <input type="date" class="date" name="date-end-application" value="{{$applicationPeriod['max']}}" min="{{$applicationPeriod['min']}}" max="{{$applicationPeriod['max']}}">
+            </div>
+            <div class="btn load-applications small-btn">Обновить</div>
+        </div>
     </div>
     <div class="flex mb-8">
         <div style="width: 100%; height: 250px" class="bg-white rounded-3xl">
@@ -106,7 +119,20 @@
     </div>
 
     <div class="flex text-2xl text-white mb-5">
-        Сводная статистика по Заказам
+        <div class="title mr-5">
+            Статистика по Заказам
+        </div>
+        <div class="flex">
+            <div class="date-start mr-4 flex items-center">
+                <span class="mr-2 text-sm">Начало</span>
+                <input type="date" class="date" name="date-start" id="">
+            </div>
+            <div class="date-end mr-4 flex items-center">
+                <span class="mr-2 text-sm">Конец</span>
+                <input type="date" class="date" name="date-end" id="">
+            </div>
+            <div class="btn load-applications small-btn">Обновить</div>
+        </div>
     </div>
     <div class="flex mb-8">
         <div style="width: 100%; height: 250px" class="bg-white rounded-3xl">
@@ -117,7 +143,20 @@
 
 
     <div class="flex text-2xl text-white mb-5">
-        Средний бал отзыва по дням
+        <div class="title mr-5">
+            Средний бал отзыва по дням
+        </div>
+        <div class="flex">
+            <div class="date-start mr-4 flex items-center">
+                <span class="mr-2 text-sm">Начало</span>
+                <input type="date" class="date" name="date-start" value="{{$reviewPeriod['min']}}" min="{{$reviewPeriod['min']}}" max="{{$reviewPeriod['max']}}">
+            </div>
+            <div class="date-end mr-4 flex items-center">
+                <span class="mr-2 text-sm">Конец</span>
+                <input type="date" class="date" name="date-end" value="{{$reviewPeriod['max']}}" min="{{$reviewPeriod['min']}}" max="{{$reviewPeriod['max']}}">
+            </div>
+            <div class="btn load-applications small-btn">Обновить</div>
+        </div>
     </div>
     <div class="flex mb-8">
         <div style="width: 100%; height: 250px" class="bg-white rounded-3xl">
@@ -126,7 +165,7 @@
     </div>
 
     <script>
-        const ctxApplications = document.getElementById('applicationsStatistics');
+        // const ctxApplications = document.getElementById('applicationsStatistics');
         const ctxOrders = document.getElementById('ordersStatistics');
         const ctxReviews = document.getElementById('reviewsStatistics');
 
@@ -153,21 +192,21 @@
             }
         }
 
-        new Chart(ctxApplications, {
-            type: 'line',
-            data: getData('Количество заявок'),
-            options: {
-                maintainAspectRatio: false,
-                layout: {
-                    padding: {
-                        left: 30,
-                        right: 30,
-                        top: 15,
-                        bottom: 15,
-                    }
-                }
-            }
-        });
+        // new Chart(ctxApplications, {
+        //     type: 'line',
+        //     data: getData('Количество заявок'),
+        //     options: {
+        //         maintainAspectRatio: false,
+        //         layout: {
+        //             padding: {
+        //                 left: 30,
+        //                 right: 30,
+        //                 top: 15,
+        //                 bottom: 15,
+        //             }
+        //         }
+        //     }
+        // });
 
         new Chart(ctxOrders, {
             type: 'line',
@@ -209,5 +248,6 @@
 
 
 @section('scripts')
+    @vite(['resources/js/pages/boardPage.js'])
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @endsection

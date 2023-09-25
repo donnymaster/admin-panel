@@ -10,6 +10,7 @@ export default defineConfig({
                 'resources/js/pages/reviewPage.js',
                 'resources/js/pages/settingPage.js',
                 'resources/js/pages/categoryPage.js',
+                'resources/js/pages/boardPage.js',
             ],
             refresh: true,
         }),

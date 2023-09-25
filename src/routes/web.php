@@ -44,6 +44,7 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
         Route::get('/board', [StatisticController::class, 'index'])->name('board')->middleware('admin-panel.check-show-page');
 
         Route::get('/applications', [ApplicationController::class, 'index'])->name('applications');
+        Route::get('/applications/date-limit', [ApplicationController::class, 'dateLimit'])->name('applications.date-limit');
         Route::get('/applications/info', [ApplicationController::class, 'info'])->name('applications.info');
 
         Route::patch('/applications/{application}', [ApplicationController::class, 'store'])->name('applications.store')->where('application', '[0-9]+');
@@ -65,6 +66,7 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
     Route::prefix('/catalog')->group(function() {
         Route::get('/categories', [CategoryController::class, 'index'])->name('catalog.categories.show');
         Route::get('/categories/list', [CategoryController::class, 'list'])->name('catalog.categories.list');
+        Route::get('/categories/{category}/products', [CategoryController::class, 'products'])->name('catalog.category.products');
         Route::get('/', [CategoryController::class, 'index'])->name('catalogs');
 
         Route::prefix('/{catalogId}')->group(function() {

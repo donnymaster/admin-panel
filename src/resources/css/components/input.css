@@ -28,3 +28,12 @@ input.input, textarea.input {
 .alert-error {
     @apply text-theme-red text-xs pt-2;
 }
+
+input.date {
+    color: black;
+    width: 120px;
+    font-size: 15px;
+    height: 23px;
+    padding: 5px;
+    border-radius: 25px;
+}

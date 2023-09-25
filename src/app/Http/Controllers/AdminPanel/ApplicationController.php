@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminPanel\UpdateApplicationRequest;
 use App\Models\AdminPanel\Application;
 use App\Services\AdminPanel\ApplicationService;
+use App\Services\AdminPanel\StatisticService;
+use Illuminate\Http\Request;
 
 class ApplicationController extends Controller
 {
@@ -32,6 +34,16 @@ class ApplicationController extends Controller
         $application->delete();
 
         return ['message' => 'Заявка была удалена'];
+    }
+
+    public function dateLimit(Request $request)
+    {
+        $dates = [
+            'min' => $request->get('min'),
+            'max' => $request->get('max'),
+        ];
+
+        return StatisticService::getCountApplicationsByPeriod($dates);
     }
 
     public function info()

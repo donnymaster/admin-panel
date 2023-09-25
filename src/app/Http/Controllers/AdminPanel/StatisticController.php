@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\AdminPanel;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Services\AdminPanel\StatisticService;
 
 class StatisticController extends Controller
 {
     public function index()
     {
-        return view('admin-panel.statistics.board');
+        $applicationPeriod = StatisticService::getMinMaxDatePeriodApplications();
+        $reviewPeriod = StatisticService::getMinMaxDatePeriodReviews();
+
+        return view('admin-panel.statistics.board', compact('applicationPeriod', 'reviewPeriod'));
     }
 }
