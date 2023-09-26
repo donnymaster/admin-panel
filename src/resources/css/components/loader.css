@@ -12,6 +12,10 @@
         @apply border-theme-blue;
         border-bottom-color: transparent;
     }
+
+    &.hidden {
+        display: none;
+    }
 }
 
 @keyframes rotation {

@@ -22,4 +22,8 @@ class Statistic extends Model
         'page_name_visit',
         'page_url_visit',
     ];
+
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d',
+    ];
 }

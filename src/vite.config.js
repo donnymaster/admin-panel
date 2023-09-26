@@ -11,6 +11,7 @@ export default defineConfig({
                 'resources/js/pages/settingPage.js',
                 'resources/js/pages/categoryPage.js',
                 'resources/js/pages/boardPage.js',
+                'resources/js/pages/statisticPage.js',
             ],
             refresh: true,
         }),

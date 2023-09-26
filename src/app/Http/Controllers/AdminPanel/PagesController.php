@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\AdminPanel;
 
+use App\DataTables\AdminPanel\PageStatisticsDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminPanel\CreatePageRequest;
 use App\Services\AdminPanel\PageService;
@@ -16,10 +17,9 @@ class PagesController extends Controller
     {
         $this->service = new PageService();
     }
-    public function index()
+    public function index(PageStatisticsDataTable $pageStatisticsDataTable)
     {
-        $pageName = '1';
-        return view('admin-panel.pages.page', compact('pageName'));
+        return $pageStatisticsDataTable->render('admin-panel.pages.page');
     }
 
     public function store(CreatePageRequest $request)

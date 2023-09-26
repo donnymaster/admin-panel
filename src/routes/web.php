@@ -45,6 +45,7 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
 
         Route::get('/applications', [ApplicationController::class, 'index'])->name('applications');
         Route::get('/applications/date-limit', [ApplicationController::class, 'dateLimit'])->name('applications.date-limit');
+        Route::get('/applications/reviews-info', [ApplicationController::class, 'getInformationReviews'])->name('applications.reviews-info');
         Route::get('/applications/info', [ApplicationController::class, 'info'])->name('applications.info');
 
         Route::patch('/applications/{application}', [ApplicationController::class, 'store'])->name('applications.store')->where('application', '[0-9]+');
@@ -61,6 +62,7 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
     Route::get('/pages/create', [PagesController::class, 'create'])->name('page.create');
     Route::post('/page/store', [PagesController::class, 'store'])->name('page.store');
     Route::get('/pages-list', [PagesController::class, 'pageList'])->name('page.list');
+    Route::get('/pages/info-visit', [StatisticController::class, 'informationPages'])->name('pages.info-visits');
     Route::get('/pages/{pageId}', [PagesController::class, 'index'])->name('page');
 
     Route::prefix('/catalog')->group(function() {

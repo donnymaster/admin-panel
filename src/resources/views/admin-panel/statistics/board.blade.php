@@ -114,7 +114,10 @@
     </div>
     <div class="flex mb-8">
         <div style="width: 100%; height: 250px" class="bg-white rounded-3xl">
-            <canvas id="applicationsStatistics"></canvas>
+            <canvas id="applicationsStatistics" class="hidden"></canvas>
+            <div id="loadingApplication" class="loading-data flex items-center w-full justify-center h-full">
+                <span class="loader dark"></span>
+            </div>
         </div>
     </div>
 
@@ -144,9 +147,9 @@
 
     <div class="flex text-2xl text-white mb-5">
         <div class="title mr-5">
-            Средний бал отзыва по дням
+            Количество отзывов по балам
         </div>
-        <div class="flex">
+        {{-- <div class="flex">
             <div class="date-start mr-4 flex items-center">
                 <span class="mr-2 text-sm">Начало</span>
                 <input type="date" class="date" name="date-start" value="{{$reviewPeriod['min']}}" min="{{$reviewPeriod['min']}}" max="{{$reviewPeriod['max']}}">
@@ -156,18 +159,19 @@
                 <input type="date" class="date" name="date-end" value="{{$reviewPeriod['max']}}" min="{{$reviewPeriod['min']}}" max="{{$reviewPeriod['max']}}">
             </div>
             <div class="btn load-applications small-btn">Обновить</div>
-        </div>
+        </div> --}}
     </div>
     <div class="flex mb-8">
         <div style="width: 100%; height: 250px" class="bg-white rounded-3xl">
-            <canvas id="reviewsStatistics"></canvas>
+            <canvas id="reviewsStatistics" class="hidden"></canvas>
+            <div id="loadingReviews" class="loading-data flex items-center w-full justify-center h-full">
+                <span class="loader dark"></span>
+            </div>
         </div>
     </div>
 
     <script>
-        // const ctxApplications = document.getElementById('applicationsStatistics');
         const ctxOrders = document.getElementById('ordersStatistics');
-        const ctxReviews = document.getElementById('reviewsStatistics');
 
         const labels = [
             'January',
@@ -192,21 +196,6 @@
             }
         }
 
-        // new Chart(ctxApplications, {
-        //     type: 'line',
-        //     data: getData('Количество заявок'),
-        //     options: {
-        //         maintainAspectRatio: false,
-        //         layout: {
-        //             padding: {
-        //                 left: 30,
-        //                 right: 30,
-        //                 top: 15,
-        //                 bottom: 15,
-        //             }
-        //         }
-        //     }
-        // });
 
         new Chart(ctxOrders, {
             type: 'line',
@@ -224,21 +213,6 @@
             }
         });
 
-        new Chart(ctxReviews, {
-            type: 'line',
-            data: getData('Средний бал отзыва'),
-            options: {
-                maintainAspectRatio: false,
-                layout: {
-                    padding: {
-                        left: 30,
-                        right: 30,
-                        top: 15,
-                        bottom: 15,
-                    }
-                }
-            }
-        });
     </script>
 @endsection
 

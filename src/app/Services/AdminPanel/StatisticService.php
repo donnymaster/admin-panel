@@ -30,19 +30,35 @@ class StatisticService
         return self::_getInformationByPeriod('applications', $dates);
     }
 
-    public static function getCountReviewsByPeriod(array $dates)
+    public static function getInfoReviews()
     {
-        return self::_getInformationByPeriod('reviews', $dates);
+        return DB::select('select count(*) count, rating from reviews GROUP by rating ORDER by rating');
+    }
+
+    public static function getInformationPagesCountVisits()
+    {
+        return DB::select(
+            'select count(*) as count, DATE(created_at) as date, page_name_visit
+            from statistics
+            GROUP by DATE(created_at), page_name_visit;'
+        );
     }
 
     private static function _getInformationByPeriod(string $tableName, array $dates)
     {
-        return DB::table($tableName)
-        ->select(DB::raw('count(*) as count, DATE(created_at) as date'))
-        ->whereBetween('created_at', [$dates['min'], $dates['max']])
-        ->groupBy(['created_at'])
-        ->orderBy('created_at')
-        ->get();
+
+        return DB::select(
+            "select count(*) as count, DATE(created_at) as date
+            from  $tableName
+            where created_at BETWEEN DATE(?) and DATE (?)
+            GROUP by DATE(created_at)
+            order by DATE(created_at)",
+            [
+                $dates['min'],
+                $dates['max']
+            ]
+
+        );
     }
 
     private static function _getValidDate($min, $max): array

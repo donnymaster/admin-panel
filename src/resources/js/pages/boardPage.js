@@ -1,6 +1,5 @@
 
 document.querySelector('.load-applications').addEventListener('click', () => {
-    // get data
     const startDate = document.querySelector('input[name="date-start-application"]').value;
     const endDate = document.querySelector('input[name="date-end-application"]').value;
 
@@ -9,61 +8,106 @@ document.querySelector('.load-applications').addEventListener('click', () => {
     )
         .then(response => response.json())
         .then((response) => {
-            console.log(response);
-            updateChart(response, 'fffff')
+            updateChart(response);
         });
-    // update data
 });
 
-function updateChart(data, title) {
-    console.log(data.map(d => d.count));
+function updateChart(data) {
     window.chartApplication.data.labels = data.map(d => d.date);
     window.chartApplication.data.datasets[0].data = data.map(d => d.count);
 
     window.chartApplication.update();
 }
 
+function initChartApplication() {
+    const loader = document.getElementById('loadingApplication');
+    const ctxApplication = document.getElementById('applicationsStatistics');
+    const startDate = document.querySelector('input[name="date-start-application"]').value;
+    const endDate = document.querySelector('input[name="date-end-application"]').value;
 
-const ctxApplications = document.getElementById('applicationsStatistics');
+    fetch(
+        `/admin/statistics/applications/date-limit?min=${startDate}&max=${endDate}`
+    )
+    .then(response => response.json())
+    .then((response) => {
+        console.log(response);
+        const data = {
+            labels: response.map(d => d.date),
+            datasets: [{
+                label: 'Количество заявок',
+                data: response.map(d => d.count),
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        };
 
+        window.chartApplication = new Chart(ctxApplication, {
+            type: 'line',
+            data: data,
+            options: {
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        left: 30,
+                        right: 30,
+                        top: 15,
+                        bottom: 15,
+                    }
+                }
+            }
+        });
 
-const labels = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-];
+        ctxApplication.classList.remove('hidden');
+        loader.classList.add('hidden');
 
+    });
 
-const getData = (title) => {
-    return {
-        labels: labels,
-        datasets: [{
-            label: title,
-            data: [...Array(7)].map(_ => Math.ceil(Math.random() * 100)),
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1
-        }]
-    }
 }
 
+function initChartReviews() {
+    const ctxReviews = document.getElementById('reviewsStatistics');
+    const loader = document.getElementById('loadingReviews');
 
-window.chartApplication = new Chart(ctxApplications, {
-    type: 'line',
-    data: getData('Количество заявок'),
-    options: {
-        maintainAspectRatio: false,
-        layout: {
-            padding: {
-                left: 30,
-                right: 30,
-                top: 15,
-                bottom: 15,
+
+    fetch(
+        '/admin/statistics/applications/reviews-info'
+    )
+    .then(response => response.json())
+    .then((response) => {
+        console.log(response);
+        const data = {
+            labels: response.map(d => d.rating),
+            datasets: [{
+                label: 'Количество комментариев',
+                data: response.map(d => d.count),
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        };
+
+        window.ctxReview = new Chart(ctxReviews, {
+            type: 'line',
+            data: data,
+            options: {
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        left: 30,
+                        right: 30,
+                        top: 15,
+                        bottom: 15,
+                    }
+                }
             }
-        }
-    }
-});
+        });
+
+        ctxReviews.classList.remove('hidden');
+        loader.classList.add('hidden');
+
+    });
+}
+
+initChartApplication();
+initChartReviews();

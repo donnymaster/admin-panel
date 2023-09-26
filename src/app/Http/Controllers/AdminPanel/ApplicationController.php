@@ -46,6 +46,11 @@ class ApplicationController extends Controller
         return StatisticService::getCountApplicationsByPeriod($dates);
     }
 
+    public function getInformationReviews()
+    {
+        return StatisticService::getInfoReviews();
+    }
+
     public function info()
     {
         return response()->json($this->service->info());

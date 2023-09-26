@@ -14,4 +14,9 @@ class StatisticController extends Controller
 
         return view('admin-panel.statistics.board', compact('applicationPeriod', 'reviewPeriod'));
     }
+
+    public function informationPages()
+    {
+        return StatisticService::getInformationPagesCountVisits();
+    }
 }

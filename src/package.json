@@ -17,7 +17,9 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "choices.js": "^10.2.0",
         "drag-on-drop": "^3.6.1",
+        "select-pure": "^2.1.4",
         "sortablejs": "^1.15.0"
     }
 }
