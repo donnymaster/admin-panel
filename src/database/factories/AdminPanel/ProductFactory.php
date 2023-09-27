@@ -20,10 +20,6 @@ class ProductFactory extends Factory
             'name' => fake()->word(),
             'category_id' => fake()->randomElement([1, 2]),
             'slug' => fake()->word(),
-            'page_title' => fake()->word(),
-            'name_tile' => fake()->word(),
-            'price' => fake()->randomElement([20, 30, 40, 15, 19, 27]),
-            'count' => fake()->randomElement([10, 100, 1000, 200, 400, 5]),
         ];
     }
 }

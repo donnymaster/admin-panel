@@ -1,5 +1,11 @@
 <div class="sidebar static-sidebar">
-    <a href="{{ route('admin.board') }}" class="static-sidebar-item active">
+    <a
+        href="{{ route('admin.catalog.categories.page.list') }}"
+        @class([
+            'static-sidebar-item',
+            'active' => $attributes->get('item_show') === 'categories',
+        ])
+    >
         <div class="icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path d="M5 10H7C9 10 10 9 10 7V5C10 3 9 2 7 2H5C3 2 2 3 2 5V7C2 9 3 10 5 10Z" stroke="black"
@@ -16,7 +22,13 @@
         </div>
         Категории
     </a>
-    <a href="{{ route('admin.applications') }}" class="static-sidebar-item">
+    <a
+        href="{{ route('admin.products') }}"
+        @class([
+            'static-sidebar-item',
+            'active' => $attributes->get('item_show') === 'products',
+        ])
+    >
         <div class="icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path d="M8.5 14.25C8.5 16.17 10.08 17.75 12 17.75C13.92 17.75 15.5 16.17 15.5 14.25" stroke="black"
@@ -36,7 +48,13 @@
             Товары
         </div>
     </a>
-    <a href="{{ route('admin.orders') }}" class="static-sidebar-item">
+    <a
+        href="{{ route('admin.orders') }}"
+        @class([
+            'static-sidebar-item',
+            'active' => $attributes->get('item_show') === 'code',
+        ])
+    >
         <div class="icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
                 <path
@@ -53,22 +71,5 @@
             </svg>
         </div>
         Промокоды
-    </a>
-    <a href="{{ route('admin.reviews') }}" class="static-sidebar-item">
-        <div class="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path
-                    d="M21.63 14.75C21.63 15.64 21.39 16.48 20.95 17.2C20.13 18.57 18.62 19.5 16.88 19.5C15.94 19.5 15.06 19.22 14.32 18.73C13.7 18.35 13.19 17.82 12.82 17.2C12.38 16.48 12.13 15.64 12.13 14.75C12.13 12.13 14.26 10 16.88 10C17.24 10 17.59 10.04 17.92 10.12C20.05 10.59 21.63 12.49 21.63 14.75Z"
-                    stroke="black" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                <path d="M15.03 14.75L16.2 15.92L18.73 13.58" stroke="black" stroke-width="1.5"
-                    stroke-linecap="round" stroke-linejoin="round" />
-                <path
-                    d="M5.33008 2H18.67C19.78 2 20.6901 2.90999 20.6901 4.01999V6.23999C20.6901 7.04999 20.1801 8.06001 19.6801 8.57001L17.92 10.12C17.59 10.04 17.2401 10 16.8801 10C14.2601 10 12.1301 12.13 12.1301 14.75C12.1301 15.64 12.3801 16.48 12.8201 17.2C13.1901 17.82 13.7001 18.35 14.3201 18.73V19.07C14.3201 19.68 13.92 20.49 13.41 20.79L12.0001 21.7C10.6901 22.51 8.87006 21.6 8.87006 19.98V14.63C8.87006 13.92 8.46006 13.01 8.06006 12.51L4.22003 8.47C3.72003 7.96 3.31006 7.05001 3.31006 6.45001"
-                    stroke="black" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                    stroke-linejoin="round" />
-            </svg>
-        </div>
-        Фильтры
     </a>
 </div>

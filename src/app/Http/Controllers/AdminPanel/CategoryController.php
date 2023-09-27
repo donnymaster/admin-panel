@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\AdminPanel;
 
+use App\DataTables\AdminPanel\CategoryDataTable;
+use App\DataTables\AdminPanel\ProductCategoryPropertiesDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\AdminPanel\Product;
 use App\Models\AdminPanel\ProductCategory;
@@ -34,8 +36,21 @@ class CategoryController extends Controller
         // return $this->service->getProductsByCategoryIdWithSearch(1, $search);
     }
 
+    public function show(ProductCategoryPropertiesDataTable $dataTable, $id)
+    {
+        $categories = ProductCategory::select('id', 'name')->get();
+        $category = ProductCategory::where('id', $id)->with(['parent', 'children'])->first();
+
+        return $dataTable->setIdCategory($id)->render('admin-panel.catalogs.category', compact('category', 'categories'));
+    }
+
     public function products(Request $request, $categoryId)
     {
         return $this->service->getProductsByCategoryId($categoryId);
+    }
+
+    public function page(CategoryDataTable $categoryDataTable)
+    {
+        return $categoryDataTable->render('admin-panel.catalogs.category-table');
     }
 }

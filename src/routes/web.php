@@ -14,6 +14,8 @@ use App\Http\Controllers\AdminPanel\StatisticController;
 use App\Http\Controllers\AdminPanel\UserController;
 use App\Models\AdminPanel\AdminRole;
 use App\Models\AdminPanel\MenuLink;
+use App\Models\AdminPanel\Product;
+use App\Models\AdminPanel\ProductCategory;
 use App\Models\AdminPanel\Review;
 use App\Models\User;
 use App\Services\AdminPanel\ApplicationService;
@@ -67,9 +69,17 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
 
     Route::prefix('/catalog')->group(function() {
         Route::get('/categories', [CategoryController::class, 'index'])->name('catalog.categories.show');
+        Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('catalog.category.show');
         Route::get('/categories/list', [CategoryController::class, 'list'])->name('catalog.categories.list');
+        Route::get('/categories/page/list', [CategoryController::class, 'page'])->name('catalog.categories.page.list');
+
         Route::get('/categories/{category}/products', [CategoryController::class, 'products'])->name('catalog.category.products');
         Route::get('/', [CategoryController::class, 'index'])->name('catalogs');
+
+        Route::get('/products', [ProductController::class, 'index'])->where('id', '[0-9]+')->name('products');
+        Route::get('/products/create', [ProductController::class, 'create'])->where('id', '[0-9]+')->name('products.create');
+        Route::post('/products/', [ProductController::class, 'store'])->where('id', '[0-9]+')->name('products.store');
+        Route::get('/products/{product}', [ProductController::class, 'show'])->where('id', '[0-9]+')->name('products.show');
 
         Route::prefix('/{catalogId}')->group(function() {
             Route::get('/', [CatalogController::class, 'show'])->where('id', '[0-9]+')->name('catalog');
@@ -98,6 +108,8 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
 Route::view('/components-admin', 'admin-components');
 
 Route::get('routes', function () {
+    // dd(Product::with('variants')->first());
+    // dd(ProductCategory::with(['parent', 'children'])->get());
     // $service = new SiteSettingService();
     // dd($service->getValueVariable('redaktor-tiny-url'));
     // dd(ApplicationService::getNumberUnprocessedApplication());

@@ -5,17 +5,13 @@ namespace App\Models\AdminPanel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class ProductCategoryProperty extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
-        'category_id',
-        'slug',
-        'keywords',
-        'page_description',
-        'image',
+        'product_category_id',
     ];
 
     protected $casts = [
@@ -25,10 +21,5 @@ class Product extends Model
     public function category()
     {
         return $this->belongsTo(ProductCategory::class);
-    }
-
-    public function variants()
-    {
-        return $this->hasMany(ProductVariant::class, 'product_id');
     }
 }

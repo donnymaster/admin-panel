@@ -21,8 +21,27 @@ class ProductCategory extends Model
         'image',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d',
+    ];
+
+    public function parent()
+    {
+        return $this->belongsTo(self::class, 'parent_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(self::class, 'parent_id');
+    }
+
     public function products()
     {
         return $this->hasMany(Product::class, 'category_id');
+    }
+
+    public function properties()
+    {
+        return $this->hasMany(ProductCategoryProperty::class, 'product_category_id');
     }
 }

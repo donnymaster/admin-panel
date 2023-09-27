@@ -3,6 +3,7 @@
 @section('title', 'Категории')
 
 @section('content')
+    <a href="{{route("admin.catalog.categories.page.list")}}" class="link tecxt-white">Page table</a>
     <div class="drop-down-list-container">
     </div>
 
@@ -46,5 +47,5 @@
 @endsection
 
 @section('sidebar')
-    <x-admin.sidebar.categories />
+    <x-admin.sidebar.categories item_show="categories" />
 @endsection
