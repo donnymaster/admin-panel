@@ -14,6 +14,7 @@ class Product extends Model
         'category_id',
         'slug',
         'keywords',
+        'vendor_code',
         'page_description',
         'image',
     ];
@@ -30,5 +31,10 @@ class Product extends Model
     public function variants()
     {
         return $this->hasMany(ProductVariant::class, 'product_id');
+    }
+
+    public function values()
+    {
+        return $this->morphMany(PropertyValue::class, 'property_value');
     }
 }

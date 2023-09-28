@@ -16,10 +16,10 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id')->nullable();
             $table->string('name');
             $table->string('slug');
+            $table->string('vendor_code');
             $table->string('image')->nullable();
             $table->string('keywords')->nullable();
             $table->text('page_description')->nullable();
-
             $table->timestamps();
 
             $table->foreign('category_id')->references('id')->on('product_categories');

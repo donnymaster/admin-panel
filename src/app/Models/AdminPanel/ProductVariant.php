@@ -25,4 +25,9 @@ class ProductVariant extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function values()
+    {
+        return $this->morphMany(PropertyValue::class, 'property_value');
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\AdminPanel;
 use App\DataTables\AdminPanel\PageStatisticsDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminPanel\CreatePageRequest;
+use App\Models\AdminPanel\Statistic;
 use App\Services\AdminPanel\PageService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -41,5 +42,10 @@ class PagesController extends Controller
         $pages = $this->service->getListPages($request);
 
         return response()->json($pages, Response::HTTP_OK);
+    }
+
+    public function validPages()
+    {
+        return Statistic::select('page_name_visit')->groupBy('page_name_visit')->get();
     }
 }

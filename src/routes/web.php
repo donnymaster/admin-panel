@@ -64,6 +64,7 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
     Route::get('/pages/create', [PagesController::class, 'create'])->name('page.create');
     Route::post('/page/store', [PagesController::class, 'store'])->name('page.store');
     Route::get('/pages-list', [PagesController::class, 'pageList'])->name('page.list');
+    Route::get('/pages/valid-pages', [PagesController::class, 'validPages'])->name('page.valid-pages');
     Route::get('/pages/info-visit', [StatisticController::class, 'informationPages'])->name('pages.info-visits');
     Route::get('/pages/{pageId}', [PagesController::class, 'index'])->name('page');
 
@@ -78,7 +79,7 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
 
         Route::get('/products', [ProductController::class, 'index'])->where('id', '[0-9]+')->name('products');
         Route::get('/products/create', [ProductController::class, 'create'])->where('id', '[0-9]+')->name('products.create');
-        Route::post('/products/', [ProductController::class, 'store'])->where('id', '[0-9]+')->name('products.store');
+        Route::post('/products', [ProductController::class, 'store'])->where('id', '[0-9]+')->name('products.store');
         Route::get('/products/{product}', [ProductController::class, 'show'])->where('id', '[0-9]+')->name('products.show');
 
         Route::prefix('/{catalogId}')->group(function() {

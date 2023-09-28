@@ -73,7 +73,11 @@
         <div class="columns-1 mb-9">
             <div class="input-group">
                 <label for="email" class="label">
-                    Описание страницы, сюда TinyMCE
+                    Описание страницы
+                    @if (!$service->getValueVariable('redaktor-tiny-url'))
+                        <br>
+                        Подключите TinyMCE установив переменную 'redaktor-tiny-url'
+                    @endif
                 </label>
                 <textarea name="page_description" id="page_description" class="input" name="story" rows="5" cols="33"></textarea>
             </div>

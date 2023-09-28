@@ -16,6 +16,10 @@
     &.hidden {
         display: none;
     }
+
+    &.white {
+
+    }
 }
 
 @keyframes rotation {

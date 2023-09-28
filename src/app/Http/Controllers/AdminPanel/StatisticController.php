@@ -4,6 +4,7 @@ namespace App\Http\Controllers\AdminPanel;
 
 use App\Http\Controllers\Controller;
 use App\Services\AdminPanel\StatisticService;
+use Illuminate\Http\Request;
 
 class StatisticController extends Controller
 {
@@ -15,8 +16,8 @@ class StatisticController extends Controller
         return view('admin-panel.statistics.board', compact('applicationPeriod', 'reviewPeriod'));
     }
 
-    public function informationPages()
+    public function informationPages(Request $request)
     {
-        return StatisticService::getInformationPagesCountVisits();
+        return StatisticService::getInformationPagesCountVisits($request);
     }
 }

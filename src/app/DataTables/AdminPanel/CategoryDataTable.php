@@ -29,7 +29,7 @@ class CategoryDataTable extends DataTable
                 return '-';
             })
             ->addColumn('product_link', function ($category) {
-                return "<a class=\"link\" href=\"".route('admin.products')."?category={$category->id}\">Открыть</a>";
+                return "<a class=\"link\" href=\"".route('admin.products')."?category={$category->id}\">Открыть ({$category->products_count})</a>";
             })
             ->setRowId('id');
     }
@@ -39,7 +39,7 @@ class CategoryDataTable extends DataTable
      */
     public function query(ProductCategory $model): QueryBuilder
     {
-        return $model->newQuery()->with('parent');
+        return $model->newQuery()->withCount('products')->with('parent');
     }
 
     /**

@@ -19,6 +19,7 @@ class ProductFactory extends Factory
         return [
             'name' => fake()->word(),
             'category_id' => fake()->randomElement([1, 2]),
+            'vendor_code' => fake()->regexify('[A-Z]{5}[0-4]{3}'),
             'slug' => fake()->word(),
         ];
     }

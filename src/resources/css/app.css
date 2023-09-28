@@ -33,3 +33,8 @@
 /* @import './pages/create-page'; */
 
 @import 'choices.js/public/assets/styles/choices.min.css';
+
+
+.choices {
+    width: 100%;
+}

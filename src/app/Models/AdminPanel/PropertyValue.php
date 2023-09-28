@@ -5,26 +5,26 @@ namespace App\Models\AdminPanel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductCategoryProperty extends Model
+class PropertyValue extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'product_category_id',
+        'product_category_property_id',
+        'value',
     ];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d',
     ];
 
-    public function values()
+    public function product_category()
     {
-        return $this->hasMany(PropertyValue::class);
+        return $this->belongsTo(ProductCategoryProperty::class);
     }
 
-    public function category()
+    public function property_value()
     {
-        return $this->belongsTo(ProductCategory::class);
+        return $this->morphTo();
     }
 }

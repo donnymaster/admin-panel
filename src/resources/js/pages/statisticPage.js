@@ -1,9 +1,93 @@
 import Choices from "choices.js";
 
-var secondElement = new Choices('#demo-2', { removeButton: true, removeItems: true, });
+// var secondElement = new Choices('#selected-pages', {
+//     allowHTML: true,
+//     delimiter: ',',
+//     editItems: true,
+//     maxItemCount: 5,
+//     removeItemButton: true,
+// });
+
+// console.log(secondElement);
+
+function initChoicesPages() {
+    // send request
+    fetch(
+        '/admin/pages/valid-pages'
+    )
+        .then(response => response.json())
+        .then((response) => {
+            redrerChoice(response);
+        });
+
+}
+
+initChoicesPages();
+
+function redrerChoice(data) {
+    // if empty data
+    if (!data.length) {
+        return;
+    }
+
+    const parentElement = document.querySelector('#selected-pages');
+
+    document.querySelector('#loadingChoicePages').classList.add('hidden');
+    parentElement.classList.remove('hidden');
+
+    data.forEach((page) => {
+        const option = document.createElement('option');
+        option.classList.add();
+        option.textContent = page.page_name_visit;
+        option.value = page.page_name_visit;
+
+        parentElement.append(option);
+    });
+
+    // if data
+
+    window.choice = new Choices('#selected-pages', {
+        allowHTML: true,
+        delimiter: ',',
+        editItems: true,
+        maxItemCount: 5,
+        removeItemButton: true,
+    });
+}
+
+document.querySelector('.update-applications').addEventListener('click', () => {
+    console.log(window.choice.getValue().map(item => item.value));
+    updateChart();
+});
+
+
+
+function updateChart() {
+    // get data
+    const pages = window.choice.getValue().map(item => item.value);
+    const startDate = document.querySelector('#startDate').value;
+    const endDate = document.querySelector('#endDate').value;
+
+    if (!pages.length) {
+        return;
+    }
+
+    const pagesList = pages.map(page => `&pages[]=${page}`);
+    console.log(pagesList);
+
+    // fetch data
+    fetch(
+        `/admin/pages/info-visit?end-date=${endDate}&start-date=${startDate}`
+    )
+    .then(response => response.json())
+    .then((response) => {
+        // TODO: check is 401
+        //check data
+        console.log(response);
+    });
+}
 
 const skipped = (ctx, value) => ctx.p0.skip || ctx.p1.skip ? value : undefined;
-const down = (ctx, value) => ctx.p0.parsed.y > ctx.p1.parsed.y ? value : undefined;
 
 const stringToColour = (str) => {
     let hash = 0;

@@ -5,6 +5,7 @@ namespace App\Services\AdminPanel;
 use App\Models\AdminPanel\Application;
 use App\Models\AdminPanel\Review;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class StatisticService
@@ -35,12 +36,44 @@ class StatisticService
         return DB::select('select count(*) count, rating from reviews GROUP by rating ORDER by rating');
     }
 
-    public static function getInformationPagesCountVisits()
+    public static function getInformationPagesCountVisits($request)
     {
+        $currentDate = $request->get('end-date', Carbon::now()->format('Y-m-d'));
+        $lastDate = $request->get('start-date', Carbon::now()->subDays(30)->format('Y-m-d'));
+
+        $pages = [];
+
+        if ($request->get('pages')) {
+            $pages = $request->get('pages');
+        }
+
+        if ($pages) {
+            $str = '';
+
+            foreach ($pages as $index => $page) {
+                $str .= '?,';
+            }
+
+           $str = substr($str, 0, -1);
+//
+            return DB::select(
+                'select count(*) as count, DATE(created_at) as date, page_name_visit
+                from statistics
+                where page_name_visit in ('.$str.') and created_at BETWEEN ? and ?
+                GROUP by DATE(created_at), page_name_visit',
+                Arr::flatten([$pages, [$lastDate, $currentDate]]),
+            );
+        }
+
         return DB::select(
             'select count(*) as count, DATE(created_at) as date, page_name_visit
             from statistics
-            GROUP by DATE(created_at), page_name_visit;'
+            where created_at BETWEEN ? AND ?
+            GROUP by DATE(created_at), page_name_visit;',
+            [
+                $lastDate,
+                $currentDate,
+            ]
         );
     }
 
@@ -79,5 +112,4 @@ class StatisticService
 
         return $dates;
     }
-
 }

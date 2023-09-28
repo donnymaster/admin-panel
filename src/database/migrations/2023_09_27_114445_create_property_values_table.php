@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('property_values', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('product_category_property_id');
+            $table->morphs('property_value');
             $table->string('value');
             $table->timestamps();
 
