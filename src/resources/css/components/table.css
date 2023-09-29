@@ -156,4 +156,14 @@
         background-repeat: no-repeat;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M14 3.98666C11.78 3.76666 9.54667 3.65333 7.32 3.65333C6 3.65333 4.68 3.71999 3.36 3.85333L2 3.98666' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M5.6665 3.31333L5.81317 2.44C5.91984 1.80666 5.99984 1.33333 7.1265 1.33333H8.87317C9.99984 1.33333 10.0865 1.83333 10.1865 2.44666L10.3332 3.31333' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M10.1398 14.6667H5.85977C3.99977 14.6667 3.93977 13.8533 3.86644 12.8067L3.43311 6.09333' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M12.5666 6.09333L12.1333 12.8067' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M6.88672 11H9.10672' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M8.54639 8.33333H9.66639' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M6.3335 8.33333H6.88683' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     }
+
+    & .copy-product {
+        display: inline-block;
+        padding: 0;
+        width: 36px;
+        height: 36px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M16 12.9V17.1C16 20.6 14.6 22 11.1 22H6.9C3.4 22 2 20.6 2 17.1V12.9C2 9.4 3.4 8 6.9 8H11.1C14.6 8 16 9.4 16 12.9Z' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M22 6.9V11.1C22 14.6 20.6 16 17.1 16H16V12.9C16 9.4 14.6 8 11.1 8H8V6.9C8 3.4 9.4 2 12.9 2H17.1C20.6 2 22 3.4 22 6.9Z' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    }
 }

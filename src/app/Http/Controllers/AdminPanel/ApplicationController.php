@@ -8,6 +8,7 @@ use App\Http\Requests\AdminPanel\UpdateApplicationRequest;
 use App\Models\AdminPanel\Application;
 use App\Services\AdminPanel\ApplicationService;
 use App\Services\AdminPanel\StatisticService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ApplicationController extends Controller
@@ -42,6 +43,12 @@ class ApplicationController extends Controller
             'min' => $request->get('min'),
             'max' => $request->get('max'),
         ];
+
+        // ограничение на загрузку на последние 30 дней при открытии страницы [is-first-load=true]
+        if ($request->has('is-first-load')) {
+            $lastDate = Carbon::create($dates['max'])->subDays(30);
+            $dates['min'] = $lastDate->gt(Carbon::create($dates['min'])) ? $lastDate->format('Y-m-d') : $dates['min'];
+        }
 
         return StatisticService::getCountApplicationsByPeriod($dates);
     }

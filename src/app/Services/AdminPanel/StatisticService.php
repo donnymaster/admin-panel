@@ -3,7 +3,9 @@
 namespace App\Services\AdminPanel;
 
 use App\Models\AdminPanel\Application;
+use App\Models\AdminPanel\Pages;
 use App\Models\AdminPanel\Review;
+use App\Models\AdminPanel\Statistic;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -34,6 +36,14 @@ class StatisticService
     public static function getInfoReviews()
     {
         return DB::select('select count(*) count, rating from reviews GROUP by rating ORDER by rating');
+    }
+
+    public static function getValidDatePeriodPageStatistic(): array
+    {
+        $minDate = Statistic::min('created_at');
+        $maxDate = Statistic::max('created_at');
+
+        return self::_getValidDate($minDate, $maxDate);
     }
 
     public static function getInformationPagesCountVisits($request)

@@ -1,31 +1,44 @@
 import Choices from "choices.js";
 
-// var secondElement = new Choices('#selected-pages', {
-//     allowHTML: true,
-//     delimiter: ',',
-//     editItems: true,
-//     maxItemCount: 5,
-//     removeItemButton: true,
-// });
+init();
 
-// console.log(secondElement);
+function init() {
+    initChoicesPages();
+
+    loadDatePeriod();
+
+    document.querySelector('.update-applications').addEventListener('click', () => {
+        console.log(window.choice.getValue().map(item => item.value));
+        updateChart();
+    });
+
+}
 
 function initChoicesPages() {
     // send request
     fetch(
         '/admin/pages/valid-pages'
     )
-        .then(response => response.json())
-        .then((response) => {
-            redrerChoice(response);
-        });
+    .then(response => response.json())
+    .then((response) => {
+        _redrerChoice(response);
+    });
 
 }
 
-initChoicesPages();
+function loadDatePeriod() {
+    fetch(
+        '/admin/pages/date-limit'
+    )
+    .then(response => response.json())
+    .then((response) => {
+        console.log(response);
+        document.querySelector('#startDate').value = response.min;
+        document.querySelector('#endDate').value = response.max;
+    });
+}
 
-function redrerChoice(data) {
-    // if empty data
+function _redrerChoice(data) {
     if (!data.length) {
         return;
     }
@@ -44,21 +57,22 @@ function redrerChoice(data) {
         parentElement.append(option);
     });
 
-    // if data
-
     window.choice = new Choices('#selected-pages', {
         allowHTML: true,
         delimiter: ',',
         editItems: true,
-        maxItemCount: 5,
+        maxItemCount: 10,
         removeItemButton: true,
     });
+
+    data.slice(0, 5).forEach((page) => {
+        console.log(page);
+        window.choice.setChoiceByValue(page.page_name_visit);
+    });
+
+    loadInfo();
 }
 
-document.querySelector('.update-applications').addEventListener('click', () => {
-    console.log(window.choice.getValue().map(item => item.value));
-    updateChart();
-});
 
 
 
@@ -72,18 +86,51 @@ function updateChart() {
         return;
     }
 
-    const pagesList = pages.map(page => `&pages[]=${page}`);
-    console.log(pagesList);
+    const pagesList = pages.map(page => `&pages[]=${page}`).join('');
 
     // fetch data
     fetch(
-        `/admin/pages/info-visit?end-date=${endDate}&start-date=${startDate}`
+        `/admin/pages/info-visit?end-date=${endDate}&start-date=${startDate}${pagesList}`
     )
     .then(response => response.json())
     .then((response) => {
         // TODO: check is 401
-        //check data
         console.log(response);
+
+        const dates = [...new Set(response.map(obj => obj.date))].sort(_compareByData);
+        const rawData = groupBy(response, 'page_name_visit');
+        const renderData = [];
+
+        for (const [key, value] of Object.entries(rawData)) {
+            let r = value.sort((x, y) => new Date(x.date) - new Date(y.date));
+
+            const values = dates.map((date) => {
+                const val = r.find(f => f.date == date);
+
+                return val ? val.count : NaN;
+            });
+
+            const color = stringToColour(key);
+
+            renderData.push({
+                label: key,
+                data: values,
+                fill: false,
+                borderColor: color,
+                segment: {
+                    borderColor: ctx => skipped(ctx, color),
+                    borderDash: ctx => skipped(ctx, [6, 6]),
+                },
+                spanGaps: true,
+            });
+        }
+
+        window.chart.data.labels = dates;
+        window.chart.data.datasets = [];
+
+        window.chart.data.datasets = renderData;
+
+        window.chart.update();
     });
 }
 
@@ -110,16 +157,22 @@ var groupBy = function (xs, key) {
 };
 
 function loadInfo() {
-    fetch(
-        '/admin/pages/info-visit'
-    )
-        .then(response => response.json())
-        .then((response) => {
-            renderDate(response);
-        });
-}
+    const pages = window.choice.getValue().map(item => item.value);
 
-loadInfo();
+    if (!pages.length) {
+        return;
+    }
+
+    const pagesList = pages.map(page => `&pages[]=${page}`).join('');
+
+    fetch(
+        `/admin/pages/info-visit?last-thirty-days=true${pagesList}`
+    )
+    .then(response => response.json())
+    .then((response) => {
+        renderDate(response);
+    });
+}
 
 
 function renderDate(data) {
@@ -151,13 +204,14 @@ function renderDate(data) {
         });
     }
 
-    new Chart(document.getElementById("line-chart"), {
+    window.chart = new Chart(document.getElementById("line-chart"), {
         type: 'line',
         data: {
             labels: dates,
             datasets: renderData,
         },
         options: {
+            responsive: true,
             fill: false,
             interaction: {
                 intersect: false
@@ -172,16 +226,11 @@ function renderDate(data) {
             }
         }
     });
+
+    document.getElementById("line-chart").classList.remove('hidden');
+    document.querySelector('#loadingChartPages').classList.add('hidden');
 }
 
 function _compareByData(x, y) {
     return new Date(x) - new Date(y);
-}
-
-function getRandomRgb() {
-    var num = Math.round(0xffffff * Math.random());
-    var r = num >> 16;
-    var g = num >> 8 & 255;
-    var b = num & 255;
-    return 'rgb(' + r + ', ' + g + ', ' + b + ')';
 }

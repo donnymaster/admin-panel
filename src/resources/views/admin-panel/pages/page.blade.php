@@ -39,7 +39,12 @@
         </div>
         <div class="btn update-applications small-btn">Обновить</div>
     </div>
-    <canvas id="line-chart" style="width: 100%" class="bg-white rounded-3xl" height="450"></canvas>
+    <div class="flex bg-white rounded-3xl" style="width: 100%;">
+        <canvas id="line-chart" class="hidden" style="width: 100%;"></canvas>
+        <div id="loadingChartPages" class="loading-data flex items-center w-full h-24 justify-center">
+            <span class="loader dark"></span>
+        </div>
+    </div>
 
     <div class="flex mt-10 mb-5 text-2xl text-white">
         Статистика по страницам

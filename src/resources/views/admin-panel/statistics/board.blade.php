@@ -98,7 +98,7 @@
 
     <div class="flex text-2xl text-white mb-5">
         <div class="title mr-5">
-            Статистика по Заявкам
+            Статистика по Заявкам за последние 30 дней
         </div>
         <div class="flex">
             <div class="date-start mr-4 flex items-center">
@@ -123,7 +123,7 @@
 
     <div class="flex text-2xl text-white mb-5">
         <div class="title mr-5">
-            Статистика по Заказам
+            Статистика по Заказам за последние 30 дней
         </div>
         <div class="flex">
             <div class="date-start mr-4 flex items-center">

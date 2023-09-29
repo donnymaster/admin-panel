@@ -12,6 +12,7 @@ export default defineConfig({
                 'resources/js/pages/categoryPage.js',
                 'resources/js/pages/boardPage.js',
                 'resources/js/pages/statisticPage.js',
+                'resources/js/pages/createCategoryPage.js',
             ],
             refresh: true,
         }),

@@ -42,6 +42,12 @@ class ProductsDataTable extends DataTable
             ->addColumn('count_variants', function ($product) {
                 return $product->variants_count;
             })
+            ->addColumn('copy', function ($product) {
+                return "<a
+                class=\"copy-product\"
+                href=\"#\">
+                </a>";
+            })
             ->setRowId('id');
     }
 
@@ -90,6 +96,7 @@ class ProductsDataTable extends DataTable
             Column::make('name')->title('Название'),
             Column::make('category_id')->title('Категория'),
             Column::make('count_variants')->title('Количество вариантов'),
+            Column::make('copy')->title('Копировать'),
             Column::make('created_at')->title('Добавлен'),
         ];
     }

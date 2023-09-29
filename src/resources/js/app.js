@@ -17,3 +17,13 @@ document.querySelectorAll('.image-create-page').forEach((imageSelector) => {
 
 
 import 'laravel-datatables-vite';
+
+// dark mode
+
+const switchThemeModeBtn = document.querySelector('.admin-site-theme');
+
+if (switchThemeModeBtn) {
+    switchThemeModeBtn.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+    });
+}

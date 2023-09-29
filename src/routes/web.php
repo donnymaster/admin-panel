@@ -61,6 +61,7 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
     });
 
     Route::get('/pages', [PagesController::class, 'index'])->name('pages');
+    Route::get('/pages/date-limit', [PagesController::class, 'getValidDatePeriod'])->name('pages.date-limit');
     Route::get('/pages/create', [PagesController::class, 'create'])->name('page.create');
     Route::post('/page/store', [PagesController::class, 'store'])->name('page.store');
     Route::get('/pages-list', [PagesController::class, 'pageList'])->name('page.list');
@@ -70,6 +71,7 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
 
     Route::prefix('/catalog')->group(function() {
         Route::get('/categories', [CategoryController::class, 'index'])->name('catalog.categories.show');
+        Route::get('/categories/new', [CategoryController::class, 'create'])->name('catalog.categories.new');
         Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('catalog.category.show');
         Route::get('/categories/list', [CategoryController::class, 'list'])->name('catalog.categories.list');
         Route::get('/categories/page/list', [CategoryController::class, 'page'])->name('catalog.categories.page.list');

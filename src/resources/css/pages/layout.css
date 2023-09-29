@@ -5,6 +5,7 @@
         width: calc(100% - 260px);
         height: calc(100vh - 67px);
         background-color: #9900ff;
+        @apply dark:bg-black;
     }
 }
 

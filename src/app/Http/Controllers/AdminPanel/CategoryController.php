@@ -36,6 +36,11 @@ class CategoryController extends Controller
         // return $this->service->getProductsByCategoryIdWithSearch(1, $search);
     }
 
+    public function create()
+    {
+        return view('admin-panel.catalogs.category-create');
+    }
+
     public function show(ProductCategoryPropertiesDataTable $dataTable, $id)
     {
         $categories = ProductCategory::select('id', 'name')->get();

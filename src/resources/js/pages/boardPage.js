@@ -26,7 +26,7 @@ function initChartApplication() {
     const endDate = document.querySelector('input[name="date-end-application"]').value;
 
     fetch(
-        `/admin/statistics/applications/date-limit?min=${startDate}&max=${endDate}`
+        `/admin/statistics/applications/date-limit?min=${startDate}&max=${endDate}&is-first-load=true`
     )
     .then(response => response.json())
     .then((response) => {

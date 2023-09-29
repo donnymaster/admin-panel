@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminPanel\CreatePageRequest;
 use App\Models\AdminPanel\Statistic;
 use App\Services\AdminPanel\PageService;
+use App\Services\AdminPanel\StatisticService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -47,5 +48,10 @@ class PagesController extends Controller
     public function validPages()
     {
         return Statistic::select('page_name_visit')->groupBy('page_name_visit')->get();
+    }
+
+    public function getValidDatePeriod()
+    {
+        return StatisticService::getValidDatePeriodPageStatistic();
     }
 }
