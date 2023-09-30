@@ -23,9 +23,16 @@ class ProductController extends Controller
         return $productsDataTable->setCategory($category)->render('admin-panel.products.index', compact('category'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        return view('admin-panel.products.create');
+        $categoryId = $request->get('category-id');
+        $parentProductId = $request->get('parent');
+
+        $categories = ProductCategory::all(['id', 'name']);
+        $parent = Product::where('id', $parentProductId)->first();
+        $category = ProductCategory::where('id', $categoryId)->first();
+
+        return view('admin-panel.products.create', compact('categories', 'categories', 'parent', 'category'));
     }
 
     public function show(Request $request, $id)

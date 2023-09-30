@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Route;
 use Jenssegers\Agent\Agent;
 use Stevebauman\Location\Facades\Location;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,7 +73,9 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
     Route::prefix('/catalog')->group(function() {
         Route::get('/categories', [CategoryController::class, 'index'])->name('catalog.categories.show');
         Route::get('/categories/new', [CategoryController::class, 'create'])->name('catalog.categories.new');
+        Route::post('/categories/new', [CategoryController::class, 'store'])->name('catalog.categories.store');
         Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('catalog.category.show');
+        Route::get('/categories/{category}/properties', [CategoryController::class, 'properties'])->name('catalog.category.properties');
         Route::get('/categories/list', [CategoryController::class, 'list'])->name('catalog.categories.list');
         Route::get('/categories/page/list', [CategoryController::class, 'page'])->name('catalog.categories.page.list');
 
@@ -111,6 +114,7 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
 Route::view('/components-admin', 'admin-components');
 
 Route::get('routes', function () {
+    // dd(Str::slug('картинка 2'));
     // dd(Product::with('variants')->first());
     // dd(ProductCategory::with(['parent', 'children'])->get());
     // $service = new SiteSettingService();

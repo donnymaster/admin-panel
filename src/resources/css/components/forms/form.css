@@ -1,0 +1,40 @@
+form {
+    .category-property {
+        padding: 25px;
+        border-radius: 25px;
+        border: 1px solid white;
+        margin-bottom: 25px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .alert {
+        background: white;
+        padding: 20px;
+        border-radius: 25px;
+        margin-bottom: 25px;
+
+        &.alert-danger {
+            & ul {
+                margin-left: 35px;
+                & li {
+                    font-weight: 500;
+                    color: red;
+                    padding-bottom: 5px;
+                    list-style-type: circle;
+                    &:last-child {
+                        padding-bottom: 0;
+                    }
+                }
+            }
+        }
+
+        &.alert-success {
+            text-align: center;
+            color: green;
+            font-weight: 500;
+        }
+    }
+}

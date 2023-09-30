@@ -34,6 +34,7 @@ class ReviewController extends Controller
             Review::whereBetween('position', [$newPosition, $currentPosition])->increment('position');
             $review->update(['position' => $newPosition]);
         }
+
         return [
             'message' => 'Комментарий обновлен',
         ];

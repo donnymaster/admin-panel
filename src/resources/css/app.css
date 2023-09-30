@@ -24,6 +24,7 @@
 @import './components/forms/input-image';
 @import './components/drop-down-list';
 @import './components/select';
+@import './components/forms/form';
 
 
 /* --- Pages --- */
