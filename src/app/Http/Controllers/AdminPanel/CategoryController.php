@@ -37,6 +37,11 @@ class CategoryController extends Controller
         // return $this->service->getProductsByCategoryIdWithSearch(1, $search);
     }
 
+    public function edit(Request $request, $id)
+    {
+        dd('edit', $id);
+    }
+
     public function create(Request $request)
     {
         $selectedCategoryId = $request->get('category_id');
@@ -88,6 +93,6 @@ class CategoryController extends Controller
 
     public function properties(int $id)
     {
-        return ProductCategory::where('id', $id)->with('properties')->first();
+        return ProductCategory::where('id', $id)->with(['properties', 'parent'])->first();
     }
 }

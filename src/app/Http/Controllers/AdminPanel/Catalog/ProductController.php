@@ -28,7 +28,7 @@ class ProductController extends Controller
         $categoryId = $request->get('category-id');
         $parentProductId = $request->get('parent');
 
-        $categories = ProductCategory::all(['id', 'name']);
+        $categories = ProductCategory::all(['id', 'name', 'parent_id']);
         $parent = Product::where('id', $parentProductId)->first();
         $category = ProductCategory::where('id', $categoryId)->first();
 

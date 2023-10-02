@@ -1,0 +1,26 @@
+.category_list {
+    display: flex;
+    font-size: 18px;
+    color: white;
+
+    & .category_item {
+        font-weight: 500;
+    }
+
+    & .category_arrow {
+        margin: 0 10px;
+    }
+}
+
+.container-variant-products {
+    & .variant-product {
+        margin-bottom: 35px;
+        padding-bottom: 30px;
+        border-bottom: 3px solid white;
+
+        &:last-child {
+            margin-bottom: 0;
+            border-bottom: none;
+        }
+    }
+}

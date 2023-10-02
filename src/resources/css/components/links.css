@@ -1,3 +1,13 @@
 a.link {
     @apply text-theme-blue border-b border-b-theme-blue hover:text-theme-light-blue hover:border-b-theme-light-blue;
+
+    &.white {
+        color: white;
+        border-bottom: 1px solid white;
+
+        &:hover {
+            @apply text-theme-light-blue hover:border-b-theme-light-blue;;
+
+        }
+    }
 }

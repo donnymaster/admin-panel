@@ -75,6 +75,7 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
         Route::get('/categories/new', [CategoryController::class, 'create'])->name('catalog.categories.new');
         Route::post('/categories/new', [CategoryController::class, 'store'])->name('catalog.categories.store');
         Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('catalog.category.show');
+        Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('catalog.category.edit');
         Route::get('/categories/{category}/properties', [CategoryController::class, 'properties'])->name('catalog.category.properties');
         Route::get('/categories/list', [CategoryController::class, 'list'])->name('catalog.categories.list');
         Route::get('/categories/page/list', [CategoryController::class, 'page'])->name('catalog.categories.page.list');
