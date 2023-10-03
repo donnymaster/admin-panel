@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('menu_links', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('route');
-            $table->boolean('is_main_menu_link')->nullable()->default(false);
-            $table->unsignedBigInteger('parent')->nullable();
-            $table->boolean('is_show');
+            $table->string('client_name');
+            $table->string('status');
+            $table->string('phone_number');
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('menu_links');
+        Schema::dropIfExists('orders');
     }
 };

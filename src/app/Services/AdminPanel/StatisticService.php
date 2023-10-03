@@ -46,6 +46,21 @@ class StatisticService
         return self::_getValidDate($minDate, $maxDate);
     }
 
+    public static function getUniqueVisitors()
+    {
+        return Statistic::select('ip_visitor')->distinct('ip_visitor')->count();
+    }
+
+    public static function getCountOrders()
+    {
+
+    }
+
+    public static function getCountApplication()
+    {
+        return Application::all()->count();
+    }
+
     public static function getInformationPagesCountVisits($request)
     {
         $currentDate = $request->get('end-date', Carbon::now()->format('Y-m-d'));

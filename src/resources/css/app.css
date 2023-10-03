@@ -26,13 +26,14 @@
 @import './components/select';
 @import './components/loaderImages';
 @import './components/forms/form';
-
+@import './components/toast';
 
 /* --- Pages --- */
 
 @import './pages/login';
 @import './pages/layout';
 @import './pages/create-product';
+@import './pages/board';
 /* @import './pages/create-page'; */
 
 @import 'choices.js/public/assets/styles/choices.min.css';

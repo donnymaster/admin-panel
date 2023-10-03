@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminPanel\CategoryController;
 use App\Http\Controllers\AdminPanel\DataExchangeController;
 use App\Http\Controllers\AdminPanel\OrderController;
 use App\Http\Controllers\AdminPanel\PagesController;
+use App\Http\Controllers\AdminPanel\PromocodeController;
 use App\Http\Controllers\AdminPanel\ReviewController;
 use App\Http\Controllers\AdminPanel\SettingSiteController;
 use App\Http\Controllers\AdminPanel\StatisticController;
@@ -17,9 +18,11 @@ use App\Models\AdminPanel\MenuLink;
 use App\Models\AdminPanel\Product;
 use App\Models\AdminPanel\ProductCategory;
 use App\Models\AdminPanel\Review;
+use App\Models\AdminPanel\Statistic;
 use App\Models\User;
 use App\Services\AdminPanel\ApplicationService;
 use App\Services\AdminPanel\SiteSettingService;
+use App\Services\AdminPanel\StatisticService;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request as FacadesRequest;
@@ -42,10 +45,9 @@ use Illuminate\Support\Str;
 Route::get('/admin/login', [UserController::class, 'login'])->middleware('guest')->name('get.login');
 Route::post('/admin/login', [UserController::class, 'loginHandler'])->middleware('throttle:10,1')->name('post.login'); // максимум 10 запросов в минуту
 
-Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
+Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->group(function() {
     Route::prefix('/statistics')->group(function() {
-        Route::get('/board', [StatisticController::class, 'index'])->name('board')->middleware('admin-panel.check-show-page');
-
+        Route::get('/board', [StatisticController::class, 'index'])->name('board');
         Route::get('/applications', [ApplicationController::class, 'index'])->name('applications');
         Route::get('/applications/date-limit', [ApplicationController::class, 'dateLimit'])->name('applications.date-limit');
         Route::get('/applications/reviews-info', [ApplicationController::class, 'getInformationReviews'])->name('applications.reviews-info');
@@ -95,10 +97,14 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
 
     });
 
+    Route::prefix('/promocode')->group(function() {
+        Route::get('/', [PromocodeController::class, 'index'])->name('promocode');
+    });
+
     Route::get('/data-exchange', [DataExchangeController::class, 'index'])->name('data-exchange');
     // other statistic pages
 
-    Route::get('/settings', [SettingSiteController::class, 'index'])->name('settings')->middleware('admin-panel.check-show-page');
+    Route::get('/settings', [SettingSiteController::class, 'index'])->name('settings');
     Route::post('/settings', [SettingSiteController::class, 'store'])->name('settings.store');
     Route::put('/settings/{setting}', [SettingSiteController::class, 'update'])->name('settings.update');
     Route::delete('/settings/{setting}', [SettingSiteController::class, 'remove'])->name('settings.remove');
@@ -106,8 +112,11 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
     // other statistic pages
 
     Route::get('/users', [UserController::class, 'index'])->name('users');
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
 
     Route::get('/account', [AccountController::class, 'index'])->name('account');
+    Route::patch('/account', [AccountController::class, 'update'])->name('account.update');
 
     Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 });
@@ -115,6 +124,7 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function() {
 Route::view('/components-admin', 'admin-components');
 
 Route::get('routes', function () {
+    // dd(StatisticService::getUniqueVisitors());
     // dd(Str::slug('картинка 2'));
     // dd(Product::with('variants')->first());
     // dd(ProductCategory::with(['parent', 'children'])->get());

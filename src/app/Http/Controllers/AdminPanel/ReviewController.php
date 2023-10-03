@@ -18,21 +18,25 @@ class ReviewController extends Controller
     {
         $data = $request->safe()->toArray();
 
-        $review->update($request->safe(['is_show']));
+        if (array_key_exists('is_show', $data)) {
+            $review->update(['is_show' => $data['is_show']]);
+        }
 
-        $currentPosition = $review->position;
-        $newPosition = $data['position'];
+        if (array_key_exists('position', $data)) {
+            $currentPosition = $review->position;
+            $newPosition = $data['position'];
 
-        $direction = $currentPosition < $newPosition ? 'right' : 'left';
+            $direction = $currentPosition < $newPosition ? 'right' : 'left';
 
-        if ($direction == 'right') {
-            $review->update(['position' => 0]);
-            Review::whereBetween('position', [$currentPosition, $newPosition])->decrement('position');
-            $review->update(['position' => $newPosition]);
-        } else {
-            $review->update(['position' => 0]);
-            Review::whereBetween('position', [$newPosition, $currentPosition])->increment('position');
-            $review->update(['position' => $newPosition]);
+            if ($direction == 'right') {
+                $review->update(['position' => 0]);
+                Review::whereBetween('position', [$currentPosition, $newPosition])->decrement('position');
+                $review->update(['position' => $newPosition]);
+            } else {
+                $review->update(['position' => 0]);
+                Review::whereBetween('position', [$newPosition, $currentPosition])->increment('position');
+                $review->update(['position' => $newPosition]);
+            }
         }
 
         return [

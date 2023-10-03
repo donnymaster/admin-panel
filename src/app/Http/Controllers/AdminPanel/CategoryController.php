@@ -70,7 +70,6 @@ class CategoryController extends Controller
         $this->service->createProductCategoryPropertiesByCategoryId($request, $category->id);
 
         return redirect()->back()->with('successfully-created', 'Категория успешно создана!');
-        dd($request->all());
     }
 
     public function show(ProductCategoryPropertiesDataTable $dataTable, $id)

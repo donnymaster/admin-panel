@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('menu_links', function (Blueprint $table) {
+        Schema::create('product_unique_values', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('route');
-            $table->boolean('is_main_menu_link')->nullable()->default(false);
-            $table->unsignedBigInteger('parent')->nullable();
-            $table->boolean('is_show');
+            $table->unsignedBigInteger('product_id');
+            $table->string('unique_name');
+            $table->string('unique_value');
             $table->timestamps();
+
+            $table->foreign('product_id')->references('id')->on('products');
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('menu_links');
+        Schema::dropIfExists('product_unique_values');
     }
 };

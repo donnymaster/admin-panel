@@ -1,16 +1,18 @@
 <?php
 
-namespace App\DataTables\AdminPanel;
+namespace App\DataTables;
 
-use App\Models\AdminPanel\Review;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class ReviewsDataTable extends DataTable
+class UsersDataTable extends DataTable
 {
+    private $role_id = null;
+
     /**
      * Build the DataTable class.
      *
@@ -19,22 +21,34 @@ class ReviewsDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->editColumn('is_show', function ($review) {
-                if ($review->is_show) {
-                    return "<div data-id=\"{$review->id}\" class=\"visible\"></div>";
-                }
-
-                return "<div data-id=\"{$review->id}\" class=\"not-visible\"></div>";
+            ->addColumn('action', 'users.action')
+            ->editColumn('role', function ($user) {
+                return $user->role->name;
             })
             ->setRowId('id');
+    }
+
+    public function setIdRole($id): self
+    {
+        $this->role_id = $id;
+
+        return $this;
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(Review $model): QueryBuilder
+    public function query(User $model): QueryBuilder
     {
-        return $model->newQuery();
+        $role = $this->role_id;
+
+        if ($role) {
+            return $model->newQuery()->whereHas('role', function($query) use ($role) {
+                return $query->where('id', $role);
+            });
+        }
+
+        return $model->newQuery()->with('role');
     }
 
     /**
@@ -43,6 +57,7 @@ class ReviewsDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
+                    ->setTableId('users-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->parameters([
@@ -60,10 +75,9 @@ class ReviewsDataTable extends DataTable
     {
         return [
             Column::make('id'),
-            Column::make('client_name')->title('Пользователь'),
-            Column::make('position')->title('Позиция'),
-            Column::make('is_show')->title('Статус'),
-            Column::make('rating')->title('Оценка'),
+            Column::make('name')->title('Имя'),
+            Column::make('email')->title('Почта'),
+            Column::make('role')->title('Роль')->sortable(false)->searchable(false),
             Column::make('created_at')->title('Добавлен'),
         ];
     }
@@ -73,6 +87,6 @@ class ReviewsDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Reviews_' . date('YmdHis');
+        return 'Users_' . date('YmdHis');
     }
 }

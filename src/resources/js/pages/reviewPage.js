@@ -37,10 +37,19 @@ function addEventClickRowTable() {
         document.querySelector('.modal').classList.toggle('hidden');
     }
 
+    function containsManyClasses(element, ...classes) {
+        return !!classes.find(c => element.classList.contains(c));
+    }
+
     const handler = (event) => {
         const data = window.datatables.rows().data();
 
         const row = event.target.closest('tbody tr');
+
+        if (containsManyClasses(event.target, 'visible', 'not-visible')) {
+            updateVisibleRow(event.target.dataset.id, event.target.className);
+            return;
+        }
 
         if (!row) {
             return;
@@ -51,6 +60,39 @@ function addEventClickRowTable() {
 
         updateModal(rowData);
         changeVisibilityModal('show');
+    }
+
+    function updateVisibleRow(id, type) {
+
+        const csrfToken = document.querySelector('input[name="_token"]').value;
+
+        const data = {
+            is_show: type === 'visible' ? false : true
+        };
+        console.log(data);
+
+        // disabled table
+        fetch(
+            `/admin/statistics/reviews/${id}`,
+            {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify(data)
+            }
+        )
+        .then((response) => {
+            window.datatables.ajax.reload();
+            window.toast.push({
+                title: 'Успех!',
+                content: 'Отзыв был обновлен!',
+                style: 'success',
+                dismissAfter: '2s'
+            });
+        });
     }
 
     const changeStateBtn = (btn) => {
@@ -111,6 +153,12 @@ function addEventClickRowTable() {
             changeStateBtn(updateReviewBtn);
             changeVisibilityModal();
             window.datatables.ajax.reload();
+            window.toast.push({
+                title: 'Успех!',
+                content: 'Отзыв был обновлен!',
+                style: 'success',
+                dismissAfter: '2s'
+            });
         });
     }
 
@@ -142,6 +190,12 @@ function addEventClickRowTable() {
             changeStateBtn(deleteReviewBtn);
             changeVisibilityModal();
             window.datatables.ajax.reload();
+            window.toast.push({
+                title: 'Успех!',
+                content: 'Отзыв был удален!',
+                style: 'success',
+                dismissAfter: '2s'
+            });
         });
     }
 

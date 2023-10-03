@@ -28,6 +28,11 @@ class Product extends Model
         return $this->belongsTo(ProductCategory::class);
     }
 
+    public function uniqueValues()
+    {
+        return $this->hasMany(ProductUniqueValue::class, 'product_id');
+    }
+
     public function variants()
     {
         return $this->hasMany(ProductVariant::class, 'product_id');

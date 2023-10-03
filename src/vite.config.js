@@ -13,7 +13,8 @@ export default defineConfig({
                 'resources/js/pages/boardPage.js',
                 'resources/js/pages/statisticPage.js',
                 'resources/js/pages/createCategoryPage.js',
-                'resources/js/pages/createProductPage.js'
+                'resources/js/pages/createProductPage.js',
+                'resources/js/pages/applicationPage.js',
             ],
             refresh: true,
         }),

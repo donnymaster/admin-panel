@@ -1,16 +1,23 @@
+import checkIsErrorResponse from "../utils/checkIsErrorResponse";
 
-document.querySelector('.load-applications').addEventListener('click', () => {
-    const startDate = document.querySelector('input[name="date-start-application"]').value;
-    const endDate = document.querySelector('input[name="date-end-application"]').value;
+const btnUpdateApplications = document.querySelector('.load-applications');
 
-    fetch(
-        `/admin/statistics/applications/date-limit?min=${startDate}&max=${endDate}`
-    )
-        .then(response => response.json())
-        .then((response) => {
-            updateChart(response);
-        });
-});
+if (btnUpdateApplications) {
+    document.querySelector('.load-applications').addEventListener('click', () => {
+        const startDate = document.querySelector('input[name="date-start-application"]').value;
+        const endDate = document.querySelector('input[name="date-end-application"]').value;
+
+        fetch(
+            `/admin/statistics/applications/date-limit?min=${startDate}&max=${endDate}`
+        )
+            .then((response) => response.json())
+            .then((response) => {
+                checkIsErrorResponse(response);
+                updateChart(response);
+            })
+            .catch(() => checkIsErrorResponse({}, true));
+    });
+}
 
 function updateChart(data) {
     window.chartApplication.data.labels = data.map(d => d.date);
@@ -22,15 +29,21 @@ function updateChart(data) {
 function initChartApplication() {
     const loader = document.getElementById('loadingApplication');
     const ctxApplication = document.getElementById('applicationsStatistics');
+
+    if (!ctxApplication) {
+        return;
+    }
+
     const startDate = document.querySelector('input[name="date-start-application"]').value;
     const endDate = document.querySelector('input[name="date-end-application"]').value;
 
     fetch(
         `/admin/statistics/applications/date-limit?min=${startDate}&max=${endDate}&is-first-load=true`
     )
-    .then(response => response.json())
+    .then((response) => response.json())
     .then((response) => {
-        console.log(response);
+        checkIsErrorResponse(response);
+
         const data = {
             labels: response.map(d => d.date),
             datasets: [{
@@ -61,7 +74,8 @@ function initChartApplication() {
         ctxApplication.classList.remove('hidden');
         loader.classList.add('hidden');
 
-    });
+    })
+    .catch(() => checkIsErrorResponse({}, true));
 
 }
 
@@ -69,13 +83,17 @@ function initChartReviews() {
     const ctxReviews = document.getElementById('reviewsStatistics');
     const loader = document.getElementById('loadingReviews');
 
+    if (!ctxReviews) {
+        return;
+    }
 
     fetch(
         '/admin/statistics/applications/reviews-info'
     )
-    .then(response => response.json())
+    .then((response) => response.json())
     .then((response) => {
-        console.log(response);
+        checkIsErrorResponse(response);
+
         const data = {
             labels: response.map(d => d.rating),
             datasets: [{
@@ -106,7 +124,8 @@ function initChartReviews() {
         ctxReviews.classList.remove('hidden');
         loader.classList.add('hidden');
 
-    });
+    })
+    .catch(() => checkIsErrorResponse({}, true));;
 }
 
 initChartApplication();

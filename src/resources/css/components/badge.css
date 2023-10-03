@@ -35,3 +35,11 @@
         @apply bg-theme-red;
     }
 }
+
+.role-badge {
+    font-size: 12px;
+    border-radius: 25px;
+    padding: 0 10px;
+    font-weight: 500;
+    @apply text-white bg-theme-green;
+}

@@ -10,7 +10,11 @@ class MenuLink extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'route', 'parent', 'is_show'
+        'name',
+        'route',
+        'parent',
+        'is_show',
+        'is_main_menu_link',
     ];
 
     public function isCurrentPage(): bool

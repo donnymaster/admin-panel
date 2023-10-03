@@ -1,0 +1,12 @@
+.statistic-cards {
+    display: flex;
+
+    & .statistics-card {
+        width: calc(33.33% - 35px);
+        margin-right: 35px;
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}
