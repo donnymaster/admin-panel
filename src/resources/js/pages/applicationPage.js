@@ -144,7 +144,6 @@ btnDeleteApplication.addEventListener('click', () => {
                 title: 'Успех!',
                 content: 'Заявка была удалена!',
                 style: 'success',
-                dismissAfter: '2s'
             });
         })
         .catch((error) => console.log(error));

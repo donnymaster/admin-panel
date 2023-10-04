@@ -42,4 +42,9 @@ class ProductController extends Controller
 
         return view('admin-panel.products.product', compact('product', 'properties'));
     }
+
+    public function store(Request $request)
+    {
+        dd($request->all());
+    }
 }

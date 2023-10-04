@@ -24,3 +24,15 @@
         }
     }
 }
+.container-product-unique-property {
+    & .product-unique-property-item {
+        padding: 30px;
+        border-radius: 25px;
+        border: 1px solid white;
+        margin-bottom: 25px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}

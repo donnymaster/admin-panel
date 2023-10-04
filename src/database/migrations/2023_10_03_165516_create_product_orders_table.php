@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('client_name');
             $table->string('status');
             $table->string('phone_number');
+            $table->decimal('total_quantity');
             $table->timestamps();
         });
     }

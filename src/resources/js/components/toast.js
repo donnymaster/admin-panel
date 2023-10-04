@@ -52,7 +52,7 @@ export default class Toasts {
             toast.style.right = this.offsetX + 'px';
         }
         if (obj.width || this.width) {
-            toast.style.width = (obj.width || this.width) + 'px';
+            toast.style.minWidth = (obj.width || this.width) + 'px';
         }
         toast.dataset.transitionState = 'queue';
         let index = this.stack.push({ element: toast, props: obj, offsetX: this.offsetX, offsetY: this.offsetY, index: 0 });

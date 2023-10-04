@@ -114,6 +114,12 @@
             margin-right: 12px;
         }
 
+        & .icon {
+            & path {
+                @apply stroke-theme-blue;
+            }
+        }
+
         &.active {
             @apply bg-theme-blue;
             color: white;

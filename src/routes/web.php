@@ -47,7 +47,7 @@ Route::post('/admin/login', [UserController::class, 'loginHandler'])->middleware
 
 Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->group(function() {
     Route::prefix('/statistics')->group(function() {
-        Route::get('/board', [StatisticController::class, 'index'])->name('board');
+        Route::get('/', [StatisticController::class, 'index'])->name('board');
         Route::get('/applications', [ApplicationController::class, 'index'])->name('applications');
         Route::get('/applications/date-limit', [ApplicationController::class, 'dateLimit'])->name('applications.date-limit');
         Route::get('/applications/reviews-info', [ApplicationController::class, 'getInformationReviews'])->name('applications.reviews-info');

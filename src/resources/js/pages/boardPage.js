@@ -10,12 +10,14 @@ if (btnUpdateApplications) {
         fetch(
             `/admin/statistics/applications/date-limit?min=${startDate}&max=${endDate}`
         )
-            .then((response) => response.json())
             .then((response) => {
-                checkIsErrorResponse(response);
-                updateChart(response);
+                if (checkIsErrorResponse(response)) {
+                    return response.json();
+                }
             })
-            .catch(() => checkIsErrorResponse({}, true));
+            .then((response) => {
+                updateChart(response);
+            });
     });
 }
 
@@ -40,10 +42,12 @@ function initChartApplication() {
     fetch(
         `/admin/statistics/applications/date-limit?min=${startDate}&max=${endDate}&is-first-load=true`
     )
-    .then((response) => response.json())
     .then((response) => {
-        checkIsErrorResponse(response);
-
+        if (checkIsErrorResponse(response)) {
+            return response.json();
+        }
+    })
+    .then((response) => {
         const data = {
             labels: response.map(d => d.date),
             datasets: [{
@@ -90,10 +94,12 @@ function initChartReviews() {
     fetch(
         '/admin/statistics/applications/reviews-info'
     )
-    .then((response) => response.json())
     .then((response) => {
-        checkIsErrorResponse(response);
-
+        if (checkIsErrorResponse(response)) {
+            return response.json();
+        }
+    })
+    .then((response) => {
         const data = {
             labels: response.map(d => d.rating),
             datasets: [{

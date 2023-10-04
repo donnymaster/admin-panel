@@ -57,6 +57,7 @@ class OrdersDataTable extends DataTable
             Column::make('client_name')->title('Клиент'),
             Column::make('status')->title('Статус'),
             Column::make('phone_number')->title('Телефон'),
+            Column::make('total_quantity')->title('Сумма'),
             Column::make('created_at')->title('Добавлен'),
         ];
     }

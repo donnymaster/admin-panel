@@ -16,9 +16,11 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id')->nullable();
             $table->string('name');
             $table->string('slug');
+            $table->string('page_title');
             $table->string('vendor_code');
-            $table->string('image')->nullable();
+            $table->string('name_tile')->nullable();
             $table->string('keywords')->nullable();
+            $table->text('description')->nullable();
             $table->text('page_description')->nullable();
             $table->timestamps();
 
