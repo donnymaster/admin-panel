@@ -21,6 +21,14 @@ class ProductCategoryPropertiesDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addColumn('action', function ($property) {
+                return "
+                <div class=\"flex\">
+                    <div data-id=\"{$property->id}\" class=\" mr-2 btn edit-setting\"></div>
+                    <div data-id=\"{$property->id}\" class=\"btn delete-setting bg-red\"></div>
+                </div>
+                ";
+            })
             ->setRowId('id');
     }
 
@@ -64,6 +72,8 @@ class ProductCategoryPropertiesDataTable extends DataTable
             Column::make('id'),
             Column::make('name')->title('Название'),
             Column::make('created_at')->title('Дата создания'),
+            Column::make('action')->title('Действия')->exportable(false)->printable(false)->sortable(false)->searchable(false)
+
         ];
     }
 

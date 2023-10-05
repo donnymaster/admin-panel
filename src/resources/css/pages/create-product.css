@@ -36,3 +36,33 @@
         }
     }
 }
+
+
+.product-types {
+    font-size: 14px;
+    border: none;
+    margin-right: auto;
+    margin-left: 25px;
+
+    & .product-type {
+        margin-right: 15px;
+        padding: 0 10px;
+        display: flex;
+        border-radius: 25px;
+        @apply bg-theme-green;
+        align-items: center;
+        & span {
+            margin-right: 5px;
+        }
+        & label {
+            margin-top: 2px;
+        }
+        & .checkbox {
+            display: inline-flex;
+        }
+    }
+}
+
+.visible-product {
+    border: none;
+}

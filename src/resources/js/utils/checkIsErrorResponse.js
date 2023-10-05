@@ -21,7 +21,6 @@ export default function checkIsErrorResponse(response) {
             title: 'Ошибка!',
             content: 'У вас нет доступа!',
             style: 'error',
-            dismissAfter: '2s'
         });
 
         throw new Error('Access limited!');
@@ -33,7 +32,6 @@ export default function checkIsErrorResponse(response) {
             title: 'Ошибка!',
             content: 'Ошибка с вашей стороны!',
             style: 'error',
-            dismissAfter: '2s'
         });
         throw new Error('Client Error');
     }
@@ -44,7 +42,6 @@ export default function checkIsErrorResponse(response) {
             title: 'Ошибка!',
             content: 'Ошибка с стороны сервера!',
             style: 'error',
-            dismissAfter: '2s'
         });
         throw new Error('Server Error');
     }

@@ -4,13 +4,22 @@ namespace App\Http\Controllers\AdminPanel\Catalog;
 
 use App\DataTables\AdminPanel\ProductsDataTable;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AdminPanel\CreateProductRequest;
 use App\Models\AdminPanel\Product;
 use App\Models\AdminPanel\ProductCategory;
 use App\Models\AdminPanel\ProductCategoryProperty;
+use App\Services\AdminPanel\ProductService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    private $productService = null;
+
+    public function __construct()
+    {
+        $this->productService = new ProductService();
+    }
+
     public function index(ProductsDataTable $productsDataTable, Request $request)
     {
         $category = null;
@@ -26,9 +35,10 @@ class ProductController extends Controller
     public function create(Request $request)
     {
         $categoryId = $request->get('category-id');
-        $parentProductId = $request->get('parent');
+        $parentProductId = $request->get('parent-id');
 
         $categories = ProductCategory::all(['id', 'name', 'parent_id']);
+
         $parent = Product::where('id', $parentProductId)->first();
         $category = ProductCategory::where('id', $categoryId)->first();
 
@@ -45,6 +55,18 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
+        $product = $this->productService
+            ->create($request)
+            ->createStatusProduct($request)
+            ->getProduct();
+
+        if ($request->has('visible')) {
+            $this->productService->setVisibleProduct(true);
+
+        } else {
+            $this->productService->setVisibleProduct(false);
+        }
+
+        return redirect()->route('admin.products');
     }
 }

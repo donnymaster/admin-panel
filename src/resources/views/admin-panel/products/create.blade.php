@@ -23,6 +23,62 @@
         @endif
         <div class="columns-1 flex justify-between mb-9 divide-x pb-2 text-white text-3xl border-b-2 border-b-white">
             <span>Общие сведения</span>
+            <div class="flex product-types">
+                <div class="product-type product-new">
+                    <span>Новый</span>
+                    <div class="checkbox">
+                        @if (old('product-type-new'))
+                            <input class="custom-checkbox" checked id="new" type="checkbox" name="product-type-new">
+                        @elseif($errors->any())
+                            <input class="custom-checkbox" @if (old('product-type-new')) checked @endif id="new" type="checkbox" name="product-type-new">
+                        @else
+                            <input class="custom-checkbox" id="new" type="checkbox" name="product-type-new">
+                        @endif
+                        <label for="new"></label>
+                    </div>
+                </div>
+                <div class="product-type product-top-sellers">
+                    <span>Топ продаж</span>
+                    <div class="checkbox">
+                        @if (old('product-type-top-sellers'))
+                            <input class="custom-checkbox" checked id="top-sellers" type="checkbox" name="product-type-top-sellers">
+                        @elseif($errors->any())
+                            <input class="custom-checkbox" @if (old('product-type-top-sellers')) checked @endif id="top-sellers" type="checkbox" name="product-type-top-sellers">
+                        @else
+                            <input class="custom-checkbox" id="top-sellers" type="checkbox" name="product-type-top-sellers">
+                        @endif
+                        <label for="top-sellers"></label>
+                    </div>
+                </div>
+                <div class="product-type product-popular">
+                    <span>Популярный</span>
+                    <div class="checkbox">
+                        @if (old('product-type-popular'))
+                            <input class="custom-checkbox" checked id="popular" type="checkbox" name="product-type-popular">
+                        @elseif($errors->any())
+                            <input class="custom-checkbox" @if (old('product-type-popular')) checked @endif id="popular" type="checkbox" name="product-type-popular">
+                        @else
+                            <input class="custom-checkbox" id="popular" type="checkbox" name="product-type-popular">
+                        @endif
+                        <label for="popular"></label>
+                    </div>
+                </div>
+
+                @if (old('visible'))
+                    <div class="flex visible-product visible">
+                        <input type="checkbox" name="visible" hidden checked>
+                    </div>
+                @elseif ($errors->any())
+                    <div class="flex visible-product not-visible">
+                        <input type="checkbox" name="visible" hidden>
+                    </div>
+                @else
+                    <div class="flex visible-product visible">
+                        <input type="checkbox" name="visible" hidden checked>
+                    </div>
+                @endif
+
+            </div>
             <button
                 href="{{ route('admin.products.create') }}"
                 class="btn load-applications small-btn border-none"
@@ -37,21 +93,33 @@
                     <span>Название</span>
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
-                <input required id="name" name="name" type="text" class="input" value="{{old('name')}}">
+                @if ($parent)
+                    <input  id="name" name="name" type="text" class="input" value="{{old('name') ? old('name') : $parent->name}}">
+                @else
+                    <input  id="name" name="name" type="text" class="input" value="{{old('name')}}">
+                @endif
             </div>
             <div class="input-group">
                 <label for="slug" class="label">
                     Адрес в сети
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
-                <input required id="slug" name="slug" type="text" class="input" value="{{old('slug')}}">
+                @if ($parent)
+                    <input  id="slug" name="slug" type="text" class="input" value="{{old('slug') ? old('slug') : $parent->slug}}">
+                @else
+                    <input  id="slug" name="slug" type="text" class="input" value="{{old('slug')}}">
+                @endif
             </div>
             <div class="input-group">
                 <label for="page_title" class="label">
                     Заголовок страницы
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
-                <input required id="page_title" name="page_title" type="text" class="input" value="{{old('page_title')}}">
+                @if ($parent)
+                    <input  id="page_title" name="page_title" type="text" class="input" value="{{old('page_title') ? old('page_title') : $parent->page_title}}">
+                @else
+                    <input  id="page_title" name="page_title" type="text" class="input" value="{{old('page_title')}}">
+                @endif
             </div>
         </div>
         <div class="columns-2 mb-9">
@@ -60,14 +128,22 @@
                     Название на плитку
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
-                <input id="name_tile" name="name_tile" type="text" class="input" value=""{{old('name_tile')}}>
+                @if ($parent)
+                    <input id="name_tile" name="name_tile" type="text" class="input" value="{{old('name_tile') ? old('name_tile') : $parent->name_tile}}">
+                @else
+                    <input id="name_tile" name="name_tile" type="text" class="input" value=""{{old('name_tile')}}>
+                @endif
             </div>
             <div class="input-group">
                 <label for="vendor_code" class="label">
                     Артикул
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
-                <input required id="vendor_code" name="vendor_code" type="text" class="input" value="{{old('vendor_code')}}">
+                @if ($parent)
+                    <input id="vendor_code" name="vendor_code" type="text" class="input" value="{{old('vendor_code') ? old('vendor_code') : $parent->vendor_code}}">
+                @else
+                    <input  id="vendor_code" name="vendor_code" type="text" class="input" value="{{old('vendor_code')}}">
+                @endif
             </div>
         </div>
 
@@ -80,7 +156,14 @@
                         Подключите TinyMCE установив переменную 'redaktor-tiny-url'
                     @endif
                 </label>
-                <textarea name="page_description" id="page_description" class="input" name="story" rows="5" cols="33">{{old('page_description')}}</textarea>
+                <textarea name="page_description" id="page_description" class="input" name="story" rows="5" cols="33">
+                    @if ($parent)
+                        {{old('page_description') ? old('page_description') : $parent->page_description}}
+                    @else
+                        {{old('page_description')}}
+                    @endif
+                    {{old('page_description')}}
+                </textarea>
             </div>
         </div>
 
@@ -93,13 +176,21 @@
                 <label for="keywords" class="label flex">
                     <span>Ключевые слова</span>
                 </label>
-                <input id="keywords" name="keywords" type="text" class="input" value="{{old('keywords')}}">
+                @if ($parent)
+                    <input id="keywords" name="keywords" type="text" class="input" value="{{old('keywords') ? old('keywords') : $parent->keywords}}">
+                @else
+                    <input id="keywords" name="keywords" type="text" class="input" value="{{old('keywords')}}">
+                @endif
             </div>
             <div class="input-group">
                 <label for="description" class="label">
                     Описание
                 </label>
-                <input id="description" name="description" type="text" class="input" value="{{old('description')}}">
+                @if ($parent)
+                    <input id="description" name="description" type="text" class="input" value="{{old('description') ? old('description') : $parent->description}}">
+                @else
+                    <input id="description" name="description" type="text" class="input" value="{{old('description')}}">
+                @endif
             </div>
         </div>
 
@@ -117,13 +208,16 @@
         </div>
 
         <div class="flex items-center mb-3">
-            <select class="select mr-5 selected-category" class="select" name="parent_id" id="parent_id" @if ($category) disabled @endif>
+            <select class="select mr-5 selected-category" class="select" name="category_id" id="category_id">
                 @if ($category)
                     <option selected value="{{$category->id}}">{{$category->name}}</option>
-                @else
-
                 @endif
                 @foreach ($categories as $item)
+                    {{-- @if ($category)
+                        @if ($category->id == $item->id)
+                            @continue
+                        @endif
+                    @endif --}}
                     <option value="{{$item->id}}">{{$item->name}}</option>
                 @endforeach
             </select>
@@ -147,7 +241,6 @@
             <div class="btn add-variant-product small-btn border-none">Добавить</div>
         </div>
         <div class="container-variant-products">
-
         </div>
     </form>
 @endsection
@@ -173,6 +266,8 @@
                 selector: '#page_description',
                 plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
                 toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight numlist bullist indent outdent | emoticons charmap | removeformat',
+                language_url: '/vendor/tinymce/lang/ru.js',
+                language: 'ru',
             });
         </script>
     @endif

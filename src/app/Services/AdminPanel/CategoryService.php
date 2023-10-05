@@ -59,6 +59,11 @@ class CategoryService
     {
         $maxPosition = ProductCategory::max('position');
 
+        if ($maxPosition == 0) {
+            $category->update(['position' => 1]);
+            return;
+        }
+
         $direction = $maxPosition < $position ? 'right' : 'left';
 
         if ($direction == 'right') {

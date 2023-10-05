@@ -20,6 +20,7 @@ class ProductFactory extends Factory
             'name' => fake()->word(),
             'page_title' => fake()->word(),
             'name_tile' => fake()->word(),
+            'visible' => true,
             'category_id' => fake()->randomElement([1, 2]),
             'vendor_code' => fake()->regexify('[A-Z]{5}[0-4]{3}'),
             'slug' => fake()->word(),

@@ -6,6 +6,7 @@
 
 @section('content')
     <form action="{{ route('admin.catalog.categories.store') }}" method="POST" enctype="multipart/form-data">
+
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -67,6 +68,7 @@
                     @foreach ($categories as $category)
                         <option value="{{$category->id}}">{{$category->name}}</option>
                     @endforeach
+                        <option value="">Родительская</option>
                 </select>
             </div>
         </div>
@@ -86,7 +88,7 @@
         </div>
         <div class="columns-1 mb-9">
             <div class="input-group">
-                <label for="email" class="label">
+                <label for="page_description" class="label">
                     Описание страницы
                     @if (!$service->getValueVariable('redaktor-tiny-url'))
                         <br>
@@ -119,6 +121,8 @@
                 selector: '#page_description',
                 plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
                 toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight numlist bullist indent outdent | emoticons charmap | removeformat',
+                language_url: '/vendor/tinymce/lang/ru.js',
+                language: 'ru',
             });
         </script>
     @endif

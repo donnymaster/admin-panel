@@ -73,16 +73,20 @@
         </div>
         <div class="columns-2 mb-9">
             <div class="input-group">
-                <label for="description" class="label flex">
+                <label for="keywords" class="label flex">
                     <span> Ключевые слова для seo</span>
                 </label>
-                <textarea id="description" class="input" name="description" rows="5" cols="33"></textarea>
+                <textarea id="keywords" class="input" name="keywords" rows="5" cols="33">
+                    {{$category->keywords}}
+                </textarea>
             </div>
             <div class="input-group">
                 <label for="keywords" class="label">
                     Описание для seo
                 </label>
-                <textarea id="keywords" name="keywords" class="input" name="story" rows="5" cols="33"></textarea>
+                <textarea id="keywords" name="keywords" class="input" name="story" rows="5" cols="33">
+                    {{$category->description}}
+                </textarea>
             </div>
         </div>
         <div class="columns-1 mb-9">
@@ -90,7 +94,9 @@
                 <label for="old_route" class="label flex">
                     <span>Описание страницы</span>
                 </label>
-                <textarea id="keywords" name="keywords" class="input" name="story" rows="5" cols="33"></textarea>
+                <textarea id="keywords" name="keywords" class="input" name="story" rows="5" cols="33">
+                    {{$category->page_description}}
+                </textarea>
             </div>
         </div>
     </form>

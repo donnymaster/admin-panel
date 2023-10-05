@@ -22,14 +22,17 @@ class CreateProductCategoryRequest extends FormRequest
      */
     public function rules(): array
     {
-        $maxPosition = intval(ProductCategory::max('position')) + 1;
-        $minPosition = ProductCategory::min('position');
+        $dbMaxPosotion = ProductCategory::max('position');
+        $dbMinPosotion = ProductCategory::min('position');
+
+        $maxPosition = $dbMaxPosotion ? intval($dbMaxPosotion) + 1 : 1;
+        $minPosition = $dbMinPosotion ? $dbMinPosotion : 1;
 
         return [
             'name' => 'required|max:255',
-            'parent_id' => 'nullable|numeric|exists:product_categories,id',
+            'parent_id' => 'nullable|exists:product_categories,id',
             'slug' => 'required|max:255',
-            'position' => "numeric|between:$minPosition,$maxPosition",
+            'position' => "required|numeric|between:$minPosition,$maxPosition",
             'page_title' => 'nullable|max:255',
             'keywords' => 'nullable|max:255',
             'description' => 'nullable',

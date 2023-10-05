@@ -19,17 +19,18 @@ class CheckPageIsShow
     public function handle(Request $request, Closure $next): Response
     {
 
-        $currentRoute = Route::currentRouteName();
-        $route = MenuLink::where('route', $currentRoute)->first();
+        // $currentRoute = Route::currentRouteName();
+        // $route = MenuLink::where('route', $currentRoute)->first();
 
-        if(!$route) {
+        // // dd($request);
+        // if(!$route) {
             return $next($request);
-        }
+        // }
 
-        if(!$route->is_show) {
-            return redirect(UserService::redirectToPanel());
-        }
+        // if(!$route->is_show) {
+            // return redirect(UserService::redirectToPanel());
+        // }
 
-        return $next($request);
+        // return $next($request);
     }
 }

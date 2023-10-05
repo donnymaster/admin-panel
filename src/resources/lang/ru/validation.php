@@ -161,5 +161,13 @@ return [
         'unauthorized'          => 'Не авторизован',
         'user_logout'           => 'Пользователь успешно вышел из системы',
         'setting_key'           => 'Slug',
+        'slug'                  => 'Адрес в сети',
+        'page_title'            => 'Заголовок страницы',
+        'name_tile'             => 'Название на плитку',
+        'keywords'              => 'Ключевые слова',
+        'vendor_code'           => 'Артикул',
+        'page_description'      => 'Описание страницы',
+        'product-unique-property.*.name' => 'Название уникального свойства',
+        'product-unique-property.*.value' => 'Свойство уникального свойства',
     ],
 ];

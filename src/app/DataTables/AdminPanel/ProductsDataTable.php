@@ -43,9 +43,16 @@ class ProductsDataTable extends DataTable
                 return $product->variants_count;
             })
             ->addColumn('copy', function ($product) {
+                $categoryId = request()->get('category');
+                $createUrl = route('admin.products.create') . "?parent-id={$product->id}";
+
+                if ($categoryId) {
+                    $createUrl .= "&category-id=$categoryId";
+                }
+
                 return "<a
                 class=\"copy-product\"
-                href=\"#\">
+                href=\"$createUrl\">
                 </a>";
             })
             ->setRowId('id');

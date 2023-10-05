@@ -15,6 +15,7 @@ class Product extends Model
         'slug',
         'page_title',
         'name_tile',
+        'visible',
         'keywords',
         'vendor_code',
         'page_description',
@@ -22,7 +23,7 @@ class Product extends Model
     ];
 
     protected $casts = [
-        'created_at' => 'datetime:Y-m-d',
+        'created_at' => 'datetime:Y-m-d H:m',
     ];
 
     public function category()

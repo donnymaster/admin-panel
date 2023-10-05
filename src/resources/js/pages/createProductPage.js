@@ -22,7 +22,7 @@ function initCategory() {
     if (urlParams.has('category-id')) {
         select.value = urlParams.get('category-id');
     } else {
-        select.value = 1;
+        select.value = select.querySelector('option').value;
     }
 
     select.dispatchEvent(new Event('change'));
@@ -84,7 +84,6 @@ function updateCategory(data) {
     const getParentName = (category) => {
         if (category.parent_id) {
             const parent = categories.find(c => c.id == category.parent_id);
-
             parentsNames = '<div class="category_arrow"> > </div>' + parentsNames;
             parentsNames = `<div class="category_item">${parent.name}</div>` + parentsNames;
 
@@ -277,18 +276,18 @@ class ProductUniquePropertyHandler {
         <div class="product-unique-property-item flex flex-col items-end">
             <div class="flex w-full">
                 <div class="input-group mr-5 w-1/2">
-                    <label for="product-unique-property-name-${number}" class="label flex">
+                    <label for="product-unique-property[${number}][name]" class="label flex">
                         <span>Название</span>
                         <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                     </label>
-                    <input id="product-unique-property-name-${number}" name="product-unique-property-name-${number}" type="text" class="input">
+                    <input id="product-unique-property[${number}][name]" name="product-unique-property[${number}][name]" type="text" class="input">
                 </div>
                 <div class="input-group w-1/2">
-                    <label for="product-unique-property-value-${number}" class="label">
+                    <label for="product-unique-property[${number}][value]" class="label">
                         Значение
                         <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                     </label>
-                    <input id="product-unique-property-value-${number}" name="product-unique-property-value-${number}" type="text" class="input">
+                    <input id="product-unique-property[${number}][value]" name="product-unique-property[${number}][value]" type="text" class="input">
                 </div>
             </div>
             <div class="btn delete-property small-btn border-none bg-red self-end mt-4">Удалить</div>
@@ -370,7 +369,24 @@ document.querySelector('#formCreateProduct')
                 content: 'Нужно добавить вариант товара!',
                 style: 'error',
             });
-            event.preventDefault();
+            // event.preventDefault();
         }
-        event.preventDefault();
+        // event.preventDefault();
+    });
+
+
+document.querySelector('.visible-product')
+    .addEventListener('click', (event) => {
+        const btn = event.target;
+        const input = btn.querySelector('input');
+
+        if (btn.classList.contains('visible')) {
+            input.checked = false;
+        } else {
+            input.checked = true;
+        }
+
+        btn.classList.toggle('visible');
+        btn.classList.toggle('not-visible');
+
     });

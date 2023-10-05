@@ -6,7 +6,6 @@ use App\DataTables\AdminPanel\CategoryDataTable;
 use App\DataTables\AdminPanel\ProductCategoryPropertiesDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminPanel\CreateProductCategoryRequest;
-use App\Models\AdminPanel\Product;
 use App\Models\AdminPanel\ProductCategory;
 use App\Services\AdminPanel\CategoryService;
 use Illuminate\Http\Request;
@@ -47,8 +46,11 @@ class CategoryController extends Controller
         $selectedCategoryId = $request->get('category_id');
         $selectedCategory = ProductCategory::where('id', $selectedCategoryId)->first();
         $categories = ProductCategory::all();
-        $maxPosition = ProductCategory::max('position');
-        $minPosition = ProductCategory::min('position');
+        $maxPosition = ProductCategory::max('position', 0);
+        $minPosition = ProductCategory::min('position', 0);
+
+        $maxPosition = !$maxPosition ? 0 : $maxPosition;
+        $minPosition = !$minPosition ? 1 : $minPosition;
 
         return view(
             'admin-panel.catalogs.category-create',
@@ -69,7 +71,8 @@ class CategoryController extends Controller
         // создать свойства если они существуют
         $this->service->createProductCategoryPropertiesByCategoryId($request, $category->id);
 
-        return redirect()->back()->with('successfully-created', 'Категория успешно создана!');
+        return redirect()->route('admin.catalog.categories.page.list');
+        // return redirect()->back()->with('successfully-created', 'Категория успешно создана!');
     }
 
     public function show(ProductCategoryPropertiesDataTable $dataTable, $id)

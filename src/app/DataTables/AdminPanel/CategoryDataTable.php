@@ -73,7 +73,7 @@ class CategoryDataTable extends DataTable
             Column::make('parent_id')->title('Родительская категория'),
             Column::make('page_title')->title('Заголовок'),
             Column::make('product_link')->title('Товары'),
-            Column::make('count_properties')->title('Свойства'),
+            Column::make('count_properties')->title('Свойств'),
             Column::make('created_at')->title('Добавлен'),
         ];
     }
