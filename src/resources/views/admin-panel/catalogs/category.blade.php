@@ -3,70 +3,69 @@
 @section('title', $category->name)
 
 @section('content')
-    <div class="columns-1 flex justify-between mb-9 divide-x pb-2 text-white text-3xl border-b-2 border-b-white">
-        <span>Информация о категории</span>
-        <div class="btn load-applications small-btn border-none">Обновить</div>
-    </div>
-    <form action="#">
+    <form action="{{route('admin.catalog.category.update', ['category' => $category->id])}}" method="POST">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        @if (session()->has('successfully'))
+            <div class="alert alert-success">
+            {{session()->get('successfully')}}
+            </div>
+        @endif
+        <div class="columns-1 flex justify-between mb-9 divide-x pb-2 text-white text-3xl border-b-2 border-b-white">
+            <span>Информация о категории</span>
+            <button class="btn load-applications small-btn border-none">Обновить</button>
+        </div>
+        @csrf
+        @method('PATCH')
         <div class="columns-4 mb-9">
             <div class="input-group">
-                <label for="page_name" class="label flex">
+                <label for="name" class="label flex">
                     <span>Название</span>
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
-                <input id="page_name" value="{{ $category->name }}" name="name" type="text"
-                    class="input @error('name') is-invalid @enderror">
-                @error('name')
-                    <div class="alert-error">{{ $message }}</div>
-                @enderror
+                <input id="name" value="{{ $category->name }}" name="name" type="text" class="input">
             </div>
             <div class="input-group">
-                <label for="route" class="label">
+                <label for="slug" class="label">
                     Slug
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
-                <input id="route" value="{{ $category->slug }}" name="route" type="text"
-                    class="input @error('route') is-invalid @enderror">
-                @error('route')
-                    <div class="alert-error">{{ $message }}</div>
-                @enderror
+                <input id="slug" value="{{ $category->slug }}" name="slug" type="text"class="input">
             </div>
             <div class="input-group">
-                <label for="title" class="label">
+                <label for="position" class="label">
                     Позиция
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
-                <input id="title" value="{{ $category->position }}" name="title" type="text"
-                    class="input @error('title') is-invalid @enderror">
-                @error('title')
-                    <div class="alert-error">{{ $message }}</div>
-                @enderror
+                <input id="position" value="{{ $category->position }}" name="position" type="text" class="input">
             </div>
             <div class="input-group">
-                <label for="title" class="label">
+                <label for="page_title" class="label">
                     Название страницы
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
-                <input id="title" value="{{ $category->page_title }}" name="title" type="text"
-                    class="input @error('title') is-invalid @enderror">
-                @error('title')
-                    <div class="alert-error">{{ $message }}</div>
-                @enderror
+                <input id="page_title" value="{{ $category->page_title }}" name="page_title" type="text" class="input">
             </div>
         </div>
         <div class="columns-1 mb-9">
             <div class="flex flex-col">
-                <label for="parent-id" class="mb-4">Родительская категория</label>
-                <select name="parent" id="parent-id">
+                <label for="parent-id" class="mb-4 label">Родительская категория</label>
+                <select class="select" name="parent_id" id="parent-id">
                     @foreach ($categories as $item)
                         <option value="{{ $item->id }}" {{ $item->id == $category->parent_id ? 'selected' : null }}>
                             {{ $item->name }}</option>
                     @endforeach
-
                     @if ($category->parent_id)
-                        <option value="0">Отсутсвует</option>
+                        <option value="">Отсутсвует</option>
                     @else
-                        <option selected value="0">Отсутсвует</option>
+                        <option selected value="">Отсутсвует</option>
                     @endif
                 </select>
             </div>
@@ -76,41 +75,121 @@
                 <label for="keywords" class="label flex">
                     <span> Ключевые слова для seo</span>
                 </label>
-                <textarea id="keywords" class="input" name="keywords" rows="5" cols="33">
-                    {{$category->keywords}}
-                </textarea>
+                <textarea id="keywords" class="input" name="keywords" rows="5" cols="33">{{$category->keywords}}</textarea>
             </div>
             <div class="input-group">
-                <label for="keywords" class="label">
+                <label for="description" class="label">
                     Описание для seo
                 </label>
-                <textarea id="keywords" name="keywords" class="input" name="story" rows="5" cols="33">
-                    {{$category->description}}
-                </textarea>
+                <textarea id="description" name="description" class="input" name="story" rows="5" cols="33">{{$category->description}}</textarea>
             </div>
         </div>
         <div class="columns-1 mb-9">
             <div class="input-group">
-                <label for="old_route" class="label flex">
-                    <span>Описание страницы</span>
+                <label for="page_description" class="label flex">
+                    Описание страницы
+                    <x-admin.tinymce.message />
                 </label>
-                <textarea id="keywords" name="keywords" class="input" name="story" rows="5" cols="33">
-                    {{$category->page_description}}
-                </textarea>
+                <textarea id="page_description" name="page_description" class="input" name="story" rows="5" cols="33">{{$category->page_description}}</textarea>
             </div>
         </div>
     </form>
     <div class="columns-1 flex justify-between mt-9 mb-9 divide-x pb-2 text-white text-3xl border-b-2 border-b-white">
         <span>Свойства категории</span>
-        <div class="btn load-applications small-btn border-none">Добавить</div>
+        <div class="btn bg-green mr-2 modal-btn" data-modal="create-category-property">
+            Добавить
+        </div>
+        <div class="btn modal-btn" style="display: none" data-modal="update-category-property">
+            Добавить
+        </div>
     </div>
 
     {{ $dataTable->table() }}
 
     {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
+
+    <x-admin.tinymce.setting />
 @endsection
 
 
 @section('sidebar')
     <x-admin.sidebar.categories item_show="categories" />
 @endsection
+
+@section('scripts')
+    @vite(['resources/js/pages/updateCategoryProduct.js'])
+
+    <x-admin.tinymce.script />
+@endsection
+
+
+@push('modals')
+    <div class="modal-container hidden">
+        <div class="modal-overlay hidden"></div>
+        <div class="modal hidden" data-modal="create-category-property">
+            <div class="modal-header mb-5 text-2xl">
+                <div class="title">Новое свойство</div>
+                <div class="close-modal">
+                    ✖
+                </div>
+            </div>
+            <div class="modal-content scrollbar">
+                <div class="input-group mb-3">
+                    <label for="property-name" class="label black pb-1">
+                        Название
+                    </label>
+                    <input id="property-name" type="text" class="input border border-theme-blue border-solid"
+                        placeholder="">
+                </div>
+                <div class="input-group mb-3">
+                    <label for="property-description" class="label black pb-1">
+                        Описание
+                    </label>
+                    <input id="property-description" type="text" class="input border border-theme-blue border-solid"
+                        placeholder="">
+                </div>
+            </div>
+            <div class="modal-footer flex justify-end">
+                <div class="btn bg-green mr-2" id="addCaregoryPropertyBtn">
+                    <span class="loader dark"></span>
+                    Добавить
+                </div>
+            </div>
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="categoty_id" value="{{ $category->id }}">
+        </div>
+
+        <div class="modal hidden" data-modal="update-category-property">
+            <div class="modal-header mb-5 text-2xl">
+                <div class="title">Обновить свойство</div>
+                <div class="close-modal">
+                    ✖
+                </div>
+            </div>
+            <div class="modal-content scrollbar">
+                <div class="input-group mb-3">
+                    <label for="name-property" class="label black pb-1">
+                        Название
+                    </label>
+                    <input id="name-property" type="text" class="input border border-theme-blue border-solid"
+                        placeholder="">
+                </div>
+                <div class="input-group mb-3">
+                    <label for="description-property" class="label black pb-1">
+                        Описание
+                    </label>
+                    <input id="description-property" type="text" class="input border border-theme-blue border-solid"
+                        placeholder="">
+                </div>
+            </div>
+            <div class="modal-footer flex justify-end">
+                <div class="btn bg-green mr-2" id="updateCaregoryPropertyBtn">
+                    <span class="loader dark"></span>
+                    Обновить
+                </div>
+            </div>
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="property_id" value="">
+        </div>
+    </div>
+@endpush

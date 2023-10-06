@@ -1,4 +1,6 @@
-export default function checkIsErrorResponse(response) {
+import wordwrap from 'wordwrapjs';
+
+export default function checkIsErrorResponse({data, response}) {
     if (response.redirected) {
         window.open(response.url, '_top');
         return false;
@@ -10,7 +12,7 @@ export default function checkIsErrorResponse(response) {
     }
 
     // if redirect to login
-    if (response.url.includes('/admin/login')) {
+    if (response.url?.includes('/admin/login')) {
         window.location.reload();
         throw new Error('Session expired!');
     }
@@ -26,11 +28,28 @@ export default function checkIsErrorResponse(response) {
         throw new Error('Access limited!');
     }
 
+    if (response.status == 419) {
+        // ограничен доступ
+        window.toast.push({
+            title: 'Ошибка!',
+            content: 'У вас нет доступа!',
+            style: 'error',
+        });
+
+        window.location.reload();
+    }
+
     if (response.status >= 400 && response.status < 500) {
+        let message = 'Ошибка с вашей стороны!';
+
+        if ('message' in data) {
+            message += '</br>' + data.message;
+            message = formatTextWrap(message, 5);
+        }
         // ошибка на стороне клиента
         window.toast.push({
             title: 'Ошибка!',
-            content: 'Ошибка с вашей стороны!',
+            content: message,
             style: 'error',
         });
         throw new Error('Client Error');
@@ -48,3 +67,20 @@ export default function checkIsErrorResponse(response) {
 
     return true;
 }
+
+
+function formatTextWrap(text, maxLineLength) {
+    const words = text.replace(/[\r\n]+/g, ' ').split(' ');
+    let lineLength = 0;
+
+    // use functional reduce, instead of for loop
+    return words.reduce((result, word) => {
+      if (lineLength + word.length >= maxLineLength) {
+        lineLength = word.length;
+        return result + `\n${word}`; // don't add spaces upfront
+      } else {
+        lineLength += word.length + (result ? 1 : 0);
+        return result ? result + ` ${word}` : `${word}`; // add space only when needed
+      }
+    }, '');
+  }

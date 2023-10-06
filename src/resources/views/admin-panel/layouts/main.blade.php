@@ -11,6 +11,9 @@
     @hasSection('scripts')
         @yield('scripts')
     @endif
+    <script>
+        window._token = '<?php echo csrf_token(); ?>';
+    </script>
 </head>
 
 <body>

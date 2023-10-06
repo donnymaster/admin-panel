@@ -15,6 +15,8 @@ export default defineConfig({
                 'resources/js/pages/createCategoryPage.js',
                 'resources/js/pages/createProductPage.js',
                 'resources/js/pages/applicationPage.js',
+                'resources/js/pages/updateCategoryProduct.js',
+                'resources/js/pages/usersPage.js',
             ],
             refresh: true,
         }),

@@ -6,12 +6,14 @@ use App\DataTables\UsersDataTable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminPanel\CreateUserRequest;
+use App\Http\Requests\AdminPanel\UpdateUserRequest;
 use App\Http\Requests\AdminPanel\User\LoginRequest;
 use App\Models\AdminPanel\AdminRole;
 use App\Models\User;
 use App\Services\AdminPanel\UserService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
@@ -43,6 +45,31 @@ class UserController extends Controller
         ));
 
         return back()->with('successfully', "Пользователь [{$user->name}] создан!");
+    }
+
+    public function delete(User $user)
+    {
+        // проверка чтоб этот чебупель себя не удалил
+        if (Auth::user()->id === $user->id) {
+            return response()->json([
+                'message' => 'Себя нельзя удалить!'
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $user->delete();
+
+        return [
+            'message' => 'Пользователь был удален',
+        ];
+    }
+
+    public function update(UpdateUserRequest $request, User $user)
+    {
+        $user->update($request->safe()->toArray());
+
+        return [
+            'message' => 'Пользователь был обновлен!',
+        ];
     }
 
     public function loginHandler(LoginRequest $request)

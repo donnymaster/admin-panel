@@ -4,7 +4,7 @@ namespace App\Http\Requests\AdminPanel;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateUserRequest extends FormRequest
+class UpdateProductCategoryPropertyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,8 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|min:1|max:255',
-            'email' => 'required|email',
-            'role_id' => 'required|numeric|exists:admin_roles,id',
-            'password' => 'sometimes|required|string|min:6|max:50',
+            'name' => 'required|min:1|max:255',
+            'description' => 'required|min:1|max:255',
         ];
     }
 }

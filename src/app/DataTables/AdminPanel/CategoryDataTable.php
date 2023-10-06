@@ -23,16 +23,25 @@ class CategoryDataTable extends DataTable
                 return $category->properties_count;
             })
             ->editColumn('name', function ($category) {
-                return "<a class=\"link\" href=\"".route('admin.catalog.category.show', ['category' => $category->id])."\">{$category->name}</a>";
+                $name = mb_strlen($category->name) >= 20 ? mb_substr($category->name, 0, 20).'...' : $category->name;
+
+                return "<a class=\"link\" href=\"".route('admin.catalog.category.edit', ['category' => $category->id])."\">$name ✎</a>";
+            })
+            ->editColumn('page_title', function ($category) {
+                $name = mb_strlen($category->page_title) >= 20 ? mb_substr($category->page_title, 0, 20).'...' : $category->page_title;
+
+                return $name;
             })
             ->editColumn('parent_id', function ($category) {
                 if ($category->parent) {
-                    return "<a class=\"link\" href=\"".route('admin.catalog.category.show', ['category' => $category->id])."\">{$category->parent->name}</a>";
+                    $nameParent = mb_strlen($category->parent->name) >= 10 ? mb_substr($category->parent->name, 0, 10).'...' : $category->parent->name;
+
+                    return "<a class=\"link\" href=\"".route('admin.catalog.category.edit', ['category' => $category->id])."\">$nameParent ✎</a>";
                 }
                 return '-';
             })
             ->addColumn('product_link', function ($category) {
-                return "<a class=\"link\" href=\"".route('admin.products')."?category={$category->id}\">Открыть ({$category->products_count})</a>";
+                return "<a class=\"link\" href=\"".route('admin.products')."?category={$category->id}\">🡵 ({$category->products_count})</a>";
             })
             ->setRowId('id');
     }
@@ -69,11 +78,10 @@ class CategoryDataTable extends DataTable
         return [
             Column::make('id'),
             Column::make('name')->title('Название'),
-            Column::make('slug')->title('Slug'),
-            Column::make('parent_id')->title('Родительская категория'),
+            Column::make('parent_id')->title('Родитель'),
             Column::make('page_title')->title('Заголовок'),
-            Column::make('product_link')->title('Товары'),
-            Column::make('count_properties')->title('Свойств'),
+            Column::make('product_link')->title('Товары')->exportable(false)->printable(false)->sortable(false)->searchable(false),
+            Column::make('count_properties')->title('Свойств')->exportable(false)->printable(false)->sortable(false)->searchable(false),
             Column::make('created_at')->title('Добавлен'),
         ];
     }

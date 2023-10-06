@@ -21,8 +21,8 @@ class SettingsDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->setRowId('id')
             ->editColumn('setting_value', function($variable) {
-                if (strlen($variable->setting_value)>= 35) {
-                    return substr($variable->setting_value, 0, 35) . '...';
+                if (mb_strlen($variable->setting_value)>= 35) {
+                    return mb_substr($variable->setting_value, 0, 35) . '...';
                 }
 
                 return $variable->setting_value;

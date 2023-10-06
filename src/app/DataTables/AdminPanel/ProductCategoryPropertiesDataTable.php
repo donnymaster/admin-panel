@@ -24,8 +24,13 @@ class ProductCategoryPropertiesDataTable extends DataTable
             ->addColumn('action', function ($property) {
                 return "
                 <div class=\"flex\">
-                    <div data-id=\"{$property->id}\" class=\" mr-2 btn edit-setting\"></div>
-                    <div data-id=\"{$property->id}\" class=\"btn delete-setting bg-red\"></div>
+                    <div
+                        data-id=\"{$property->id}\"
+                        data-name=\"{$property->name}\"
+                        data-description=\"{$property->description}\"
+                        class=\" mr-2 btn edit-property\"
+                        ></div>
+                    <div data-id=\"{$property->id}\" class=\"btn delete-property bg-red\"></div>
                 </div>
                 ";
             })

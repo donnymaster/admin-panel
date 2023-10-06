@@ -169,5 +169,6 @@ return [
         'page_description'      => 'Описание страницы',
         'product-unique-property.*.name' => 'Название уникального свойства',
         'product-unique-property.*.value' => 'Свойство уникального свойства',
+        'position'              => 'Позиция',
     ],
 ];

@@ -2,11 +2,8 @@
 
 @section('title', 'Новая категория')
 
-@inject('service', 'App\Services\AdminPanel\SiteSettingService')
-
 @section('content')
     <form action="{{ route('admin.catalog.categories.store') }}" method="POST" enctype="multipart/form-data">
-
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -90,10 +87,7 @@
             <div class="input-group">
                 <label for="page_description" class="label">
                     Описание страницы
-                    @if (!$service->getValueVariable('redaktor-tiny-url'))
-                        <br>
-                        Подключите TinyMCE установив переменную 'redaktor-tiny-url'
-                    @endif
+                    <x-admin.tinymce.message />
                 </label>
                 <textarea name="page_description" id="page_description" class="input" name="story" rows="5" cols="33">{{old('page_description')}}</textarea>
             </div>
@@ -115,17 +109,8 @@
             @endif
         </div>
     </form>
-    @if ($service->getValueVariable('redaktor-tiny-url'))
-        <script>
-            tinymce.init({
-                selector: '#page_description',
-                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight numlist bullist indent outdent | emoticons charmap | removeformat',
-                language_url: '/vendor/tinymce/lang/ru.js',
-                language: 'ru',
-            });
-        </script>
-    @endif
+
+    <x-admin.tinymce.setting />
 @endsection
 
 
@@ -136,7 +121,5 @@
 @section('scripts')
     @vite(['resources/js/pages/createCategoryPage.js'])
 
-    @if ($service->getValueVariable('redaktor-tiny-url'))
-        <script src="{{ $service->getValueVariable('redaktor-tiny-url') }}" referrerpolicy="origin"></script>
-    @endif
+    <x-admin.tinymce.script />
 @endsection

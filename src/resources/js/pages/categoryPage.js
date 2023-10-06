@@ -19,15 +19,6 @@ class TreeList {
     }
 
     _render(data) {
-        // data.sort((f, l) => {
-        //     if (f.parent_id > l.parent_id) return 1;
-        //     if (f.parent_id < l.parent_id) return -1;
-        //     return 0;
-        // })
-        //     .forEach((category) => {
-        //         this._createCategory(category);
-        //     });
-
             const nestedSortables = [].slice.call(document.querySelectorAll('.nested-sortable'));
 
             for (var i = 0; i < nestedSortables.length; i++) {
@@ -130,7 +121,7 @@ class TreeList {
         btnElement.textContent = products.total;
         // this._updateCountProducts();
         // this._updatePaginationElements();
-        console.log(products);
+        // console.log(products);
 
         const parent = btnElement.closest('.list-group.nested-sortable.category');
 

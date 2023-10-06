@@ -16,7 +16,7 @@ class ProductUniqueValue extends Model
     ];
 
     protected $casts = [
-        'created_at' => 'datetime:Y-m-d',
+        'created_at' => 'datetime:Y-m-d H:m',
     ];
 
     public function product()

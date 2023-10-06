@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests\AdminPanel;
 
-use App\Models\AdminPanel\ProductCategory;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\AdminPanel\ProductCategory;
 
-class CreateProductCategoryRequest extends FormRequest
+class UpdateProductCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -37,9 +37,6 @@ class CreateProductCategoryRequest extends FormRequest
             'keywords' => 'nullable|max:255',
             'description' => 'nullable',
             'page_description' => 'nullable',
-            'image' => 'nullable',
-            'category-property.*.name' => 'required|min:1|max:255|unique:product_category_properties,name',
-            'category-property.*.description' => 'required|min:1|max:255',
         ];
     }
 }

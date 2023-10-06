@@ -76,8 +76,12 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
         Route::get('/categories', [CategoryController::class, 'index'])->name('catalog.categories.show');
         Route::get('/categories/new', [CategoryController::class, 'create'])->name('catalog.categories.new');
         Route::post('/categories/new', [CategoryController::class, 'store'])->name('catalog.categories.store');
-        Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('catalog.category.show');
-        Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('catalog.category.edit');
+        Route::get('/categories/{category}', [CategoryController::class, 'edit'])->name('catalog.category.edit');
+        Route::patch('/categories/{category}', [CategoryController::class, 'update'])->name('catalog.category.update');
+        Route::post('/categories/{category}/addProperty', [CategoryController::class, 'addProperty'])->name('catalog.category.addProperty');
+        Route::delete('/categories/{category}/property/{property}', [CategoryController::class, 'deleteProperty'])->name('catalog.category.deleteProperty');
+        Route::patch('/categories/{category}/property/{property}', [CategoryController::class, 'updateProperty'])->name('catalog.category.updateProperty');
+
         Route::get('/categories/{category}/properties', [CategoryController::class, 'properties'])->name('catalog.category.properties');
         Route::get('/categories/list', [CategoryController::class, 'list'])->name('catalog.categories.list');
         Route::get('/categories/page/list', [CategoryController::class, 'page'])->name('catalog.categories.page.list');
@@ -114,6 +118,8 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
     Route::get('/users', [UserController::class, 'index'])->name('users');
     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
     Route::post('/users', [UserController::class, 'store'])->name('users.store');
+    Route::delete('/users/{user}', [UserController::class, 'delete'])->name('users.delete');
+    Route::patch('/users/{user}', [UserController::class, 'update'])->name('users.update');
 
     Route::get('/account', [AccountController::class, 'index'])->name('account');
     Route::patch('/account', [AccountController::class, 'update'])->name('account.update');

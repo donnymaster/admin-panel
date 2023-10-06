@@ -25,6 +25,20 @@ class UsersDataTable extends DataTable
             ->editColumn('role', function ($user) {
                 return $user->role->name;
             })
+            ->addColumn('action', function ($user) {
+                return "
+                    <div class=\"flex\">
+                        <div
+                            data-id=\"{$user->id}\"
+                            data-email=\"{$user->email}\"
+                            data-name=\"{$user->name}\"
+                            data-role=\"{$user->role_id}\"
+                            class=\" mr-2 btn edit modal-btn\">
+                            </div>
+                        <div data-id=\"{$user->id}\" class=\"btn delete bg-red\" data-delete=\"delete\">
+                    </div>
+                ";
+            })
             ->setRowId('id');
     }
 
@@ -77,7 +91,15 @@ class UsersDataTable extends DataTable
             Column::make('id'),
             Column::make('name')->title('Имя'),
             Column::make('email')->title('Почта'),
-            Column::make('role')->title('Роль')->sortable(false)->searchable(false),
+            Column::make('role')
+                ->title('Роль')
+                ->sortable(false)
+                ->exportable(false)
+                ->printable(false),
+            Column::computed('action')
+                ->title('Действия')
+                ->exportable(false)
+                ->printable(false),
             Column::make('created_at')->title('Добавлен'),
         ];
     }

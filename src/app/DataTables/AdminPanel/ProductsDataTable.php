@@ -28,7 +28,7 @@ class ProductsDataTable extends DataTable
             ->editColumn('category_id', function ($product) {
                 return "<a
                 class=\"link\"
-                href=\"".route('admin.catalog.category.show', ['category' => $product->category_id])."\">
+                href=\"".route('admin.catalog.category.edit', ['category' => $product->category_id])."\">
                 {$product->category->name}
                 </a>";
             })

@@ -12,7 +12,7 @@ new DropDownList();
 
 document.querySelectorAll('.image-create-page').forEach((imageSelector) => {
    const f = new SelectImage(imageSelector);
-   console.log(f);
+//    console.log(f);
 });
 
 
