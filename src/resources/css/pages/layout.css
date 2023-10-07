@@ -1,18 +1,21 @@
+body {
+    @apply bg-white dark:bg-primary-dark;
+}
+
 .content {
     & .page {
         padding: 40px;
         overflow: auto;
         width: calc(100% - 260px);
         height: calc(100vh - 67px);
-        background-color: #9900ff;
-        @apply dark:bg-black;
+        @apply bg-primary-color dark:bg-second-dark;
     }
 }
 
 
 .admin-header {
     border-bottom-width: 1px;
-    @apply flex border-b-theme-blue;
+    @apply flex border-b-theme-blue dark:border-b-second-dark;
     padding-right: 20px;
     height: 67px;
 
@@ -25,9 +28,10 @@
             padding-top: 20px;
             padding-bottom: 12px;
             /* font-weight: 500; */
+            @apply dark:text-white;
 
             &.active {
-                @apply bg-theme-blue text-white rounded-t-xl;
+                @apply bg-theme-blue text-white rounded-t-xl dark:bg-second-dark;
                 position: relative;
 
                 &::after,
@@ -40,6 +44,7 @@
                     right: -19px;
                     transform: rotate(180deg);
                     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='19' height='19' viewBox='0 0 19 19' fill='none'%3E%3Cpath d='M0.962986 0C15.3926 0 19 12.6667 19 19L19 0L0.962986 0Z' fill='%239900FF'/%3E%3C/svg%3E");
+
                 }
 
                 &::before {
@@ -231,6 +236,32 @@
                     }
                 }
             }
+        }
+    }
+}
+
+.temporary-window {
+    position: absolute;
+    z-index: 9999;
+    padding: 20px;
+    border-radius: 25px;
+    background: white;
+    right: 50%;
+    bottom: 50%;
+    transform: translate(50%,50%);
+    width: 50vw;
+    border: 1px solid;
+    & .temporary-window-remove {
+        text-align: end;
+        cursor: pointer;
+    }
+    & table {
+        width: 100%;
+    }
+    & table, th, td {
+        border: 1px solid black;
+        & td {
+            padding: 5px;
         }
     }
 }

@@ -17,6 +17,7 @@ class Product extends Model
         'name_tile',
         'visible',
         'keywords',
+        'position_in_category',
         'vendor_code',
         'page_description',
         'description',

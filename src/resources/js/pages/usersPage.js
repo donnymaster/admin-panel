@@ -68,8 +68,14 @@ function updateUser(user) {
 
 
 document.querySelector('#updateUser')
-    .addEventListener('click', () => {
-        // get data
+    .addEventListener('click', ({target}) => {
+
+        if (target.classList.contains('disabled')) {
+            return;
+        }
+
+        target.classList.add('disabled');
+
         const name = document.querySelector('.modal input[name="name"]').value;
         const email = document.querySelector('.modal input[name="email"]').value;
         const role_id = document.querySelector('.modal select[name="role_id"]').value;
@@ -106,6 +112,7 @@ document.querySelector('#updateUser')
                 tables.ajax.reload();
                 document.querySelector('.modal[data-modal="update-user"] .close-modal').click();
             }
-        });
+        })
+        .finally(() => target.classList.remove('disabled'));
 
     });

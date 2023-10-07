@@ -110,7 +110,7 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
 
     Route::get('/settings', [SettingSiteController::class, 'index'])->name('settings');
     Route::post('/settings', [SettingSiteController::class, 'store'])->name('settings.store');
-    Route::put('/settings/{setting}', [SettingSiteController::class, 'update'])->name('settings.update');
+    Route::patch('/settings/{setting}', [SettingSiteController::class, 'update'])->name('settings.update');
     Route::delete('/settings/{setting}', [SettingSiteController::class, 'remove'])->name('settings.remove');
 
     // other statistic pages

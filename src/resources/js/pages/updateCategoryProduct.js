@@ -61,11 +61,11 @@ window.addEventListener('load', () => {
             .addEventListener('click', (event) => {
                 const el = event.target;
 
-                if (el.classList.contains('edit-property')) {
+                if (el.classList.contains('edit')) {
                     updateCategoryproperty(el.dataset);
                 }
 
-                if (!el.classList.contains('delete-property')) {
+                if (!el.classList.contains('delete')) {
                     return;
                 }
 
@@ -119,7 +119,13 @@ function updateCategoryproperty(dataset) {
 }
 
 document.querySelector('#updateCaregoryPropertyBtn')
-    .addEventListener('click', () => {
+    .addEventListener('click', ({target}) => {
+        if (target.classList.contains('disabled')) {
+            return;
+        }
+
+        target.classList.add('disabled');
+
         const nameInput = document.querySelector('.modal[data-modal="update-category-property"] input[id="name-property"]');
         const descriptionInput = document.querySelector('.modal[data-modal="update-category-property"] input[id="description-property"]');
         const table = document.querySelector('#dataTableBuilder_wrapper');
@@ -158,6 +164,7 @@ document.querySelector('#updateCaregoryPropertyBtn')
             }
         })
         .finally(() => {
+            target.classList.remove('disabled');
             table.classList.remove('load');
         });
     });

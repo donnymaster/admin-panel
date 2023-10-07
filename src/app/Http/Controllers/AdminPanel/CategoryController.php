@@ -145,6 +145,11 @@ class CategoryController extends Controller
         return $categoryDataTable->render('admin-panel.catalogs.category-table');
     }
 
+    public function positionBoundaries()
+    {
+
+    }
+
     public function properties(int $id)
     {
         return ProductCategory::where('id', $id)->with(['properties', 'parent'])->first();

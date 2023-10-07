@@ -63,6 +63,33 @@ class ProductService
         return $this->product;
     }
 
+    public function updatePositionProduct($position, Product $product = null)
+    {
+        $currentProduct = $product ? $product : $this->product;
+        $categoryId = $currentProduct->category_id;
+
+        $maxPosition = Product::where('category_id', $categoryId)->max('position_in_category');
+
+        if ($maxPosition == 0) {
+            $currentProduct->update(['position_in_category' => 1]);
+            return $this;
+        }
+
+        $direction = $maxPosition < $position ? 'right' : 'left';
+
+        if ($direction == 'right') {
+            Product::where('category_id', $categoryId)
+                ->whereBetween('position_in_category', [$maxPosition, $position])->decrement('position_in_category');
+            $currentProduct->update(['position_in_category' => $position]);
+        } else {
+            Product::where('category_id', $categoryId)
+                ->whereBetween('position_in_category', [$position, $maxPosition])->increment('position_in_category');
+            $currentProduct->update(['position_in_category' => $position]);
+        }
+
+        return $this;
+    }
+
     public function createStatusProduct($data, Product $product = null)
     {
         $currentProduct = $product ? $product : $this->product;

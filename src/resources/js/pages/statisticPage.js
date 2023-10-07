@@ -1,4 +1,6 @@
 import Choices from "choices.js";
+import spreadResponse from "../utils/spreadResponse";
+import checkIsErrorResponse from "../utils/checkIsErrorResponse";
 
 init();
 
@@ -8,33 +10,33 @@ function init() {
     loadDatePeriod();
 
     document.querySelector('.update-applications').addEventListener('click', () => {
-        console.log(window.choice.getValue().map(item => item.value));
         updateChart();
     });
 
 }
 
 function initChoicesPages() {
-    // send request
     fetch(
         '/admin/pages/valid-pages'
     )
-    .then(response => response.json())
+    .then(spreadResponse)
     .then((response) => {
-        _redrerChoice(response);
+        if (checkIsErrorResponse(response)) {
+            _redrerChoice(response.data);
+        }
     });
-
 }
 
 function loadDatePeriod() {
     fetch(
         '/admin/pages/date-limit'
     )
-    .then(response => response.json())
+    .then(spreadResponse)
     .then((response) => {
-        console.log(response);
-        document.querySelector('#startDate').value = response.min;
-        document.querySelector('#endDate').value = response.max;
+        if (checkIsErrorResponse(response)) {
+            document.querySelector('#startDate').value = response.data.min;
+            document.querySelector('#endDate').value = response.data.max;
+        }
     });
 }
 
@@ -77,7 +79,6 @@ function _redrerChoice(data) {
 
 
 function updateChart() {
-    // get data
     const pages = window.choice.getValue().map(item => item.value);
     const startDate = document.querySelector('#startDate').value;
     const endDate = document.querySelector('#endDate').value;
@@ -88,17 +89,19 @@ function updateChart() {
 
     const pagesList = pages.map(page => `&pages[]=${page}`).join('');
 
-    // fetch data
     fetch(
         `/admin/pages/info-visit?end-date=${endDate}&start-date=${startDate}${pagesList}`
     )
-    .then(response => response.json())
-    .then((response) => {
-        // TODO: check is 401
-        console.log(response);
+    .then(spreadResponse)
+    .then((res) => {
+        if (!checkIsErrorResponse(res)) {
+            console.log('error empty data');
+        }
 
-        const dates = [...new Set(response.map(obj => obj.date))].sort(_compareByData);
-        const rawData = groupBy(response, 'page_name_visit');
+        const { data } = res;
+
+        const dates = [...new Set(data.map(obj => obj.date))].sort(_compareByData);
+        const rawData = groupBy(data, 'page_name_visit');
         const renderData = [];
 
         for (const [key, value] of Object.entries(rawData)) {
@@ -168,9 +171,11 @@ function loadInfo() {
     fetch(
         `/admin/pages/info-visit?last-thirty-days=true${pagesList}`
     )
-    .then(response => response.json())
+    .then(spreadResponse)
     .then((response) => {
-        renderDate(response);
+        if(checkIsErrorResponse(response)) {
+            renderDate(response.data);
+        }
     });
 }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\AdminPanel;
 
+use App\Models\AdminPanel\Product;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateProductRequest extends FormRequest
@@ -21,15 +22,22 @@ class CreateProductRequest extends FormRequest
      */
     public function rules(): array
     {
+        $dbMinPosition = Product::where('category_id', $this->category_id)->min('position_in_category');
+        $dbMaxPosition = Product::where('category_id', $this->category_id)->max('position_in_category');
+
+        $maxPosition = $dbMaxPosition ? intval($dbMaxPosition) + 1 : 1;
+        $minPosition = $dbMinPosition ? $dbMinPosition : 1;
+
         return [
             'name' => 'required|min:1|max:255|unique:products,name',
             'category_id' => 'required|numeric|exists:product_categories,id',
             'slug' => 'required|min:1|max:255',
             'page_title' => 'required|min:1|max:255',
             'name_tile' => 'required|min:1|max:255',
-            'visible' => 'required|boolean',
+            'visible' => 'sometimes|required|boolean',
+            'position_in_category' => "required|numeric|between:$minPosition,$maxPosition",
             'keywords' => 'required|min:1|max:255',
-            'vendor_code' => 'required|min:1|max:255|unique:products:vendor_code',
+            'vendor_code' => 'required|min:1|max:255|unique:products,vendor_code',
             'page_description' => 'required|min:1|max:65535',
             'description' => 'required|min:1|max:65535',
 
@@ -38,5 +46,12 @@ class CreateProductRequest extends FormRequest
             'product-unique-property.*.value' => 'required|min:1|max:255',
 
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'visible' => (boolean) $this->visible,
+        ]);
     }
 }

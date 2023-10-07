@@ -43,17 +43,23 @@ class ProductsDataTable extends DataTable
                 return $product->variants_count;
             })
             ->addColumn('copy', function ($product) {
-                $categoryId = request()->get('category');
                 $createUrl = route('admin.products.create') . "?parent-id={$product->id}";
 
-                if ($categoryId) {
-                    $createUrl .= "&category-id=$categoryId";
+                $createUrl .= "&category-id={$product->category_id}";
+
+                return "
+                    <a
+                        class=\"copy-product\"
+                        href=\"$createUrl\">
+                    </a>
+                ";
+            })
+            ->editColumn('visible', function ($product) {
+                if ($product->visible) {
+                    return "<div data-id=\"{$product->id}\" class=\"visible\"></div>";
                 }
 
-                return "<a
-                class=\"copy-product\"
-                href=\"$createUrl\">
-                </a>";
+                return "<div data-id=\"{$product->id}\" class=\"not-visible\"></div>";
             })
             ->setRowId('id');
     }
@@ -102,7 +108,8 @@ class ProductsDataTable extends DataTable
             Column::make('id'),
             Column::make('name')->title('Название'),
             Column::make('category_id')->title('Категория'),
-            Column::make('count_variants')->title('Количество вариантов'),
+            Column::make('count_variants')->title('Вариантов'),
+            Column::computed('visible')->title('Статус'),
             Column::make('copy')->title('Копировать'),
             Column::make('created_at')->title('Добавлен'),
         ];

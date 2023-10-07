@@ -28,7 +28,7 @@
     & .input {
         border: 1px solid;
         @apply border-primary-color;
-        @apply dark:bg-third-dark border-primary-color-light text-white;
+        @apply dark:bg-third-dark border-primary-color-light dark:text-white;
     }
 
     & .checkbox label {

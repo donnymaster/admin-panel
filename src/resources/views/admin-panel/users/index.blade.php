@@ -59,7 +59,7 @@
                     <input id="email" name="email" type="email" class="input border border-theme-blue border-solid">
                 </div>
                 <div class="flex flex-col">
-                    <label for="role_id" class="mb-2 label">Родительская категория</label>
+                    <label for="role_id" class="mb-2 label">Роль</label>
                     <select class="select mb-3" name="role_id" id="role_id">
                         @foreach ($roles as $role)
                             <option value="{{$role->id}}">{{$role->name}}</option>

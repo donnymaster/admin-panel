@@ -34,9 +34,11 @@ class SettingSiteController extends Controller
 
     public function update(UpdateSiteSettingRequest $request, SiteSetting $setting)
     {
-        $this->service->update($request->validated(), $setting);
+        $this->service->update($request->safe()->toArray(), $setting);
 
-        return back()->with(['message' => 'Данные успешно обновлены!']);
+        return [
+            'message' => 'Данные успешно обновлены!'
+        ];
     }
 
     public function remove(SiteSetting $setting)

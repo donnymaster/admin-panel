@@ -1,5 +1,7 @@
 const selectCategory = document.querySelector('.selected-category');
 import LoaderImages from "../components/loaderImages";
+import checkIsErrorResponse from "../utils/checkIsErrorResponse";
+import spreadResponse from "../utils/spreadResponse";
 
 selectCategory.addEventListener('change', (event) => {
     loadProductCategoryProperties(event.target.value);
@@ -35,10 +37,12 @@ function loadProductCategoryProperties(id) {
     selectCategory.setAttribute('disabled', true);
 
     fetch(`/admin/catalog/categories/${id}/properties`)
-        .then(res => res.json())
-        .then((res) => {
-            selectCategory.removeAttribute('disabled');
-            updateCategory(res);
+        .then(spreadResponse)
+        .then((response) => {
+            if (checkIsErrorResponse(response)) {
+                selectCategory.removeAttribute('disabled');
+                updateCategory(response.data);
+            }
         });
 }
 
@@ -106,7 +110,7 @@ function updateCategory(data) {
             'afterbegin',
             `
                 <div class="empry-data-category-properties text-white text-1xl text-center mt-4">
-                    Уникальные свойства отсутствуют, вам нужно <a href="/admin/catalog/categories/${data.id}/edit" class="link white">добавить</a> свойства чтобы они тут отобразились!
+                    Уникальные свойства отсутствуют, вам нужно <a href="/admin/catalog/categories/${data.id}" class="link white">добавить</a> свойства чтобы они тут отобразились!
                 </div>
             `
         );
@@ -180,7 +184,7 @@ document.querySelector('.add-variant-product')
         // add variant
 
         const stringHtml = `
-        <div class="variant-product">
+        <div class="variant-product flex flex-col">
             <div class="columns-2 mb-4">
                 <div class="input-group">
                     <label for="product-variant-name-${countVariant}" class="label">
@@ -248,6 +252,9 @@ document.querySelector('.add-variant-product')
             `;
 
             lastVariant.insertAdjacentHTML('beforeend', stringElementProperty);
+            lastVariant.insertAdjacentHTML('beforeend', `
+                <div class="btn delete-property small-btn border-none bg-red self-end mt-4">Удалить</div>
+            `);
         });
 
         bindInput.execute();

@@ -16,12 +16,29 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
+        static $firstCategory = 1;
+        static $secondCategory = 1;
+        $position = 0;
+
+        $categoryId = fake()->randomElement([1, 2]);
+
+        if ($categoryId === 1) {
+            $position = $firstCategory;
+            ++$firstCategory;
+        }
+
+        if ($categoryId === 2) {
+            $position = $secondCategory;
+            ++$secondCategory;
+        }
+
         return [
             'name' => fake()->word(),
             'page_title' => fake()->word(),
             'name_tile' => fake()->word(),
             'visible' => true,
-            'category_id' => fake()->randomElement([1, 2]),
+            'position_in_category' => $position,
+            'category_id' => $categoryId,
             'vendor_code' => fake()->regexify('[A-Z]{5}[0-4]{3}'),
             'slug' => fake()->word(),
         ];

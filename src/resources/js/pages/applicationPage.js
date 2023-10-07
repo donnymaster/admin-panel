@@ -1,7 +1,8 @@
+import checkIsErrorResponse from "../utils/checkIsErrorResponse";
+import spreadResponse from "../utils/spreadResponse";
 
 const btnDeleteApplication = document.querySelector('#deleteApplication');
 const changeStatusApplication = document.querySelector('#changeStatusApplication');
-const csrfToken = document.querySelector('input[name="_token"]').value;
 let datatables = null;
 
 const handleModal = (type) => {
@@ -85,31 +86,28 @@ changeStatusApplication.addEventListener('click', () => {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,
+                    'X-CSRF-TOKEN': window._token,
                 },
                 body: JSON.stringify({
                     processed: status == 'Не обработан' ? true : false
                 })
             }
         )
+        .then(spreadResponse)
         .then((response) => {
-            if (response.status == 419 || response.status == 401) {
-                window.location.reload();
-                return;
+            if (checkIsErrorResponse(response)) {
+                updateCountApplication();
+                changeStatusApplication.classList.remove('disabled');
+                datatables.ajax.reload();
+                handleModal('');
+                window.toast.push({
+                    title: 'Успех!',
+                    content: 'Заявка была обновлена!',
+                    style: 'success',
+                    dismissAfter: '2s'
+                });
             }
-            // close modal
-            updateCountApplication();
-            changeStatusApplication.classList.remove('disabled');
-            datatables.ajax.reload();
-            handleModal('');
-            window.toast.push({
-                title: 'Успех!',
-                content: 'Заявка была обновлена!',
-                style: 'success',
-                dismissAfter: '2s'
-            });
-        })
-        .catch((error) => console.log(error));
+        });
 });
 
 btnDeleteApplication.addEventListener('click', () => {
@@ -126,27 +124,24 @@ btnDeleteApplication.addEventListener('click', () => {
             `/admin/statistics/applications/${idApplication}`, {
                 method: 'DELETE',
                 headers: {
-                    'X-CSRF-TOKEN': csrfToken
+                    'X-CSRF-TOKEN': window._token
                 }
             }
         )
+        .then(spreadResponse)
         .then((response) => {
-            if (response.status == 419 || response.status == 401) {
-                window.location.reload();
-                return;
+            if (checkIsErrorResponse(response)) {
+                updateCountApplication();
+                btnDeleteApplication.classList.remove('disabled');
+                datatables.ajax.reload();
+                handleModal('');
+                window.toast.push({
+                    title: 'Успех!',
+                    content: 'Заявка была удалена!',
+                    style: 'success',
+                });
             }
-            // close modal
-            updateCountApplication();
-            btnDeleteApplication.classList.remove('disabled');
-            datatables.ajax.reload();
-            handleModal('');
-            window.toast.push({
-                title: 'Успех!',
-                content: 'Заявка была удалена!',
-                style: 'success',
-            });
-        })
-        .catch((error) => console.log(error));
+        });
 });
 
 const updateCountApplication = () => {
@@ -157,16 +152,12 @@ const updateCountApplication = () => {
     fetch(
             '/admin/statistics/applications/info'
         )
+        .then(spreadResponse)
         .then((response) => {
-            if (response.status == 419 || response.status == 401) {
-                window.location.reload();
-                return;
+            if (checkIsErrorResponse(response)) {
+                applicationProcessedCount.textContent = response.data.processed;
+                applicationNotProcessedCount.textContent = response.data.notProcessed;
+                applicationNotProcessedCountSideBar.textContent = response.data.notProcessed;
             }
-            return response.json();
-        })
-        .then((response) => {
-            applicationProcessedCount.textContent = response.processed;
-            applicationNotProcessedCount.textContent = response.notProcessed;
-            applicationNotProcessedCountSideBar.textContent = response.notProcessed;
         });
 }

@@ -1,3 +1,5 @@
+import checkIsErrorResponse from "../utils/checkIsErrorResponse";
+import spreadResponse from "../utils/spreadResponse";
 
 window.addEventListener('load', () => {
     window.datatables = LaravelDataTables.dataTableBuilder;
@@ -64,14 +66,10 @@ function addEventClickRowTable() {
 
     function updateVisibleRow(id, type) {
 
-        const csrfToken = document.querySelector('input[name="_token"]').value;
-
         const data = {
             is_show: type === 'visible' ? false : true
         };
-        console.log(data);
 
-        // disabled table
         fetch(
             `/admin/statistics/reviews/${id}`,
             {
@@ -79,19 +77,22 @@ function addEventClickRowTable() {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,
+                    'X-CSRF-TOKEN': window._token,
                 },
                 body: JSON.stringify(data)
             }
         )
+        .then(spreadResponse)
         .then((response) => {
-            window.datatables.ajax.reload();
-            window.toast.push({
-                title: 'Успех!',
-                content: 'Отзыв был обновлен!',
-                style: 'success',
-                dismissAfter: '2s'
-            });
+            if(checkIsErrorResponse(response)) {
+                window.datatables.ajax.reload();
+                window.toast.push({
+                    title: 'Успех!',
+                    content: 'Отзыв был обновлен!',
+                    style: 'success',
+                    dismissAfter: '2s'
+                });
+            }
         });
     }
 
@@ -122,8 +123,6 @@ function addEventClickRowTable() {
         }
 
         const id = document.querySelector('input[name="id-review"]').value;
-        const csrfToken = document.querySelector('input[name="_token"]').value;
-
         const data = getValidatedData();
 
         if (!data) {
@@ -139,26 +138,26 @@ function addEventClickRowTable() {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,
+                    'X-CSRF-TOKEN': window._token,
                 },
                 body: JSON.stringify(data)
             }
         )
+        .then(spreadResponse)
         .then((response) => {
-            if (response.status == 419 || response.status == 401) {
-                window.location.reload();
-                return;
-            }
+            if(checkIsErrorResponse(response)) {
+                changeStateBtn(updateReviewBtn);
+                changeVisibilityModal();
 
-            changeStateBtn(updateReviewBtn);
-            changeVisibilityModal();
-            window.datatables.ajax.reload();
-            window.toast.push({
-                title: 'Успех!',
-                content: 'Отзыв был обновлен!',
-                style: 'success',
-                dismissAfter: '2s'
-            });
+                window.datatables.ajax.reload();
+
+                window.toast.push({
+                    title: 'Успех!',
+                    content: 'Отзыв был обновлен!',
+                    style: 'success',
+                    dismissAfter: '2s'
+                });
+            }
         });
     }
 
@@ -168,7 +167,6 @@ function addEventClickRowTable() {
         }
 
         const id = document.querySelector('input[name="id-review"]').value;
-        const csrfToken = document.querySelector('input[name="_token"]').value;
 
         changeStateBtn(deleteReviewBtn);
 
@@ -177,25 +175,25 @@ function addEventClickRowTable() {
             {
                 method: 'DELETE',
                 headers: {
-                    'X-CSRF-TOKEN': csrfToken,
+                    'X-CSRF-TOKEN': window._token,
                 },
             }
         )
+        .then(spreadResponse)
         .then((response) => {
-            if (response.status == 419 || response.status == 401) {
-                window.location.reload();
-                return;
-            }
+            if (checkIsErrorResponse(response)) {
+                changeStateBtn(deleteReviewBtn);
+                changeVisibilityModal();
 
-            changeStateBtn(deleteReviewBtn);
-            changeVisibilityModal();
-            window.datatables.ajax.reload();
-            window.toast.push({
-                title: 'Успех!',
-                content: 'Отзыв был удален!',
-                style: 'success',
-                dismissAfter: '2s'
-            });
+                window.datatables.ajax.reload();
+
+                window.toast.push({
+                    title: 'Успех!',
+                    content: 'Отзыв был удален!',
+                    style: 'success',
+                    dismissAfter: '2s'
+                });
+            }
         });
     }
 

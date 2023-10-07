@@ -1,27 +1,22 @@
+import spreadResponse from "../utils/spreadResponse";
+import checkIsErrorResponse from "../utils/checkIsErrorResponse";
+
+
 const btnCreate = document.querySelector('#createVariableSetting');
 
 btnCreate.addEventListener('click', () => {
     const inputNameValue = document.querySelector('input[id="name"]').value;
     const inputSlugValue = document.querySelector('input[id="slug"]').value;
     const inputValue = document.querySelector('input[id="value"]').value;
-    const csrfToken = document.querySelector('input[name="_token"]').value;
-
-    // validate data
-
-    console.log({
-        inputNameValue,
-        inputSlugValue,
-        inputValue,
-    });
 
     const changeStateBtn = (btn) => {
         btn.classList.toggle('disabled');
     }
 
-    if (!inputNameValue || !inputSlugValue || !inputValue) {
-        alert('Все поля должны быть заполнены!');
-        return;
-    }
+    // if (!inputNameValue || !inputSlugValue || !inputValue) {
+    //     alert('Все поля должны быть заполнены!');
+    //     return;
+    // }
 
     changeStateBtn(btnCreate);
 
@@ -32,7 +27,7 @@ btnCreate.addEventListener('click', () => {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'X-CSRF-TOKEN': csrfToken,
+                'X-CSRF-TOKEN': window._token,
             },
             body: JSON.stringify({
                 setting_name: inputNameValue,
@@ -41,20 +36,20 @@ btnCreate.addEventListener('click', () => {
             })
         }
     )
-        .then((response) => response.json())
+        .then(spreadResponse)
         .then((response) => {
-            if (response.status == 419 || response.status == 401) {
-                window.location.reload();
-                return;
+            if (checkIsErrorResponse(response)) {
+                window.datatables.ajax.reload();
+                document.querySelector('.modal[data-modal="create-setting"] .close-modal').click();
+                window.toast.push({
+                    title: 'Успех!',
+                    content: 'Переменная была добавлена!',
+                    style: 'success',
+                    dismissAfter: '2s'
+                });
             }
-
-            if ('errors' in response) {
-                alert(response.message);
-            }
-
-            window.datatables.ajax.reload();
-            changeStateBtn(btnCreate);
-        });
+        })
+        .finally(() => changeStateBtn(btnCreate));
 });
 
 window.addEventListener('load', () => {
@@ -90,6 +85,7 @@ function addEventClickRowTable() {
 
             updateModal(setting);
             changeVisibilityModal('update-setting', 'show');
+            document.querySelector('#updateVariableSetting').setAttribute('data-id', settingId);
         }
 
         if (event.target.hasAttribute('data-delete')) {
@@ -110,18 +106,68 @@ function deleteVariableSetting(id) {
         {
             method: 'DELETE',
             headers: {
-                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                'X-CSRF-TOKEN': window._token,
             }
         }
-    ).then((response) => {
-        if (response.status == 419 || response.status == 401) {
-            window.location.reload();
-            return;
+    )
+    .then(spreadResponse)
+    .then((response) => {
+        if(checkIsErrorResponse(response)) {
+            window.datatables.ajax.reload();
+            window.toast.push({
+                title: 'Успех!',
+                content: 'Переменная была удалена!',
+                style: 'success',
+                dismissAfter: '2s'
+            });
         }
-
-        window.datatables.ajax.reload();
     });
 }
+
+document.querySelector('#updateVariableSetting')
+    .addEventListener('click', ({target}) => {
+        if (target.classList.contains('disabled')) {
+            return;
+        }
+        const setting_name = document.querySelector('input[id="var-name-update"]').value;
+        const setting_key = document.querySelector('input[id="var-slug-update"]').value;
+        const setting_value = document.querySelector('input[id="var-value-update"]').value;
+
+        const settngId = target.dataset.id;
+
+        target.classList.add('disabled');
+
+        fetch(
+            `/admin/settings/${settngId}`,
+            {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': window._token,
+                },
+                body: JSON.stringify({
+                    setting_name,
+                    setting_key,
+                    setting_value,
+                })
+            }
+        )
+        .then(spreadResponse)
+        .then((response) => {
+            if(checkIsErrorResponse(response)) {
+                window.datatables.ajax.reload();
+                window.toast.push({
+                    title: 'Успех!',
+                    content: 'Переменная была обновлена!',
+                    style: 'success',
+                    dismissAfter: '2s'
+                });
+                document.querySelector('.modal[data-modal="update-setting"] .close-modal').click();
+            }
+        })
+        .finally(() => target.classList.remove('disabled'));
+    });
 
 class ConvertWordsToTranscription {
     constructor() {

@@ -1,4 +1,5 @@
 import checkIsErrorResponse from "../utils/checkIsErrorResponse";
+import spreadResponse from "../utils/spreadResponse";
 
 const btnUpdateApplications = document.querySelector('.load-applications');
 
@@ -10,14 +11,12 @@ if (btnUpdateApplications) {
         fetch(
             `/admin/statistics/applications/date-limit?min=${startDate}&max=${endDate}`
         )
+            .then(spreadResponse)
             .then((response) => {
                 if (checkIsErrorResponse(response)) {
-                    return response.json();
+                    updateChart(response.data);
                 }
             })
-            .then((response) => {
-                updateChart(response);
-            });
     });
 }
 
@@ -42,17 +41,17 @@ function initChartApplication() {
     fetch(
         `/admin/statistics/applications/date-limit?min=${startDate}&max=${endDate}&is-first-load=true`
     )
+    .then(spreadResponse)
     .then((response) => {
-        if (checkIsErrorResponse(response)) {
-            return response.json();
+        if(!checkIsErrorResponse(response)) {
+            throw new Error('Error in initChartApplication');
         }
-    })
-    .then((response) => {
+
         const data = {
-            labels: response.map(d => d.date),
+            labels: response.data.map(d => d.date),
             datasets: [{
                 label: 'Количество заявок',
-                data: response.map(d => d.count),
+                data: response.data.map(d => d.count),
                 fill: false,
                 borderColor: 'rgb(75, 192, 192)',
                 tension: 0.1
@@ -78,8 +77,7 @@ function initChartApplication() {
         ctxApplication.classList.remove('hidden');
         loader.classList.add('hidden');
 
-    })
-    .catch(() => checkIsErrorResponse({}, true));
+    });
 
 }
 
@@ -94,17 +92,17 @@ function initChartReviews() {
     fetch(
         '/admin/statistics/applications/reviews-info'
     )
+    .then(spreadResponse)
     .then((response) => {
-        if (checkIsErrorResponse(response)) {
-            return response.json();
+        if (!checkIsErrorResponse(response)) {
+            throw new Error('initChartReviews error');
         }
-    })
-    .then((response) => {
+
         const data = {
-            labels: response.map(d => d.rating),
+            labels: response.data.map(d => d.rating),
             datasets: [{
                 label: 'Количество комментариев',
-                data: response.map(d => d.count),
+                data: response.data.map(d => d.count),
                 fill: false,
                 borderColor: 'rgb(75, 192, 192)',
                 tension: 0.1
@@ -130,8 +128,7 @@ function initChartReviews() {
         ctxReviews.classList.remove('hidden');
         loader.classList.add('hidden');
 
-    })
-    .catch(() => checkIsErrorResponse({}, true));;
+    });
 }
 
 initChartApplication();

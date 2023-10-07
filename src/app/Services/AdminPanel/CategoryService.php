@@ -57,7 +57,14 @@ class CategoryService
 
     public function positionRecalculationByCreate(ProductCategory $category, int $position): void
     {
-        $maxPosition = ProductCategory::max('position');
+        $maxPosition = 0;
+        $categoryId = $category->parent_id;
+
+        if ($categoryId ) {
+            $maxPosition = ProductCategory::where('parent_id', $categoryId)->max('position');
+        } else {
+            $maxPosition = ProductCategory::max('position');
+        }
 
         if ($maxPosition == 0) {
             $category->update(['position' => 1]);
@@ -67,10 +74,14 @@ class CategoryService
         $direction = $maxPosition < $position ? 'right' : 'left';
 
         if ($direction == 'right') {
-            ProductCategory::whereBetween('position', [$maxPosition, $position])->decrement('position');
+            ProductCategory::when($categoryId , function($query) use ($categoryId) {
+                $query->where('parent_id', $categoryId);
+            })->whereBetween('position', [$maxPosition, $position])->decrement('position');
             $category->update(['position' => $position]);
         } else {
-            ProductCategory::whereBetween('position', [$position, $maxPosition])->increment('position');
+            ProductCategory::when($categoryId, function($query) use ($categoryId) {
+                $query->where('parent_id', $categoryId);
+            })->whereBetween('position', [$position, $maxPosition])->increment('position');
             $category->update(['position' => $position]);
         }
     }

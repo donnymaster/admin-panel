@@ -1,6 +1,5 @@
-export default ({response}) => {
-
-    if (!Object.hasOwn(response, 'redirected')) {
+export default function ifRedirect({response}) {
+    if (!response.redirected) {
         return true;
     }
 

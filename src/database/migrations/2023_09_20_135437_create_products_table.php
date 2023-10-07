@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('page_title');
             $table->string('vendor_code');
             $table->unsignedBigInteger('category_id');
+            $table->integer('position_in_category')->default(0);
             $table->boolean('visible')->nullable();
             $table->string('name_tile')->nullable();
             $table->string('keywords')->nullable();

@@ -53,11 +53,12 @@ class ProductController extends Controller
         return view('admin-panel.products.product', compact('product', 'properties'));
     }
 
-    public function store(Request $request)
+    public function store(CreateProductRequest $request)
     {
         $product = $this->productService
             ->create($request)
             ->createStatusProduct($request)
+            ->updatePositionProduct(1)
             ->getProduct();
 
         if ($request->has('visible')) {

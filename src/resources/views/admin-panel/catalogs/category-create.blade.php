@@ -43,7 +43,7 @@
                     Позиция
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
-                <input value="{{old('position')}}" id="position" name="position" type="number" class="input" min="{{$minPosition}}" max="{{++$maxPosition}}">
+                <input value="{{old('position') ? old('position') : 1}}" id="position" name="position" type="number" class="input" min="{{$minPosition}}" max="{{++$maxPosition}}">
             </div>
         </div>
         <div class="columns-2">

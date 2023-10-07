@@ -28,9 +28,9 @@ class ProductCategoryPropertiesDataTable extends DataTable
                         data-id=\"{$property->id}\"
                         data-name=\"{$property->name}\"
                         data-description=\"{$property->description}\"
-                        class=\" mr-2 btn edit-property\"
+                        class=\" mr-2 btn edit\"
                         ></div>
-                    <div data-id=\"{$property->id}\" class=\"btn delete-property bg-red\"></div>
+                    <div data-id=\"{$property->id}\" class=\"btn delete bg-red\"></div>
                 </div>
                 ";
             })

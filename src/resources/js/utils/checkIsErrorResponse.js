@@ -5,7 +5,7 @@ import clientError from "./middleware/handlers/clientError";
 import serverError from "./middleware/handlers/serverError";
 
 export default function checkIsErrorResponse(response) {
-    const pipeline = new SimplePipeline(
+    const pipeline = (new SimplePipeline(
         [
             redirect,
             redirectToLogin,
@@ -13,7 +13,7 @@ export default function checkIsErrorResponse(response) {
             serverError,
         ],
         response
-    );
+    )).enableLog();
 
     return pipeline.execute();
 }

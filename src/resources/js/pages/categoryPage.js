@@ -1,4 +1,6 @@
 import Sortable from 'sortablejs';
+import spreadResponse from '../utils/spreadResponse';
+import checkIsErrorResponse from '../utils/checkIsErrorResponse';
 
 class TreeList {
     constructor() {
@@ -12,9 +14,11 @@ class TreeList {
         fetch(
             '/admin/catalog/categories/list'
         )
-            .then(response => response.json())
+            .then(spreadResponse)
             .then((response) => {
-                this._render(response);
+                if (checkIsErrorResponse(response)) {
+                    this._render(response.data);
+                }
             });
     }
 
@@ -99,10 +103,12 @@ class TreeList {
         fetch(
             `/admin/catalog/categories/${categoryId}/products`
         )
-        .then(response => response.json())
+        .then(spreadResponse)
         .then((response) => {
-            this._changeStateLoadProducts(btnElement);
-            // this._renderProducts(response, btnElement);
+            if(checkIsErrorResponse(response)) {
+                this._changeStateLoadProducts(btnElement);
+                // this._renderProducts(response, btnElement);
+            }
         });
         // вывести количество продуктов всего
         // обновить кнопки для пагинации

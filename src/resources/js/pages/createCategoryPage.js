@@ -122,7 +122,6 @@ class HandlerCategoryProperty {
 
         btn.removeEventListener('click', handler);
 
-        // update data-number in elements
         this.containerElement.querySelectorAll('.category-property').forEach((val, key) => {
             val.setAttribute('data-number', ++key);
         });

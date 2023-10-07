@@ -122,7 +122,7 @@
                 @endif
             </div>
         </div>
-        <div class="columns-2 mb-9">
+        <div class="columns-3 mb-9">
             <div class="input-group">
                 <label for="name_tile" class="label">
                     Название на плитку
@@ -144,6 +144,13 @@
                 @else
                     <input  id="vendor_code" name="vendor_code" type="text" class="input" value="{{old('vendor_code')}}">
                 @endif
+            </div>
+            <div class="input-group">
+                <label for="position_in_category" class="label">
+                    Позиция
+                    <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
+                </label>
+                <input id="position_in_category" value="1" name="position_in_category" type="number" class="input">
             </div>
         </div>
 

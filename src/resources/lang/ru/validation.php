@@ -170,5 +170,9 @@ return [
         'product-unique-property.*.name' => 'Название уникального свойства',
         'product-unique-property.*.value' => 'Свойство уникального свойства',
         'position'              => 'Позиция',
+        'role_id'               => 'Роль',
+        'setting_name'          => 'Название',
+        'setting_key'           => 'Slug',
+        'setting_value'         => 'Значение',
     ],
 ];

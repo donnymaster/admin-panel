@@ -18,35 +18,33 @@ document.querySelectorAll('.image-create-page').forEach((imageSelector) => {
 
 import 'laravel-datatables-vite';
 
-// dark mode
-const initTheme = (newState = 'dark') => {
+function initTheme() {
+    const theme = localStorage.getItem('theme');
 
-    let state = localStorage.getItem('theme');
-
-    if (!state) {
-        state = newState ? newState : 'light';
-    } else {
-        state = state === 'dark' ? 'light' : 'dark';
-    }
-
-    if (state === 'dark') {
-        localStorage.setItem('theme', 'dark');
-        document.documentElement.classList.add('dark');
-    } else {
-        localStorage.setItem('theme', 'light');
-        document.documentElement.classList.remove('dark');
+    if (theme) {
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
     }
 }
 
-initTheme('dark');
+initTheme();
 
 const switchThemeModeBtn = document.querySelector('.admin-site-theme');
 
 if (switchThemeModeBtn) {
     switchThemeModeBtn.addEventListener('click', () => {
-        let state = localStorage.getItem('theme');
+        const currentState = localStorage.getItem('theme');
 
-        state === 'dark' ? initTheme('light') : initTheme();
+        if (currentState === 'dark') {
+            localStorage.setItem('theme', 'light');
+            document.documentElement.classList.remove('dark');
+        } else {
+            localStorage.setItem('theme', 'dark');
+            document.documentElement.classList.add('dark');
+        }
     });
 }
 

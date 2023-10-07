@@ -66,6 +66,12 @@ export default class ModalHandler {
         this.modalOverlay.classList.toggle(this._CLASS_HIDDEN);
         this.modalContainer.classList.toggle(this._CLASS_HIDDEN);
         this.modalContainer.classList.remove('flex');
+
+        const temporaryWindow = document.querySelector('.temporary-window');
+
+        if(temporaryWindow) {
+            temporaryWindow.removeTemporaryWindow();
+        }
     }
 
     // show modal
