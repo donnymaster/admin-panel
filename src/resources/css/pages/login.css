@@ -1,15 +1,50 @@
+.form-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @apply bg-primary-color-light dark:bg-primary-dark;
+
+    height: 100vh;
+
+    @media (max-height: 450px) {
+        & {
+            height: auto;
+        }
+    }
+}
+
 .login-form {
     width: 400px;
-    @apply
-        rounded-3xl
-        bg-white
-        p-6;
+    border-radius: 1.5rem;
+    background-color: white;
+    @apply dark:bg-second-dark;
+    padding: 1.5rem;
 
     & .input-group label.label {
         @apply text-black;
+        @apply dark:text-white;
     }
 
     & .input {
-        @apply border-theme-blue border;
+        border: 1px solid;
+        @apply border-primary-color;
+        @apply dark:bg-third-dark border-primary-color-light text-white;
+    }
+
+    & .checkbox label {
+        @apply dark:text-white;
+    }
+
+    @media (max-height: 450px) {
+        & {
+            margin: 25px 10px;
+        }
+    }
+}
+
+@media (max-width: 400px) {
+    .login-form {
+        width: 300px;
+        margin: 25px 10px;
     }
 }
