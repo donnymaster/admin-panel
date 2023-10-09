@@ -30,4 +30,14 @@ class ProductVariant extends Model
     {
         return $this->morphMany(PropertyValue::class, 'property_value');
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(ProductReview::class, 'product_variant_id');
+    }
+
+    public function promocodes()
+    {
+        return $this->hasMany(Promocode::class, 'product_variant_id');
+    }
 }

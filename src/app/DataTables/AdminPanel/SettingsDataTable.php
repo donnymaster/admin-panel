@@ -34,7 +34,7 @@ class SettingsDataTable extends DataTable
                 return "
                 <div class=\"flex\">
                     <div data-id=\"{$setting->id}\" class=\" mr-2 btn edit modal-btn\" data-update=\"update\"></div>
-                    <div data-id=\"{$setting->id}\" class=\"btn delete bg-red\" data-delete=\"delete\">
+                    <div data-id=\"{$setting->id}\" class=\"btn delete bg-red\" data-delete=\"delete\"></div>
                 </div>
                 ";
             });

@@ -13,7 +13,8 @@ export default function checkIsErrorResponse(response) {
             serverError,
         ],
         response
-    )).enableLog();
+    ));
+    // .enableLog();
 
     return pipeline.execute();
 }

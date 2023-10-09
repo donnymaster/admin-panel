@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminPanel\CategoryController;
 use App\Http\Controllers\AdminPanel\DataExchangeController;
 use App\Http\Controllers\AdminPanel\OrderController;
 use App\Http\Controllers\AdminPanel\PagesController;
+use App\Http\Controllers\AdminPanel\ProductReviewController;
 use App\Http\Controllers\AdminPanel\PromocodeController;
 use App\Http\Controllers\AdminPanel\ReviewController;
 use App\Http\Controllers\AdminPanel\SettingSiteController;
@@ -73,6 +74,11 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
     Route::get('/pages/{pageId}', [PagesController::class, 'index'])->name('page');
 
     Route::prefix('/catalog')->group(function() {
+        Route::get('/promocodes', [PromocodeController::class, 'index'])->name('promocode.index');
+        Route::post('/promocodes', [PromocodeController::class, 'store'])->name('promocode.store');
+        Route::delete('/promocodes/{promocode}', [PromocodeController::class, 'delete'])->name('promocode.delete');
+        Route::patch('/promocodes/{promocode}', [PromocodeController::class, 'update'])->name('promocode.update');
+
         Route::get('/categories', [CategoryController::class, 'index'])->name('catalog.categories.show');
         Route::get('/categories/new', [CategoryController::class, 'create'])->name('catalog.categories.new');
         Route::post('/categories/new', [CategoryController::class, 'store'])->name('catalog.categories.store');
@@ -94,15 +100,15 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
         Route::post('/products', [ProductController::class, 'store'])->where('id', '[0-9]+')->name('products.store');
         Route::get('/products/{product}', [ProductController::class, 'show'])->where('id', '[0-9]+')->name('products.show');
 
+        Route::get('/product-reviews', [ProductReviewController::class, 'index'])->name('product-reviews.index');
+        Route::patch('/product-reviews/{review}', [ProductReviewController::class, 'update'])->name('product-reviews.update');
+        Route::delete('/product-reviews/{review}', [ProductReviewController::class, 'delete'])->name('product-reviews.delete');
+
+
         Route::prefix('/{catalogId}')->group(function() {
             Route::get('/', [CatalogController::class, 'show'])->where('id', '[0-9]+')->name('catalog');
             Route::get('/product/{productId}', [ProductController::class, 'index'])->where('id', '[0-9]+')->name('product');
         });
-
-    });
-
-    Route::prefix('/promocode')->group(function() {
-        Route::get('/', [PromocodeController::class, 'index'])->name('promocode');
     });
 
     Route::get('/data-exchange', [DataExchangeController::class, 'index'])->name('data-exchange');
