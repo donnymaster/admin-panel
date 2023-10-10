@@ -3,14 +3,20 @@
 namespace App\Http\Controllers\AdminPanel\Catalog;
 
 use App\DataTables\AdminPanel\ProductsDataTable;
+use App\DataTables\AdminPanel\ProductUniquePropertyDataTable;
+use App\DataTables\AdminPanel\ProductVariantsDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminPanel\CreateProductRequest;
+use App\Http\Requests\AdminPanel\CreateProductUniquePropertyRequest;
+use App\Http\Requests\AdminPanel\UpdateProductUniquePropertyRequest;
 use App\Models\AdminPanel\Product;
 use App\Models\AdminPanel\ProductCategory;
-use App\Models\AdminPanel\ProductCategoryProperty;
+use App\Models\AdminPanel\ProductUniqueValue;
 use App\Models\AdminPanel\ProductVariant;
 use App\Services\AdminPanel\ProductService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -46,12 +52,31 @@ class ProductController extends Controller
         return view('admin-panel.products.create', compact('categories', 'categories', 'parent', 'category'));
     }
 
-    public function show(Request $request, $id)
-    {
+    public function show(
+        Request $request,
+        $id,
+        ProductVariantsDataTable $productVariantsDataTable,
+        ProductUniquePropertyDataTable $productUniquePropertyDataTable
+    ) {
         $product = Product::where('id', $id)->with(['category'])->firstOrFail();
-        $properties = ProductCategoryProperty::where('product_category_id', $product->category_id)->get();
 
-        return view('admin-panel.products.product', compact('product', 'properties'));
+        if ($request->get('table') == 'variants') {
+            return $productVariantsDataTable->setProduct($product)->render('admin-panel.products.product');
+        }
+
+        if ($request->get('table') == 'unique') {
+            return $productUniquePropertyDataTable->setProduct($product)->render('admin-panel.products.product');
+        }
+
+
+        return view(
+            'admin-panel.products.product',
+            [
+                'product' => $product,
+                'variantsTable' => $productVariantsDataTable->setProduct($product)->html()->ajax('?table=variants'),
+                'productUniquePropertyTable' => $productUniquePropertyDataTable->setProduct($product)->html()->ajax('?table=unique')
+            ]
+        );
     }
 
     public function store(CreateProductRequest $request)
@@ -59,12 +84,12 @@ class ProductController extends Controller
         $product = $this->productService
             ->create($request)
             ->createStatusProduct($request)
-            ->updatePositionProduct(1)
+            ->updatePositionProduct($request->get('position_in_category'))
+            ->createUnuqieProperty($request)
             ->getProduct();
 
         if ($request->has('visible')) {
             $this->productService->setVisibleProduct(true);
-
         } else {
             $this->productService->setVisibleProduct(false);
         }
@@ -74,14 +99,67 @@ class ProductController extends Controller
 
     public function productVariants(Request $request)
     {
-        $limit = $request->get('search', 10);
+        $limit = $request->get('limit', 10);
 
         $search = $request->get('search');
 
-        $variants = ProductVariant::when($search, function ($query) use ($search) {
+        $variants = ProductVariant::select('id', 'page_title')->limit($limit)->when($search, function ($query) use ($search) {
             $query->where('page_title', 'like', "%$search%");
-        })->offset(0)->limit($limit)->get();
+        })->get();
 
         return response($variants);
+    }
+
+    public function createUniqueProperty(CreateProductUniquePropertyRequest $request, $id)
+    {
+        ProductUniqueValue::create(
+            array_merge(
+                $request->safe()->toArray(),
+                [
+                    'unique_slug' => Str::slug($request->get('unique_name')),
+                    'product_id' => $id,
+                ],
+            )
+        );
+
+        return [
+            'message' => 'Уникальное свовойство было добавлено!'
+        ];
+
+    }
+
+    public function deleteUniqueProperty($id, ProductUniqueValue $property)
+    {
+        $property->delete();
+
+        return [
+            'message' => 'Уникальное свойство было удалено!'
+        ];
+    }
+
+    public function updateUniqueProperty(UpdateProductUniquePropertyRequest $request, $id, ProductUniqueValue $property)
+    {
+        $property->update($request->except(['unique_name']));
+        $name = $request->get('unique_name');
+
+        if ($name) {
+            $searchProperty = ProductUniqueValue::where('unique_name', $name)->first();
+
+            if ($searchProperty) {
+                if ($searchProperty->id != $property->id) {
+                    return response([
+                        'message' => 'Имя должно быть уникальным!'
+                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                }
+            }
+
+            $property->update(['unique_slug' => Str::slug($name)]);
+        }
+
+
+
+        return [
+            'message' => 'Уникальное свойство было обновлено!'
+        ];
     }
 }

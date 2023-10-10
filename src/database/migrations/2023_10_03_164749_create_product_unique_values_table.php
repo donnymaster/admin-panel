@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('product_id');
             $table->string('unique_name');
+            $table->string('unique_slug');
             $table->string('unique_value');
             $table->timestamps();
 

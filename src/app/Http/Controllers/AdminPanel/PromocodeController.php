@@ -28,13 +28,13 @@ class PromocodeController extends Controller
 
     public function delete(Promocode $promocode)
     {
-        $countRelation = Promocode::where('id', $promocode->id)->withCount('productVariant')->first();
+        // $countRelation = Promocode::where('id', $promocode->id)->withCount('productVariant')->first();
 
-        if ($countRelation->product_variant_count > 0) {
-            return response([
-                'message' => 'Невозможно удалить промокод, потому что он используется товаром',
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
+        // if ($countRelation->product_variant_count > 0) {
+        //     return response([
+        //         'message' => 'Невозможно удалить промокод, потому что он используется товаром',
+        //     ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        // }
 
         $promocode->delete();
 
@@ -45,7 +45,26 @@ class PromocodeController extends Controller
 
     public function update(UpdatePromocodeRequest $request, Promocode $promocode)
     {
-        $promocode->update($request->safe()->toArray());
+        $codeRequest = $request->get('code');
+
+        if ($codeRequest) {
+            $resultSearch = Promocode::where('code', $codeRequest)->first();
+
+            if ($resultSearch) {
+                if ($promocode->id != $resultSearch->id) {
+                    return response([
+                        'message' => 'Такой код уже существует!',
+                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                }
+            }
+        }
+
+        $promocode->update(
+            array_merge(
+                $request->safe()->toArray(),
+                ['product_variant_id' => $request->get('product_variant_id')]
+            )
+        );
 
         return [
             'message' => 'Промокод был обновлен',

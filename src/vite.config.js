@@ -19,6 +19,7 @@ export default defineConfig({
                 'resources/js/pages/usersPage.js',
                 'resources/js/pages/productReviewPage.js',
                 'resources/js/pages/promocodePage.js',
+                'resources/js/pages/productPage.js'
             ],
             refresh: true,
         }),

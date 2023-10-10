@@ -4,7 +4,7 @@ namespace App\Http\Requests\AdminPanel;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdatePromocodeRequest extends FormRequest
+class UpdateProductUniquePropertyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,17 +22,8 @@ class UpdatePromocodeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|required|max:255',
-            'status' => 'sometimes|required|boolean',
-            'quantity' => 'sometimes|required|numeric',
-            'percentages' => 'sometimes|required|numeric',
+            'unique_name' => 'sometimes|required|min:1|max:255',
+            'unique_value' => 'sometimes|required|min:1|max:255',
         ];
-    }
-
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'status' => (boolean) $this->status,
-        ]);
     }
 }

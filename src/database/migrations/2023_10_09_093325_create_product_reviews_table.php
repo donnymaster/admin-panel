@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedTinyInteger('rating');
             $table->text('client_review');
             $table->string('client_name');
+            $table->integer('position');
             $table->boolean('visible')->default(false);
 
             $table->timestamps();

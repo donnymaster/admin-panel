@@ -20,6 +20,7 @@
     {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
 
     <div style="display: none;" class="btn bg-green mr-2 modal-btn" data-modal="show-review"></div>
+    <div style="display: none;" class="btn bg-green mr-2 modal-btn" data-modal="update-review"></div>
 @endsection
 
 
@@ -51,6 +52,29 @@
                 </div>
                 <div class="description-title">Комментарий</div>
                 <div class="description"></div>
+            </div>
+        </div>
+
+        <div class="modal hidden" data-modal="update-review">
+            <div class="modal-header mb-5 text-2xl">
+                <div class="title text-1xl"></div>
+                <div class="close-modal">
+                    ✖
+                </div>
+            </div>
+            <div class="modal-content scrollbar">
+                <div class="input-group mb-2">
+                    <label for="review-position" class="label black pb-1">
+                        Позиция
+                    </label>
+                    <input id="review-position" type="text" class="input border border-theme-blue border-solid">
+                </div>
+            </div>
+            <div class="modal-footer flex justify-end">
+                <div class="btn bg-green mr-2" id="updateProductReview">
+                    <span class="loader dark"></span>
+                    Обновить
+                </div>
             </div>
         </div>
     </div>

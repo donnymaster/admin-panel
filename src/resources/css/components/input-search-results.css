@@ -1,0 +1,33 @@
+
+.input-search-results {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    border-radius: 25px;
+    border: 1px solid;
+    position: absolute;
+    bottom: 70px;
+    width: 100%;
+    background-color: white;
+    display: none;
+
+    & .search-element {
+        cursor: pointer;
+        margin-bottom: 10px;
+        position: relative;
+        padding-left: 10px;
+        &:last-child {
+            margin-bottom: 0;
+        }
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 5px;
+            height: 5px;
+            @apply bg-primary-color;
+            border-radius: 25px;
+        }
+    }
+}

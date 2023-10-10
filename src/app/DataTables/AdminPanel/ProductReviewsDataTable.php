@@ -36,7 +36,8 @@ class ProductReviewsDataTable extends DataTable
                 return "
                     <div class=\"flex\">
                         <div data-id=\"{$review->id}\" class=\"btn show mr-2\"></div>
-                        <div data-id=\"{$review->id}\" class=\"btn delete bg-red\"></div>
+                        <div data-id=\"{$review->id}\" class=\"btn delete bg-red mr-2\"></div>
+                        <div data-id=\"{$review->id}\" class=\"btn edit bg-green\"></div>
                     </div>
                 ";
             })
@@ -94,9 +95,10 @@ class ProductReviewsDataTable extends DataTable
     {
         return [
             Column::make('id'),
-            Column::make('name_variant')->title('Название'),
+            Column::make('name_variant')->title('Товар'),
             Column::make('rating')->title('Балы'),
             Column::make('client_name')->title('Клиент'),
+            Column::make('position')->title('Позиция'),
             Column::computed('visible')
             ->exportable(false)
             ->printable(false)

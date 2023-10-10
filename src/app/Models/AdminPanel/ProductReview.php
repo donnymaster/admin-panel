@@ -15,6 +15,7 @@ class ProductReview extends Model
         'client_review',
         'client_name',
         'visible',
+        'position',
     ];
 
     protected $casts = [

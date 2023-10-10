@@ -118,7 +118,6 @@
 
 @section('scripts')
     @vite(['resources/js/pages/updateCategoryProduct.js'])
-
     <x-admin.tinymce.script />
 @endsection
 

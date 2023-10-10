@@ -5,6 +5,7 @@ namespace App\Services\AdminPanel;
 use App\Models\AdminPanel\Product;
 use App\Models\AdminPanel\ProductUniqueValue;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProductService
 {
@@ -101,7 +102,8 @@ class ProductService
         if (isset($data['product-type-new'])) {
             ProductUniqueValue::create([
                 'product_id' => $currentProduct->id,
-                'unique_name' => self::STATUS_PRODUCT_NEW,
+                'unique_name' => 'новый',
+                'unique_slug' => self::STATUS_PRODUCT_NEW,
                 'unique_value' => true,
             ]);
         }
@@ -109,7 +111,8 @@ class ProductService
         if (isset($data['product-type-top-sellers'])) {
             ProductUniqueValue::create([
                 'product_id' => $currentProduct->id,
-                'unique_name' => self::STATUS_PRODUCT_TOP_SELLERS,
+                'unique_name' => 'топ продаж',
+                'unique_slug' => self::STATUS_PRODUCT_TOP_SELLERS,
                 'unique_value' => true,
             ]);
         }
@@ -117,9 +120,28 @@ class ProductService
         if (isset($data['product-type-popular'])) {
             ProductUniqueValue::create([
                 'product_id' => $currentProduct->id,
-                'unique_name' => self::STATUS_PRODUCT_POPULAR,
+                'unique_name' => 'популярный',
+                'unique_slug' => self::STATUS_PRODUCT_POPULAR,
                 'unique_value' => true,
             ]);
+        }
+
+        return $this;
+    }
+
+    public function createUnuqieProperty(Request $request)
+    {
+        $properties = $request->get('product-unique-property');
+
+        if ($properties) {
+            foreach ($properties as $propertry) {
+                ProductUniqueValue::create([
+                    'product_id' => $this->product->id,
+                    'unique_name' => $propertry['name'],
+                    'unique_slug' => Str::slug($propertry['name']),
+                    'unique_value' => $propertry['value'],
+                ]);
+            }
         }
 
         return $this;

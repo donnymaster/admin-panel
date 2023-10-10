@@ -61,6 +61,13 @@ class ProductsDataTable extends DataTable
 
                 return "<div data-id=\"{$product->id}\" class=\"not-visible\"></div>";
             })
+            ->addColumn('action', function ($product) {
+                return "
+                <div class=\"flex\">
+                    <div data-id=\"{$product->id}\" class=\"btn delete bg-red mr-2\"></div>
+                </div>
+                ";
+            })
             ->setRowId('id');
     }
 
@@ -112,6 +119,10 @@ class ProductsDataTable extends DataTable
             Column::computed('visible')->title('Статус'),
             Column::make('copy')->title('Копировать'),
             Column::make('created_at')->title('Добавлен'),
+            Column::computed('action')
+            ->exportable(false)
+            ->printable(false)
+            ->title('Действие'),
         ];
     }
 

@@ -220,11 +220,6 @@
                     <option selected value="{{$category->id}}">{{$category->name}}</option>
                 @endif
                 @foreach ($categories as $item)
-                    {{-- @if ($category)
-                        @if ($category->id == $item->id)
-                            @continue
-                        @endif
-                    @endif --}}
                     <option value="{{$item->id}}">{{$item->name}}</option>
                 @endforeach
             </select>
@@ -232,23 +227,23 @@
             </div>
         </div>
 
-        <div class="columns-1 flex items-center justify-between mb-9 divide-x pb-2 text-white text-1xl border-b-2 border-b-white">
+        <div style="display: none" class="columns-1 flex items-center justify-between mb-9 divide-x pb-2 text-white text-1xl border-b-2 border-b-white">
             <span>Список уникальных свойст</span>
             <span class="border-none text-3xl cursor-pointer">+</span>
         </div>
 
-        <div class="main-container">
+        <div style="display: none" class="main-container">
             <div class="container-category-property">
 
             </div>
         </div>
 
-        <div class="columns-1 flex justify-between mb-9 divide-x pb-2 text-white text-2xl border-b-2 border-b-white">
+        {{-- <div class="columns-1 flex justify-between mb-9 divide-x pb-2 text-white text-2xl border-b-2 border-b-white">
             <span>Вариации товара (<span class="variant-product-count">0</span>)</span>
             <div class="btn add-variant-product small-btn border-none">Добавить</div>
         </div>
         <div class="container-variant-products">
-        </div>
+        </div> --}}
     </form>
 @endsection
 

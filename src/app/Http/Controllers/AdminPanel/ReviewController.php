@@ -11,7 +11,10 @@ class ReviewController extends Controller
 {
     public function index(ReviewsDataTable $reviewsDataTable)
     {
+
+        // $reviewsDataTable->html();
         return $reviewsDataTable->render('admin-panel.reviews.index');
+
     }
 
     public function store(UpdateReviewRequest $request, Review $review)

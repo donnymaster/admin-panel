@@ -12,6 +12,7 @@ class ProductUniqueValue extends Model
     protected $fillable = [
         'product_id',
         'unique_name',
+        'unique_slug',
         'unique_value',
     ];
 

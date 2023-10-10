@@ -101,6 +101,10 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
         Route::get('/products/{product}', [ProductController::class, 'show'])->where('id', '[0-9]+')->name('products.show');
         Route::get('/product-variants', [ProductController::class, 'productVariants'])->name('product-variants');
 
+        Route::post('/products/{product}/unique-properties', [ProductController::class, 'createUniqueProperty'])->name('products.unique-property.create');
+        Route::delete('/products/{product}/unique-properties/{property}', [ProductController::class, 'deleteUniqueProperty'])->name('products.unique-property.delete');
+        Route::patch('/products/{product}/unique-properties/{property}', [ProductController::class, 'updateUniqueProperty'])->name('products.unique-property.update');
+
         Route::get('/product-reviews', [ProductReviewController::class, 'index'])->name('product-reviews.index');
         Route::patch('/product-reviews/{review}', [ProductReviewController::class, 'update'])->name('product-reviews.update');
         Route::delete('/product-reviews/{review}', [ProductReviewController::class, 'delete'])->name('product-reviews.delete');
