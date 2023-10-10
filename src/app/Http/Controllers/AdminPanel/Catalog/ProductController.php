@@ -8,6 +8,7 @@ use App\Http\Requests\AdminPanel\CreateProductRequest;
 use App\Models\AdminPanel\Product;
 use App\Models\AdminPanel\ProductCategory;
 use App\Models\AdminPanel\ProductCategoryProperty;
+use App\Models\AdminPanel\ProductVariant;
 use App\Services\AdminPanel\ProductService;
 use Illuminate\Http\Request;
 
@@ -69,5 +70,18 @@ class ProductController extends Controller
         }
 
         return redirect()->route('admin.products');
+    }
+
+    public function productVariants(Request $request)
+    {
+        $limit = $request->get('search', 10);
+
+        $search = $request->get('search');
+
+        $variants = ProductVariant::when($search, function ($query) use ($search) {
+            $query->where('page_title', 'like', "%$search%");
+        })->offset(0)->limit($limit)->get();
+
+        return response($variants);
     }
 }

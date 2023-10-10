@@ -99,6 +99,7 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
         Route::get('/products/create', [ProductController::class, 'create'])->where('id', '[0-9]+')->name('products.create');
         Route::post('/products', [ProductController::class, 'store'])->where('id', '[0-9]+')->name('products.store');
         Route::get('/products/{product}', [ProductController::class, 'show'])->where('id', '[0-9]+')->name('products.show');
+        Route::get('/product-variants', [ProductController::class, 'productVariants'])->name('product-variants');
 
         Route::get('/product-reviews', [ProductReviewController::class, 'index'])->name('product-reviews.index');
         Route::patch('/product-reviews/{review}', [ProductReviewController::class, 'update'])->name('product-reviews.update');

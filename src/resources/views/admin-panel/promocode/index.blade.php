@@ -101,7 +101,7 @@
                     </label>
                     <input id="percentages" type="text" class="input border border-theme-blue border-solid">
                 </div>
-                <div class="input-group mb-2">
+                <div class="input-group mb-2 input-search-parent relative">
                     <label for="product" class="label black pb-1">
                         Продукт
                     </label>

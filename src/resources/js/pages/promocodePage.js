@@ -318,23 +318,42 @@ class SearchEngineInput {
     constructor(
         url,
         inputSearchSelector,
-        inputNewName
+        inputNewName,
+        parentlementSelector,
     ) {
         this.url = url;
         this.inputSearch = document.querySelector(inputSearchSelector);
         this.inputNewName = inputNewName;
+        this.parent = document.querySelector(parentlementSelector);
+        this.limit = 10;
 
         this.init();
     }
 
     init() {
-        console.log(this.inputSearch);
-        const wrap = (e) => this.debounce(() => console.log(1), 500);
-        this.inputSearch.addEventListener('input', wrap.bind(this));
+        this.inputSearch.addEventListener('input', this.debounce(this.search.bind(this), 500));
+        this.parent.insertAdjacentHTML('beforeend', `
+            <input hidden name="${this.inputNewName}"/>
+        `);
+
+        this.parent.insertAdjacentHTML("afterbegin", `
+            <div class="input-search-results"></div>
+        `);
+
+        this.resultContainer = this.parent.querySelector('.input-search-results');
     }
 
     search({target}) {
-        console.log(target.value, this);
+
+        fetch(
+            ``,
+        )
+        .then(spreadResponse)
+        .then((response) => {
+            if (checkIsErrorResponse(response)) {
+
+            }
+        })
     }
 
     debounce(func, timeout = 300) {
@@ -347,4 +366,4 @@ class SearchEngineInput {
 
 }
 
-new SearchEngineInput('/', '.modal[data-modal="create-promocode"] input[id="product"]', '');
+new SearchEngineInput('/', '.modal[data-modal="create-promocode"] input[id="product"]', 'parent_id', '.input-search-parent');
