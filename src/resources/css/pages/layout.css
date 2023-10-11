@@ -34,6 +34,7 @@ body {
                 @apply bg-theme-blue text-white rounded-t-xl dark:bg-second-dark;
                 position: relative;
 
+
                 &::after,
                 &::before {
                     content: "";
@@ -44,7 +45,15 @@ body {
                     right: -19px;
                     transform: rotate(180deg);
                     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='19' height='19' viewBox='0 0 19 19' fill='none'%3E%3Cpath d='M0.962986 0C15.3926 0 19 12.6667 19 19L19 0L0.962986 0Z' fill='%239900FF'/%3E%3C/svg%3E");
+                }
 
+
+
+                :is(.dark &) {
+                    &::after,
+                    &::before {
+                        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='19' height='19' viewBox='0 0 19 19' fill='none'%3E%3Cpath d='M0.962986 0C15.3926 0 19 12.6667 19 19L19 0L0.962986 0Z' fill='%23152a3d'/%3E%3C/svg%3E");
+                    }
                 }
 
                 &::before {
