@@ -6,9 +6,11 @@ use App\Http\Controllers\AdminPanel\Catalog\CatalogController;
 use App\Http\Controllers\AdminPanel\Catalog\ProductController;
 use App\Http\Controllers\AdminPanel\CategoryController;
 use App\Http\Controllers\AdminPanel\DataExchangeController;
+use App\Http\Controllers\AdminPanel\ImageProcessingController;
 use App\Http\Controllers\AdminPanel\OrderController;
 use App\Http\Controllers\AdminPanel\PagesController;
 use App\Http\Controllers\AdminPanel\ProductReviewController;
+use App\Http\Controllers\AdminPanel\ProductVariantController;
 use App\Http\Controllers\AdminPanel\PromocodeController;
 use App\Http\Controllers\AdminPanel\ReviewController;
 use App\Http\Controllers\AdminPanel\SettingSiteController;
@@ -58,6 +60,8 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
         Route::delete('/applications/{application}', [ApplicationController::class, 'remove'])->name('applications.remove')->where('application', '[0-9]+');
 
         Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+        Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+        Route::patch('/orders/change-status', [OrderController::class, 'changeStatus'])->name('orders.change-status');
 
         Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews');
         Route::patch('/reviews/{review}', [ReviewController::class, 'store'])->name('reviews.store')->where('review', '[0-9]+');
@@ -105,6 +109,9 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
         Route::delete('/products/{product}/unique-properties/{property}', [ProductController::class, 'deleteUniqueProperty'])->name('products.unique-property.delete');
         Route::patch('/products/{product}/unique-properties/{property}', [ProductController::class, 'updateUniqueProperty'])->name('products.unique-property.update');
 
+        Route::get('/products/{product}/variants', [ProductVariantController::class, 'create'])->name('products.variants.create');
+
+
         Route::get('/product-reviews', [ProductReviewController::class, 'index'])->name('product-reviews.index');
         Route::patch('/product-reviews/{review}', [ProductReviewController::class, 'update'])->name('product-reviews.update');
         Route::delete('/product-reviews/{review}', [ProductReviewController::class, 'delete'])->name('product-reviews.delete');
@@ -115,6 +122,8 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
             Route::get('/product/{productId}', [ProductController::class, 'index'])->where('id', '[0-9]+')->name('product');
         });
     });
+
+    Route::post('/image/save', [ImageProcessingController::class, 'save'])->name('image.save');
 
     Route::get('/data-exchange', [DataExchangeController::class, 'index'])->name('data-exchange');
     // other statistic pages

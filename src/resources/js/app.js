@@ -18,6 +18,13 @@ document.querySelectorAll('.image-create-page').forEach((imageSelector) => {
 
 import 'laravel-datatables-vite';
 
+// import Editor from "datatables.net-editor";
+// import Editor from "datatables.net-editor-bs5";
+
+// $.fn.dataTable.Editor = Editor;
+
+// Editor(window, $);
+
 function initTheme() {
     const theme = localStorage.getItem('theme');
 

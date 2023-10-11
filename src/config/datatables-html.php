@@ -24,4 +24,6 @@ return [
      * Html builder script template for DataTables Editor integration.
      */
     'editor' => 'datatables::editor',
+
+    'rowReorder' => true,
 ];

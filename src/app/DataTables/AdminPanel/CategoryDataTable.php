@@ -7,10 +7,14 @@ use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Column;
+use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Services\DataTable;
+use Yajra\DataTables\Html\Editor\Fields;
 
 class CategoryDataTable extends DataTable
 {
+    private $parent_id = null;
+
     /**
      * Build the DataTable class.
      *
@@ -36,7 +40,7 @@ class CategoryDataTable extends DataTable
                 if ($category->parent) {
                     $nameParent = mb_strlen($category->parent->name) >= 10 ? mb_substr($category->parent->name, 0, 10).'...' : $category->parent->name;
 
-                    return "<a class=\"link\" href=\"".route('admin.catalog.category.edit', ['category' => $category->id])."\">$nameParent ✎</a>";
+                    return "<a class=\"link\" href=\"".route('admin.catalog.categories.page.list')."?parent={$category->parent->id}\">$nameParent 🡵</a>";
                 }
                 return '-';
             })
@@ -46,12 +50,27 @@ class CategoryDataTable extends DataTable
             ->setRowId('id');
     }
 
+    public function setParentId($id = null)
+    {
+        $this->parent_id = $id;
+
+        return $this;
+    }
+
     /**
      * Get the query source of dataTable.
      */
     public function query(ProductCategory $model): QueryBuilder
     {
-        return $model->newQuery()->withCount('products')->withCount('properties')->with('parent');
+        $parent_id = $this->parent_id;
+
+        return $model
+            ->when($parent_id, function ($query) use ($parent_id) {
+                return $query->where('parent_id', $parent_id);
+            })
+            ->newQuery()
+            ->withCount(['products', 'properties'])
+            ->with('parent');
     }
 
     /**
@@ -63,10 +82,18 @@ class CategoryDataTable extends DataTable
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->parameters([
+                        // 'select' => true,
+                        // 'rowReorder' => ['dataSrc' => 'id', 'editor' => 'editor'],
                         'buttons' => [],
                         'language' => [
                             'url' => url('/vendor/datatables/lang/'.app()->getLocale().'.json'),
                         ]])
+                        // ->editors([
+                        //     Editor::make()
+                        //         ->fields([
+                        //             Fields\Text::make('id')
+                        //         ])
+                        // ])
                     ->orderBy(0, 'asc');
     }
 
@@ -76,6 +103,7 @@ class CategoryDataTable extends DataTable
     public function getColumns(): array
     {
         return [
+            // Column::make('id')->className('reorder'),
             Column::make('id'),
             Column::make('name')->title('Название'),
             Column::make('parent_id')->title('Родитель'),

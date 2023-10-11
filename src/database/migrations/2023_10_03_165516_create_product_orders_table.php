@@ -17,6 +17,11 @@ return new class extends Migration
             $table->string('status');
             $table->string('phone_number');
             $table->decimal('total_quantity');
+            $table->string('delivery_address')->nullable();
+            $table->string('type_delivery')->nullable();
+            $table->string('user_annotation')->nullable();
+            $table->string('admin_annotation')->nullable();
+
             $table->timestamps();
         });
     }

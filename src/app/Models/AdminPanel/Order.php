@@ -14,6 +14,10 @@ class Order extends Model
         'status',
         'phone_number',
         'total_quantity',
+        'delivery_address',
+        'type_delivery',
+        'user_annotation',
+        'admin_annotation',
     ];
 
     protected $casts = [

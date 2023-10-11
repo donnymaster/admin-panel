@@ -174,5 +174,8 @@ return [
         'setting_name'          => 'Название',
         'setting_key'           => 'Slug',
         'setting_value'         => 'Значение',
+        'quantity'              => 'Количество',
+        'percentages'           => 'Процент',
+        'code'                  => 'Код'
     ],
 ];

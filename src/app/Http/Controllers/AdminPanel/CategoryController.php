@@ -140,9 +140,10 @@ class CategoryController extends Controller
         return $this->service->getProductsByCategoryId($categoryId);
     }
 
-    public function page(CategoryDataTable $categoryDataTable)
+    public function page(Request $request, CategoryDataTable $categoryDataTable)
     {
-        return $categoryDataTable->render('admin-panel.catalogs.category-table');
+
+        return $categoryDataTable->setParentId($request->get('parent'))->render('admin-panel.catalogs.category-table');
     }
 
     public function positionBoundaries()

@@ -170,6 +170,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Jenssegers\Agent\AgentServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
+        Yajra\DataTables\EditorServiceProvider::class,
     ])->toArray(),
 
     /*

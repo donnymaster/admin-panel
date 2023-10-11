@@ -35,6 +35,9 @@ class ProductUniquePropertyDataTable extends DataTable
             </div>
                 ";
             })
+            ->editColumn('unique_name', function ($property) {
+                return "<div title=\"{$property->unique_slug}\">{$property->unique_name}</div>";
+            })
             ->setRowId('id');
     }
 

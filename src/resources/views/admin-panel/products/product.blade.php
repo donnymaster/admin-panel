@@ -148,7 +148,7 @@
 
     <div class="mt-8 columns-1 flex justify-between mb-9 divide-x pb-2 text-white text-3xl border-b-2 border-b-white">
         <span>Варианты</span>
-        <a class="btn small-btn border-none">Добавить</a>
+        <a href="{{route('admin.products.variants.create', ['product' => $product->id])}}" class="btn small-btn border-none">Добавить</a>
     </div>
     {{ $variantsTable->table() }}
 
