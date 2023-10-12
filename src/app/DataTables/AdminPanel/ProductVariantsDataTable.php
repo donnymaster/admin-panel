@@ -71,13 +71,8 @@ class ProductVariantsDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            // Column::computed('action')
-            //       ->exportable(false)
-            //       ->printable(false)
-            //       ->width(60)
-            //       ->addClass('text-center'),
             Column::make('id'),
-            Column::make('page_title'),
+            Column::make('title'),
             Column::make('price'),
             Column::make('count'),
             Column::make('created_at'),

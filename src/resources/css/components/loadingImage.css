@@ -1,10 +1,25 @@
 .load-images-container {
 
-    & .load-image-row{
+    & .load-image-row {
         background: white;
         padding: 20px;
         border-radius: 25px;
         margin-bottom: 40px;
+        position: relative;
+
+        & .overlay {
+            position: absolute;
+            border-radius: 25px;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0, .5);
+            top: 0;
+            left: 0;
+            display: none;
+            &.load {
+                display: block;
+            }
+        }
 
         & .header {
             width: 100%;
@@ -17,42 +32,78 @@
         & .body {
             width: 100%;
             display: flex;
+            flex-wrap: wrap;
+
+            & .image-wrapper {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 400px;
+                border-radius: 25px;
+                overflow: hidden;
+
+                & img {
+                    max-height: 100%;
+                    /* height: 400px; */
+                }
+            }
         }
 
         & .default-image {
             position: relative;
+            border: 1px solid;
+            border-radius: 25px;
+            margin-right: 20px;
+            width: calc(20% - 20px);
+            margin-bottom: 20px;
 
             & .overlay-image {
                 position: absolute;
-                top: 0;
-                left: 0;
                 width: 100%;
-                height: 100%;
+                height: 30px;
+                bottom: 0;
+                border-bottom-left-radius: 25px;
+                border-bottom-right-radius: 25px;
+                background: black;
 
-                & .type-image {
-                    position: absolute;
-                    text-align: center;
-                    width: 100%;
-                    top: 5px;
-                    color: black;
-                    font-size: 12px;
-                    font-weight: 600;
-                }
-
-                & .size-image {
+                & .size-image, .proportions-image {
                     position: absolute;
                     bottom: 5px;
                     right: 10px;
-                    color: red;
+                    color: white;
                     font-size: 12px;
                     font-weight: 600;
                 }
+
+                & .proportions-image {
+                    left: 10px;
+                }
             }
 
-            & img {
-                height: 400px;
-                border-radius: 25px;
+            & .delete-image {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                cursor: pointer;
             }
         }
     }
 }
+.remove-row {
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M21 5.97998C17.67 5.64998 14.32 5.47998 10.98 5.47998C9 5.47998 7.02 5.57998 5.04 5.77998L3 5.97998" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 4.97L8.72 3.66C8.88 2.71 9 2 10.69 2H13.31C15 2 15.13 2.75 15.28 3.67L15.5 4.97" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.85 9.14001L18.2 19.21C18.09 20.78 18 22 15.21 22H8.79C6 22 5.91 20.78 5.8 19.21L5.15 9.14001" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.33 16.5H13.66" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 12.5H14.5" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+}
+
+.add-custom-image {
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url('data:image/svg+xml,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="vuesax/broken/additem"><g id="additem"><path id="Vector" d="M2 5.43C2 3.14 3.14 2 5.43 2H10C12.29 2 13.43 3.14 13.43 5.43" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path id="Vector_2" d="M8 16H5.43C3.14 16 2 14.86 2 12.57V9.98001" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path id="Vector_3" d="M18.5701 22H14.0001C11.7101 22 10.5701 20.86 10.5701 18.57V11.43C10.5701 9.14 11.7101 8 14.0001 8H18.5701C20.8601 8 22.0001 9.14 22.0001 11.43V18.57C22.0001 20.86 20.8601 22 18.5701 22Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path id="Vector_4" d="M14.8701 15H18.1301" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path id="Vector_5" d="M16.5 16.63V13.37" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></g></g></svg>');
+}
+

@@ -30,14 +30,14 @@
                     <span>Название</span>
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
-                <input id="name" value="{{ $category->name }}" name="name" type="text" class="input">
+                <input id="name" value="{{ $category->name }}" name="name" type="text" class="input convert-parent" data-child="slug-convert">
             </div>
             <div class="input-group">
                 <label for="slug" class="label">
                     Slug
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
-                <input id="slug" value="{{ $category->slug }}" name="slug" type="text"class="input">
+                <input id="slug" value="{{ $category->slug }}" name="slug" type="text"class="input slug-convert">
             </div>
             <div class="input-group">
                 <label for="position" class="label">
@@ -55,7 +55,7 @@
             </div>
         </div>
         <div class="columns-1 mb-9">
-            <div class="flex flex-col">
+            <div class="flex flex-col input-group">
                 <label for="parent-id" class="mb-4 label">Родительская категория</label>
                 <select class="select" name="parent_id" id="parent-id">
                     @foreach ($categories as $item)

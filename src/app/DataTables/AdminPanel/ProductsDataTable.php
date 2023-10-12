@@ -32,11 +32,11 @@ class ProductsDataTable extends DataTable
                 {$product->category->name}
                 </a>";
             })
-            ->editColumn('name', function ($product) {
+            ->editColumn('title', function ($product) {
                 return "<a
                 class=\"link\"
                 href=\"".route('admin.products.show', ['product' => $product->id])."\">
-                {$product->name}
+                {$product->title}
                 </a>";
             })
             ->addColumn('count_variants', function ($product) {
@@ -113,10 +113,10 @@ class ProductsDataTable extends DataTable
     {
         return [
             Column::make('id'),
-            Column::make('name')->title('Название'),
+            Column::make('title')->title('Название'),
             Column::make('category_id')->title('Категория'),
             Column::make('count_variants')->title('Вариантов'),
-            Column::computed('visible')->title('Статус'),
+            Column::make('visible')->title('Статус'),
             Column::make('copy')->title('Копировать'),
             Column::make('created_at')->title('Добавлен'),
             Column::computed('action')

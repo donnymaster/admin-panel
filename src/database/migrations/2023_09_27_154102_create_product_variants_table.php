@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('product_variants', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('product_id');
-            $table->string('page_title')->nullable();
+            $table->string('title')->nullable();
             $table->string('name_tile')->nullable();
             $table->decimal('price')->nullable();
             $table->integer('count')->nullable();
+            $table->string('sync_id')->nullable();
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products');

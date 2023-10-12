@@ -29,14 +29,14 @@
                     <span>Название</span>
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
-                <input id="name" name="name" type="text" class="input" value="{{old('name')}}">
+                <input id="name" name="name" type="text" class="input convert-parent" value="{{old('name')}}" data-child="slug-convert">
             </div>
             <div class="input-group">
                 <label for="slug" class="label">
                     Адрес в сети
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
-                <input id="slug" name="slug" type="text" class="input" value="{{old('slug')}}">
+                <input id="slug" name="slug" type="text" class="input slug-convert" value="{{old('slug')}}">
             </div>
             <div class="input-group">
                 <label for="position" class="label">

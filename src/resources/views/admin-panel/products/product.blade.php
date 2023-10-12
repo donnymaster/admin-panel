@@ -1,6 +1,6 @@
 @extends('admin-panel.layouts.main')
 
-@section('title', $product->name)
+@section('title', $product->title)
 
 @section('content')
     <form data-product="{{$product->id}}" action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data" id="formUpdateProduct">
@@ -24,11 +24,11 @@
             <div class="flex product-types">
                 @if ($product->visible)
                     <div class="flex visible-product visible">
-                        <input type="checkbox" name="visible" hidden checked>
+                        <input type="text" name="visible" hidden value="1">
                     </div>
                 @else
                     <div class="flex visible-product not-visible">
-                        <input type="checkbox" name="visible" hidden>
+                        <input type="text" name="visible" hidden value="0">
                     </div>
                 @endif
             </div>
@@ -39,19 +39,19 @@
 
         <div class="columns-3 mb-9">
             <div class="input-group">
-                <label for="name" class="label flex">
+                <label for="title" class="label flex">
                     <span>Название</span>
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
-                <input id="name" name="name" type="text" class="input"
-                    value="{{ old('name') ? old('name') : $product->name }}">
+                <input id="title" name="title" type="text" class="input convert-parent"
+                    value="{{ old('title') ? old('title') : $product->title }}" data-child="slug-convert">
             </div>
             <div class="input-group">
                 <label for="slug" class="label">
                     Адрес в сети
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
-                <input id="slug" name="slug" type="text" class="input"
+                <input id="slug" name="slug" type="text" class="input slug-convert"
                     value="{{ old('slug') ? old('slug') : $product->slug }}">
             </div>
             <div class="input-group">
@@ -96,7 +96,7 @@
                     Описание страницы
                     <x-admin.tinymce.message />
                 </label>
-                <textarea name="page_description" id="page_description" class="input" name="story" rows="5" cols="33">
+                <textarea name="page_description" id="page_description" class="input" rows="5" cols="33">
                 {{ old('page_description') ? old('page_description') : $product->page_description }}
             </textarea>
             </div>
@@ -111,15 +111,13 @@
                 <label for="keywords" class="label flex">
                     <span>Ключевые слова</span>
                 </label>
-                <input id="keywords" name="keywords" type="text" class="input"
-                    value="{{ old('keywords') ? old('keywords') : $product->keywords }}">
+                <textarea id="keywords" class="input" name="keywords" rows="5" cols="33">{{ old('keywords') ? old('keywords') : $product->keywords }}</textarea>
             </div>
             <div class="input-group">
                 <label for="description" class="label">
                     Описание
                 </label>
-                <input id="description" name="description" type="text" class="input"
-                    value="{{ old('description') ? old('description') : $product->description }}">
+                <textarea id="description" class="input" name="description" rows="5" cols="33">{{ old('description') ? old('description') : $product->description }}</textarea>
             </div>
         </div>
         <div class="columns-1 flex justify-between mb-9 divide-x pb-2 text-white text-2xl border-b-2 border-b-white">
@@ -127,15 +125,14 @@
         </div>
 
         <div class="flex items-center mb-3">
-            <select class="select mr-5 selected-category" class="select" name="category_id" id="category_id">
+            <select class="select mr-5 selected-category" class="select" disabled>
+                <option value="">{{$product->category->name}}</option>
             </select>
             <div class="category_list flex">
+                Количество свойст: {{$countProperties}}
             </div>
         </div>
     </form>
-
-
-
 
     <div class="mt-8 columns-1 flex justify-between mb-9 divide-x pb-2 text-white text-3xl border-b-2 border-b-white">
         <span>Уникальные свойства</span>
@@ -143,7 +140,6 @@
         <a style="display: none" class="modal-btn" data-modal="update-unique-property">Добавить</a>
     </div>
     {{ $productUniquePropertyTable->table() }}
-
     {{ $productUniquePropertyTable->scripts(attributes: ['type' => 'module']) }}
 
     <div class="mt-8 columns-1 flex justify-between mb-9 divide-x pb-2 text-white text-3xl border-b-2 border-b-white">
@@ -151,7 +147,6 @@
         <a href="{{route('admin.products.variants.create', ['product' => $product->id])}}" class="btn small-btn border-none">Добавить</a>
     </div>
     {{ $variantsTable->table() }}
-
     {{ $variantsTable->scripts(attributes: ['type' => 'module']) }}
 
 

@@ -45,7 +45,12 @@ class CategoryDataTable extends DataTable
                 return '-';
             })
             ->addColumn('product_link', function ($category) {
-                return "<a class=\"link\" href=\"".route('admin.products')."?category={$category->id}\">🡵 ({$category->products_count})</a>";
+                return "
+                    <div class=\"flex\">
+                        <a class=\"link mr-3\" href=\"".route('admin.products')."?category={$category->id}\">🡵 ({$category->products_count})</a>
+                        <a class=\"link\" href=\"".route('admin.products.create')."?category-id={$category->id}\">+</a>
+                    </div>
+                ";
             })
             ->setRowId('id');
     }

@@ -1,5 +1,8 @@
 import checkIsErrorResponse from "../utils/checkIsErrorResponse";
 import spreadResponse from "../utils/spreadResponse";
+import ConvertWordsToTranscription from "../components/ConvertWordsToTranscription";
+
+new ConvertWordsToTranscription();
 
 document.querySelector('#addCaregoryPropertyBtn')
     .addEventListener('click', (event) => {

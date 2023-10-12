@@ -44,6 +44,51 @@ class ImageProcessingController extends Controller
         ];
     }
 
+    public function saveResizeImage(Request $request)
+    {
+        $imagePath = $request->get('image-path');
+        $imageWidth = $request->get('image-width');
+        $imageHeight = $request->get('image-height');
+
+        $filename = pathinfo($imagePath)['filename'];
+
+        $path = Storage::path('public/' . $imagePath);
+        $pathNewImage = pathinfo($imagePath)['dirname'] . '/' . md5($filename . time()) . '.webp';
+
+        Image::load($path)
+            ->width($imageWidth)
+            ->height($imageHeight)
+            ->save('./storage/' . $pathNewImage);
+
+        return [
+            'path' => $pathNewImage,
+            'url-image' => Storage::url($pathNewImage),
+            'size' => $this->formatBytes(Storage::size('public/'.$pathNewImage))
+        ];
+    }
+
+    public function delete(Request $request)
+    {
+        $imagePath = $request->get('image-url');
+
+        if (is_array($imagePath)) {
+            foreach ($imagePath as $path) {
+                Storage::delete('public/'.$path);
+            }
+
+            return [
+                'message' => 'Картинки была удалены!'
+            ];
+        } else {
+            Storage::delete('public/'.$imagePath);
+
+            return [
+                'message' => 'Картинка была удалена!'
+            ];
+        }
+
+    }
+
     private function getPathProductVariant($productId)
     {
         return "/product/{$productId}/variants";

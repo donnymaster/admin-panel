@@ -29,7 +29,7 @@ class CreateProductRequest extends FormRequest
         $minPosition = $dbMinPosition ? $dbMinPosition : 1;
 
         return [
-            'name' => 'required|min:1|max:255|unique:products,name',
+            'title' => 'required|min:1|max:255',
             'category_id' => 'required|numeric|exists:product_categories,id',
             'slug' => 'required|min:1|max:255',
             'page_title' => 'required|min:1|max:255',
@@ -51,7 +51,7 @@ class CreateProductRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'visible' => (boolean) $this->visible,
+            'visible' => intval($this->visible),
         ]);
     }
 }

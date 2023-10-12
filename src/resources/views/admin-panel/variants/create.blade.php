@@ -46,9 +46,10 @@
             <div class="btn btn-add-image small-btn border-none ml-auto">Добавить</div>
         </div>
 
+        <div style="display:none" class="modal-btn" data-modal="add-image">Добавить</div>
+
         <div class="load-images-container">
             <div class="empty-data">
-
             </div>
         </div>
     </div>
@@ -61,3 +62,53 @@
 @section('scripts')
     @vite(['resources/js/pages/createVariantPage.js'])
 @endsection
+
+@push('modals')
+    <div class="modal-container hidden">
+        <div class="modal-overlay hidden"></div>
+        <div class="modal hidden" data-modal="add-image">
+            <div class="modal-header mb-5 text-2xl">
+                <div class="title">
+                   <div class="flex items-center">
+                    <span>Новая картинка</span>
+                    <div class="checkbox ml-3 text-sm mt-1">
+                        <input class="custom-checkbox" type="checkbox" checked id="proportions">
+                        <label for="proportions">Пропорции</label>
+                    </div>
+                   </div>
+                </div>
+                <div class="close-modal">
+                    ✖
+                </div>
+            </div>
+                <div class="modal-content scrollbar">
+                    <div class="input-group  mb-2">
+                        <label for="image-mark" class="label black">
+                            Пометка
+                        </label>
+                        <input id="image-mark" type="text" class="input border border-theme-blue border-solid">
+                    </div>
+                    <div class="columns-2">
+                        <div class="input-group  mb-2">
+                            <label for="image-width" class="label black pb-1">
+                                Ширина
+                            </label>
+                            <input id="image-width" type="text" class="input border border-theme-blue border-solid">
+                        </div>
+                        <div class="input-group  mb-2">
+                            <label for="image-height" class="label black pb-1">
+                                Высота
+                            </label>
+                            <input id="image-height" type="text" class="input border border-theme-blue border-solid">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer flex justify-end">
+                    <div class="btn bg-green mr-2" id="addNewImage">
+                        <span class="loader dark"></span>
+                        Добавить
+                    </div>
+                </div>
+        </div>
+    </div>
+@endpush

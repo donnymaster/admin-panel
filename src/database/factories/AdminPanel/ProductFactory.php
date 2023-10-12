@@ -33,7 +33,7 @@ class ProductFactory extends Factory
         }
 
         return [
-            'name' => fake()->word(),
+            'title' => fake()->word(),
             'page_title' => fake()->word(),
             'name_tile' => fake()->word(),
             'visible' => true,

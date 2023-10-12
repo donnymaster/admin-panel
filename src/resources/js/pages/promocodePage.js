@@ -92,7 +92,7 @@ class SearchEngineInput {
             const productElement = document.createElement('div');
             productElement.classList.add('search-element');
             productElement.setAttribute('data-id', product.id);
-            productElement.textContent = product.page_title;
+            productElement.textContent = product.title;
 
             this.resultContainer.append(productElement);
         });
@@ -258,7 +258,7 @@ function openModalUpdatePromocode(el) {
 
 
     if (promocode.product_variant) {
-        searchEngineInputUpdatePromocode.setValueSearchInput(promocode.product_variant.page_title);
+        searchEngineInputUpdatePromocode.setValueSearchInput(promocode.product_variant.title);
         searchEngineInputUpdatePromocode.setValueInputHidden(promocode.product_variant.id);
     }
 }

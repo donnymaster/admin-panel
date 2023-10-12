@@ -11,6 +11,7 @@ use App\Http\Requests\AdminPanel\CreateProductUniquePropertyRequest;
 use App\Http\Requests\AdminPanel\UpdateProductUniquePropertyRequest;
 use App\Models\AdminPanel\Product;
 use App\Models\AdminPanel\ProductCategory;
+use App\Models\AdminPanel\ProductCategoryProperty;
 use App\Models\AdminPanel\ProductUniqueValue;
 use App\Models\AdminPanel\ProductVariant;
 use App\Services\AdminPanel\ProductService;
@@ -60,6 +61,8 @@ class ProductController extends Controller
     ) {
         $product = Product::where('id', $id)->with(['category'])->firstOrFail();
 
+        $countProperties = $this->getCountProperties(ProductCategory::where('id', $product->category_id)->first());
+
         if ($request->get('table') == 'variants') {
             return $productVariantsDataTable->setProduct($product)->render('admin-panel.products.product');
         }
@@ -72,11 +75,27 @@ class ProductController extends Controller
         return view(
             'admin-panel.products.product',
             [
+                'countProperties' => $countProperties,
                 'product' => $product,
                 'variantsTable' => $productVariantsDataTable->setProduct($product)->html()->ajax('?table=variants'),
                 'productUniquePropertyTable' => $productUniquePropertyDataTable->setProduct($product)->html()->ajax('?table=unique')
             ]
         );
+    }
+
+    private function getCountProperties(ProductCategory $category)
+    {
+        $countProperties = 0;
+
+        $countProperties = ProductCategory::where('id', $category->id)->withCount('properties')->first()->properties_count;
+
+        if ($category->parent_id) {
+            $countProperties += $this->getCountProperties(
+                ProductCategory::where('id', $category->parent_id)->first()
+            );
+        }
+
+        return $countProperties;
     }
 
     public function store(CreateProductRequest $request)
@@ -88,12 +107,6 @@ class ProductController extends Controller
             ->createUnuqieProperty($request)
             ->getProduct();
 
-        if ($request->has('visible')) {
-            $this->productService->setVisibleProduct(true);
-        } else {
-            $this->productService->setVisibleProduct(false);
-        }
-
         return redirect()->route('admin.products');
     }
 
@@ -103,8 +116,8 @@ class ProductController extends Controller
 
         $search = $request->get('search');
 
-        $variants = ProductVariant::select('id', 'page_title')->limit($limit)->when($search, function ($query) use ($search) {
-            $query->where('page_title', 'like', "%$search%");
+        $variants = ProductVariant::select('id', 'title')->limit($limit)->when($search, function ($query) use ($search) {
+            $query->where('title', 'like', "%$search%");
         })->get();
 
         return response($variants);

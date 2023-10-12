@@ -125,6 +125,8 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
     });
 
     Route::post('/image/save', [ImageProcessingController::class, 'save'])->name('image.save');
+    Route::post('/image/save/resize', [ImageProcessingController::class, 'saveResizeImage'])->name('image.save-resize');
+    Route::delete('/image/remove', [ImageProcessingController::class, 'delete'])->name('image.delete');
 
     Route::get('/data-exchange', [DataExchangeController::class, 'index'])->name('data-exchange');
     // other statistic pages
@@ -152,7 +154,7 @@ Route::view('/components-admin', 'admin-components');
 
 Route::get('routes', function () {
 
-    dd(file_exists('/var/www/laravel/storage/app/public/product/1/variants/harHeOUrNfhI3iv3EC4V3KhQRATII5HjO4PYa6Yl.png'));
+    // dd(file_exists('/var/www/laravel/storage/app/public/product/1/variants/harHeOUrNfhI3iv3EC4V3KhQRATII5HjO4PYa6Yl.png'));
     // dd(Storage::url('product/1/variants/harHeOUrNfhI3iv3EC4V3KhQRATII5HjO4PYa6Yl.png'));
     // dd(StatisticService::getUniqueVisitors());
     // dd(Str::slug('картинка 2'));

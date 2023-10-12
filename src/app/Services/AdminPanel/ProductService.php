@@ -16,7 +16,7 @@ class ProductService
     const STATUS_PRODUCT_POPULAR = 'popular';
 
     const FIELDS_DEFAULT_CREATE = [
-        'name',
+        'title',
         'slug',
         'page_title',
         'vendor_code',
@@ -25,6 +25,7 @@ class ProductService
         'page_description',
         'keywords',
         'description',
+        'visible',
     ];
 
     private $product = null;

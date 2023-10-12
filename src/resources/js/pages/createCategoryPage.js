@@ -1,3 +1,6 @@
+import ConvertWordsToTranscription from "../components/ConvertWordsToTranscription";
+
+new ConvertWordsToTranscription();
 
 class Store {
     constructor(initData) {

@@ -11,10 +11,11 @@ class ProductVariant extends Model
 
     protected $fillable = [
         'product_id',
-        'page_title',
+        'title',
         'name_tile',
         'price',
         'count',
+        'sync_id',
     ];
 
     protected $casts = [
@@ -34,6 +35,11 @@ class ProductVariant extends Model
     public function reviews()
     {
         return $this->hasMany(ProductReview::class, 'product_variant_id');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(ProductVariantImage::class, 'product_variant_id');
     }
 
     public function promocodes()

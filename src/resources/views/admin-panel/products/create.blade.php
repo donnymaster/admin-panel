@@ -66,15 +66,15 @@
 
                 @if (old('visible'))
                     <div class="flex visible-product visible">
-                        <input type="checkbox" name="visible" hidden checked>
+                        <input type="text" name="visible" hidden>
                     </div>
                 @elseif ($errors->any())
                     <div class="flex visible-product not-visible">
-                        <input type="checkbox" name="visible" hidden>
+                        <input type="text" name="visible" hidden>
                     </div>
                 @else
-                    <div class="flex visible-product visible">
-                        <input type="checkbox" name="visible" hidden checked>
+                    <div class="flex visible-product not-visible">
+                        <input type="text" name="visible" hidden value="0">
                     </div>
                 @endif
 
@@ -89,14 +89,14 @@
 
         <div class="columns-3 mb-9">
             <div class="input-group">
-                <label for="name" class="label flex">
+                <label for="title" class="label flex">
                     <span>Название</span>
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
                 @if ($parent)
-                    <input  id="name" name="name" type="text" class="input" value="{{old('name') ? old('name') : $parent->name}}">
+                    <input  id="title" name="title" type="text" class="input convert-parent" value="{{old('title') ? old('title') : $parent->title}}" data-child="slug-convert">
                 @else
-                    <input  id="name" name="name" type="text" class="input" value="{{old('name')}}">
+                    <input  id="title" name="title" type="text" class="input convert-parent" value="{{old('title')}}" data-child="slug-convert">
                 @endif
             </div>
             <div class="input-group">
@@ -105,9 +105,9 @@
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
                 @if ($parent)
-                    <input  id="slug" name="slug" type="text" class="input" value="{{old('slug') ? old('slug') : $parent->slug}}">
+                    <input  id="slug" name="slug" type="text" class="input slug-convert" value="{{old('slug') ? old('slug') : $parent->slug}}">
                 @else
-                    <input  id="slug" name="slug" type="text" class="input" value="{{old('slug')}}">
+                    <input  id="slug" name="slug" type="text" class="input slug-convert" value="{{old('slug')}}">
                 @endif
             </div>
             <div class="input-group">
@@ -184,9 +184,9 @@
                     <span>Ключевые слова</span>
                 </label>
                 @if ($parent)
-                    <input id="keywords" name="keywords" type="text" class="input" value="{{old('keywords') ? old('keywords') : $parent->keywords}}">
+                    <textarea id="keywords" class="input" name="keywords" rows="5" cols="33">{{old('keywords') ? old('keywords') : $parent->keywords}}</textarea>
                 @else
-                    <input id="keywords" name="keywords" type="text" class="input" value="{{old('keywords')}}">
+                    <textarea id="keywords" class="input" name="keywords" rows="5" cols="33">{{old('keywords')}}</textarea>
                 @endif
             </div>
             <div class="input-group">
@@ -194,9 +194,9 @@
                     Описание
                 </label>
                 @if ($parent)
-                    <input id="description" name="description" type="text" class="input" value="{{old('description') ? old('description') : $parent->description}}">
+                    <textarea id="description" class="input" name="description" rows="5" cols="33">{{old('description') ? old('description') : $parent->description}}</textarea>
                 @else
-                    <input id="description" name="description" type="text" class="input" value="{{old('description')}}">
+                    <textarea id="description" class="input" name="description" rows="5" cols="33">{{old('description')}}</textarea>
                 @endif
             </div>
         </div>
@@ -237,13 +237,6 @@
 
             </div>
         </div>
-
-        {{-- <div class="columns-1 flex justify-between mb-9 divide-x pb-2 text-white text-2xl border-b-2 border-b-white">
-            <span>Вариации товара (<span class="variant-product-count">0</span>)</span>
-            <div class="btn add-variant-product small-btn border-none">Добавить</div>
-        </div>
-        <div class="container-variant-products">
-        </div> --}}
     </form>
 @endsection
 

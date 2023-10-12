@@ -1,6 +1,8 @@
 import checkIsErrorResponse from "../utils/checkIsErrorResponse";
 import spreadResponse from "../utils/spreadResponse";
+import ConvertWordsToTranscription from "../components/ConvertWordsToTranscription";
 
+new ConvertWordsToTranscription();
 
 window.addEventListener('load', () => {
     window.dVariants = window.LaravelDataTables['productvariants-table'];
@@ -124,7 +126,7 @@ function openModalUpdateUniqueProperty(id) {
     // data
     const property = window.dUnique.ajax.json().data.find((item) => item.id == id);
 
-    document.querySelector('.modal[data-modal="update-unique-property"] input[id="property-name"]').value = property.unique_name;
+    document.querySelector('.modal[data-modal="update-unique-property"] input[id="property-name"]').value = property.raw_name;
     document.querySelector('.modal[data-modal="update-unique-property"] input[id="property-value"]').value = property.unique_value;
 
     document.querySelector('#updateUniqueProperty').setAttribute('data-id', id);
@@ -172,3 +174,22 @@ function updateUniquePropertyById() {
         }
     }).finally(() => updateUniqueProductPropertyBtn.classList.remove('disabled'));
 }
+
+
+document.querySelector('.visible-product')
+    .addEventListener('click', (event) => {
+        const btn = event.target;
+        const input = btn.querySelector('input');
+
+        if (btn.classList.contains('visible')) {
+            input.value = 0;
+        } else {
+            input.value = 1;
+        }
+
+        btn.classList.toggle('visible');
+        btn.classList.toggle('not-visible');
+
+});
+
+
