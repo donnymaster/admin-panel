@@ -10,6 +10,7 @@ class ProductVariantController extends Controller
 {
     public function create(Product $product)
     {
-        return view('admin-panel.variants.create');
+
+        return view('admin-panel.variants.create', compact('product'));
     }
 }

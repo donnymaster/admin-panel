@@ -1,0 +1,58 @@
+.load-images-container {
+
+    & .load-image-row{
+        background: white;
+        padding: 20px;
+        border-radius: 25px;
+        margin-bottom: 40px;
+
+        & .header {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: end;
+            margin-bottom: 25px;
+        }
+
+        & .body {
+            width: 100%;
+            display: flex;
+        }
+
+        & .default-image {
+            position: relative;
+
+            & .overlay-image {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+
+                & .type-image {
+                    position: absolute;
+                    text-align: center;
+                    width: 100%;
+                    top: 5px;
+                    color: black;
+                    font-size: 12px;
+                    font-weight: 600;
+                }
+
+                & .size-image {
+                    position: absolute;
+                    bottom: 5px;
+                    right: 10px;
+                    color: red;
+                    font-size: 12px;
+                    font-weight: 600;
+                }
+            }
+
+            & img {
+                height: 400px;
+                border-radius: 25px;
+            }
+        }
+    }
+}

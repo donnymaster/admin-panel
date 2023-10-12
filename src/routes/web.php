@@ -30,6 +30,7 @@ use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Jenssegers\Agent\Agent;
 use Stevebauman\Location\Facades\Location;
 use Illuminate\Support\Str;
@@ -150,6 +151,9 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
 Route::view('/components-admin', 'admin-components');
 
 Route::get('routes', function () {
+
+    dd(file_exists('/var/www/laravel/storage/app/public/product/1/variants/harHeOUrNfhI3iv3EC4V3KhQRATII5HjO4PYa6Yl.png'));
+    // dd(Storage::url('product/1/variants/harHeOUrNfhI3iv3EC4V3KhQRATII5HjO4PYa6Yl.png'));
     // dd(StatisticService::getUniqueVisitors());
     // dd(Str::slug('картинка 2'));
     // dd(Product::with('variants')->first());

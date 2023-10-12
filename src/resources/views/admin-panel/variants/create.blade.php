@@ -3,7 +3,7 @@
 @section('title', 'Новый вариант')
 
 @section('content')
-    <div class="variant-product flex flex-col">
+    <div data-product="{{$product->id}}" id="information" class="variant-product flex flex-col">
         <div class="columns-2 mb-4">
             <div class="input-group">
                 <label for="product-variant-name-${countVariant}" class="label">
@@ -40,12 +40,16 @@
                     type="number" min="1" class="input">
             </div>
         </div>
-        <div class="columns-1 flex mb-3 justify-between divide-x text-white text-1xl">
-            Картинки варианта
+
+        <div class="columns-1 text-white mt-4 flex justify-between mb-9 divide-x pb-2 text-3xl border-b-2 border-b-white">
+            <span>Картинки варианта</span>
+            <div class="btn btn-add-image small-btn border-none ml-auto">Добавить</div>
         </div>
 
-        <div class="columns-1 flex justify-between mb-9 divide-x pb-2 text-3xl border-b-2 border-b-white">
-            <div class="btn btn-add-image small-btn border-none ml-auto">Добавить</div>
+        <div class="load-images-container">
+            <div class="empty-data">
+
+            </div>
         </div>
     </div>
 @endsection

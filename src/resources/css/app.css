@@ -28,6 +28,7 @@
 @import './components/forms/form';
 @import './components/toast';
 @import './components/input-search-results';
+@import './components/loadingImage';
 
 /* --- Pages --- */
 
