@@ -1,4 +1,9 @@
 import LoaderImage from "../components/loadingImage";
+import ItcAccordion from "../components/accordion";
+
+new ItcAccordion('#accordion-1', {
+    alwaysOpen: true
+  });
 
 new LoaderImage(
     '.btn-add-image',
@@ -7,6 +12,6 @@ new LoaderImage(
     }
     );
 
-    window.onbeforeunload = function() {
-        return 'Перед тем как уйти с страницы, удалите все не использованные картинки!';
-      }
+// window.onbeforeunload = function() {
+//     return 'Перед тем как уйти с страницы, удалите все не использованные картинки!';
+// }

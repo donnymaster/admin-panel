@@ -155,4 +155,20 @@ class CategoryController extends Controller
     {
         return ProductCategory::where('id', $id)->with(['properties', 'parent'])->first();
     }
+
+    public function delete(ProductCategory $category)
+    {
+        try {
+            $category->delete();
+        } catch (QueryException $th) {
+            return response(
+                ['message' => 'Ошибка при удалении категории, категория является родительской для другой категории или у нее есть свойства!'],
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+        }
+
+        return [
+            'message' => 'Категория была удалена!'
+        ];
+    }
 }

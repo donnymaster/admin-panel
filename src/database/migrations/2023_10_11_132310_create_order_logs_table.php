@@ -19,8 +19,8 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('order_id')->references('id')->on('orders');
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnUpdate();
+            $table->foreign('order_id')->references('id')->on('orders')->cascadeOnUpdate();
         });
     }
 

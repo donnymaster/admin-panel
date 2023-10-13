@@ -6,7 +6,7 @@ use App\Http\Controllers\AdminPanel\Catalog\CatalogController;
 use App\Http\Controllers\AdminPanel\Catalog\ProductController;
 use App\Http\Controllers\AdminPanel\CategoryController;
 use App\Http\Controllers\AdminPanel\DataExchangeController;
-use App\Http\Controllers\AdminPanel\ImageProcessingController;
+use App\Http\Controllers\AdminPanel\ImageProcessingProductVariantController;
 use App\Http\Controllers\AdminPanel\OrderController;
 use App\Http\Controllers\AdminPanel\PagesController;
 use App\Http\Controllers\AdminPanel\ProductReviewController;
@@ -87,6 +87,8 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
         Route::get('/categories', [CategoryController::class, 'index'])->name('catalog.categories.show');
         Route::get('/categories/new', [CategoryController::class, 'create'])->name('catalog.categories.new');
         Route::post('/categories/new', [CategoryController::class, 'store'])->name('catalog.categories.store');
+
+        Route::delete('/categories/{category}', [CategoryController::class, 'delete'])->name('catalog.categories.delete');
         Route::get('/categories/{category}', [CategoryController::class, 'edit'])->name('catalog.category.edit');
         Route::patch('/categories/{category}', [CategoryController::class, 'update'])->name('catalog.category.update');
         Route::post('/categories/{category}/addProperty', [CategoryController::class, 'addProperty'])->name('catalog.category.addProperty');
@@ -103,6 +105,9 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
         Route::get('/products', [ProductController::class, 'index'])->where('id', '[0-9]+')->name('products');
         Route::get('/products/create', [ProductController::class, 'create'])->where('id', '[0-9]+')->name('products.create');
         Route::post('/products', [ProductController::class, 'store'])->where('id', '[0-9]+')->name('products.store');
+        Route::delete('/products/{product}', [ProductController::class, 'remove'])->where('id', '[0-9]+')->name('products.remove');
+        Route::patch('/products/{product}', [ProductController::class, 'update'])->where('id', '[0-9]+')->name('products.update');
+
         Route::get('/products/{product}', [ProductController::class, 'show'])->where('id', '[0-9]+')->name('products.show');
         Route::get('/product-variants', [ProductController::class, 'productVariants'])->name('product-variants');
 
@@ -111,6 +116,8 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
         Route::patch('/products/{product}/unique-properties/{property}', [ProductController::class, 'updateUniqueProperty'])->name('products.unique-property.update');
 
         Route::get('/products/{product}/variants', [ProductVariantController::class, 'create'])->name('products.variants.create');
+        Route::post('/products/{product}/variants', [ProductVariantController::class, 'store'])->name('products.variants.store');
+        Route::delete('/products/{product}/variants/{variant}', [ProductVariantController::class, 'remove'])->name('products.variants.remove');
 
 
         Route::get('/product-reviews', [ProductReviewController::class, 'index'])->name('product-reviews.index');
@@ -124,9 +131,9 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
         });
     });
 
-    Route::post('/image/save', [ImageProcessingController::class, 'save'])->name('image.save');
-    Route::post('/image/save/resize', [ImageProcessingController::class, 'saveResizeImage'])->name('image.save-resize');
-    Route::delete('/image/remove', [ImageProcessingController::class, 'delete'])->name('image.delete');
+    Route::post('/product-variant/image/save', [ImageProcessingProductVariantController::class, 'save'])->name('image.save');
+    Route::post('/product-variant/image/save/resize', [ImageProcessingProductVariantController::class, 'saveResizeImage'])->name('image.save-resize');
+    Route::delete('/product-variant/image/remove', [ImageProcessingProductVariantController::class, 'delete'])->name('image.delete');
 
     Route::get('/data-exchange', [DataExchangeController::class, 'index'])->name('data-exchange');
     // other statistic pages

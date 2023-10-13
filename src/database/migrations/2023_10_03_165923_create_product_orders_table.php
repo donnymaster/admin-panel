@@ -19,8 +19,8 @@ return new class extends Migration
             $table->timestamps();
 
 
-            $table->foreign('product_variant_id')->references('id')->on('product_variants');
-            $table->foreign('order_id')->references('id')->on('orders');
+            $table->foreign('product_variant_id')->references('id')->on('product_variants')->cascadeOnDelete();
+            $table->foreign('order_id')->references('id')->on('orders')->cascadeOnDelete();
         });
     }
 

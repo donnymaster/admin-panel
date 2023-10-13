@@ -20,7 +20,10 @@
         @endif
         <div class="columns-1 flex justify-between mb-9 divide-x pb-2 text-white text-3xl border-b-2 border-b-white">
             <span>Информация о категории</span>
-            <button class="btn load-applications small-btn border-none">Обновить</button>
+            <div class="flex border-none">
+                <div data-id="{{$category->id}}" class="mr-3 btn bg-red load-applications small-btn border-none delete-category">Удалить</div>
+                <button class="btn load-applications small-btn border-none mr-3">Обновить</button>
+            </div>
         </div>
         @csrf
         @method('PATCH')

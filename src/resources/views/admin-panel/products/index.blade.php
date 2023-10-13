@@ -26,3 +26,7 @@
 @section('sidebar')
     <x-admin.sidebar.categories item_show="products" />
 @endsection
+
+@section('scripts')
+    @vite(['resources/js/pages/productsPage.js'])
+@endsection

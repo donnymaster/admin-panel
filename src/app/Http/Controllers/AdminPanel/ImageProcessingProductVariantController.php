@@ -5,20 +5,18 @@ namespace App\Http\Controllers\AdminPanel;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
 use App\Http\Controllers\Controller;
+use App\Models\AdminPanel\ProductVariantImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
-class ImageProcessingController extends Controller
+class ImageProcessingProductVariantController extends Controller
 {
     public function save(Request $request)
     {
-        $filePath = '';
-
-        if ($request->get('type') == 'variant') {
-            $filePath = $request->file('image')->store($this->getPathProductVariant(
-                $request->get('product-id'),
-            ), 'public');
-        }
+        $filePath = $request->file('image')->store($this->getPathProductVariant(
+            $request->get('product-id'),
+        ), 'public');
 
         $path = Storage::path('public/' . $filePath);
         $fileName = pathinfo(basename($path), PATHINFO_FILENAME);
@@ -32,6 +30,12 @@ class ImageProcessingController extends Controller
 
         Storage::delete('public/'.$filePath);
 
+        $image = ProductVariantImage::create([
+            'name' => 'default',
+            'slug' => 'default',
+            'path' => substr($pathWebp, 1)
+        ]);
+
         return [
             'message' => 'Картинка была добавлена',
             'data' => [
@@ -40,7 +44,8 @@ class ImageProcessingController extends Controller
                 'width' => $w,
                 'heigth' => $h,
                 'size' => $this->formatBytes(Storage::size('public'.$pathWebp))
-            ]
+            ],
+            'image' => $image,
         ];
     }
 
@@ -49,6 +54,7 @@ class ImageProcessingController extends Controller
         $imagePath = $request->get('image-path');
         $imageWidth = $request->get('image-width');
         $imageHeight = $request->get('image-height');
+        $imageName = $request->get('image-name');
 
         $filename = pathinfo($imagePath)['filename'];
 
@@ -60,7 +66,14 @@ class ImageProcessingController extends Controller
             ->height($imageHeight)
             ->save('./storage/' . $pathNewImage);
 
+        $image = ProductVariantImage::create([
+            'name' => $imageName,
+            'slug' => Str::slug($imageName),
+            'path' => $pathNewImage
+        ]);
+
         return [
+            'image' => $image,
             'path' => $pathNewImage,
             'url-image' => Storage::url($pathNewImage),
             'size' => $this->formatBytes(Storage::size('public/'.$pathNewImage))
@@ -76,14 +89,19 @@ class ImageProcessingController extends Controller
                 Storage::delete('public/'.$path);
             }
 
+            ProductVariantImage::where('path', $path)->delete();
+
             return [
                 'message' => 'Картинки была удалены!'
             ];
         } else {
             Storage::delete('public/'.$imagePath);
 
+            ProductVariantImage::where('path', $imagePath)->delete();
+
             return [
-                'message' => 'Картинка была удалена!'
+                'message' => 'Картинка была удалена!',
+                '$imagePath' => $imagePath
             ];
         }
 

@@ -3,7 +3,7 @@
 @section('title', $product->title)
 
 @section('content')
-    <form data-product="{{$product->id}}" action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data" id="formUpdateProduct">
+    <form data-product="{{$product->id}}" action="{{ route('admin.products.update', ['product' => $product->id]) }}" method="POST" id="formUpdateProduct">
         @csrf
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -14,6 +14,7 @@
                 </ul>
             </div>
         @endif
+        @method('PATCH')
         @if (session()->has('successfully'))
             <div class="alert alert-success">
                 {{ session()->get('successfully') }}

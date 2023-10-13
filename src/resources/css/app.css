@@ -29,6 +29,7 @@
 @import './components/toast';
 @import './components/input-search-results';
 @import './components/loadingImage';
+@import './components/accordion';
 
 /* --- Pages --- */
 

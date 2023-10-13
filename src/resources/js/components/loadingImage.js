@@ -25,6 +25,10 @@ export default class LoaderImage {
     }
 
     sendImage(image) {
+        if (this.addImage.classList.contains('disabled')) return;
+
+        this.addImage.classList.add('disabled');
+
         const formData = new FormData();
         formData.append('image', image);
         formData.append('type', 'variant');
@@ -34,7 +38,7 @@ export default class LoaderImage {
         }
 
         fetch(
-            '/admin/image/save',
+            '/admin/product-variant/image/save',
             {
                 method: 'POST',
                 headers: {
@@ -50,7 +54,7 @@ export default class LoaderImage {
                         new RowImage(response.data, this.imageRowsContainer)
                     );
                 }
-            });
+            }).finally(() => this.addImage.classList.remove('disabled'));
     }
 
     selectFile(event) {
@@ -140,7 +144,6 @@ class RowImage {
     }
 
     removeRow() {
-        // get images
         const images = [...this.container.querySelectorAll('img')];
 
         const imageUrls = images.map((img) => img.getAttribute('src').replace('/storage/', ''));
@@ -148,7 +151,7 @@ class RowImage {
         this.overlayContainer.classList.add('load');
 
         fetch(
-            '/admin/image/remove',
+            '/admin/product-variant/image/remove',
             {
                 method: 'DELETE',
                 headers: {
@@ -197,9 +200,14 @@ class RowImage {
         });
     }
 
-    sendImageResize() {
+    sendImageResize({target}) {
+        if (target.classList.contains('disabled')) return;
+
+        target.classList.add('disabled');
+
         const width = this.modal.querySelector('input[id="image-width"]').value;
         const height = this.modal.querySelector('input[id="image-height"]').value;
+        const name = this.modal.querySelector('input[id="image-mark"]').value;
 
         const size = this.calculateAspectRatioFit(parseInt(width), parseInt(height));
 
@@ -207,9 +215,10 @@ class RowImage {
         formData.append('image-height', parseInt(size.height));
         formData.append('image-width', parseInt(size.width));
         formData.append('image-path', this.data.data['path-image']);
+        formData.append('image-name', name);
 
         fetch(
-            '/admin/image/save/resize',
+            '/admin/product-variant/image/save/resize',
             {
                 method: 'POST',
                 headers: {
@@ -221,9 +230,10 @@ class RowImage {
             .then(spreadResponse)
             .then((response) => {
                 if (checkIsErrorResponse(response)) {
-                    this.addNewVariantResizeImage(response.data, size);
+                    this.addNewVariantResizeImage(response.data, size, response.data.image);
+                    this.modal.querySelector('.close-modal').click();
                 }
-            });
+            }).finally(() => target.classList.remove('disabled'));
 
     }
 
@@ -247,8 +257,8 @@ class RowImage {
         return mutationObserver;
     }
 
-    addNewVariantResizeImage(image, size) {
-        console.log(image);
+    addNewVariantResizeImage(image, size, objImage) {
+        const number = this.container.querySelectorAll('.default-image').length;
 
         const htmlString = `
         <div class="default-image">
@@ -260,6 +270,8 @@ class RowImage {
             <div class="image-wrapper">
                 <img src="${image['url-image']}" alt="resize-image">
             </div>
+            <input hidden name="images[${this.countRow}][${number}][id]" value="${objImage.id}">
+            <input hidden name="images[${this.countRow}][${number}][path]" value="${objImage.path}">
         </div>
         `;
 
@@ -287,7 +299,7 @@ class RowImage {
         this.overlayContainer.classList.add('load');
 
         fetch(
-            '/admin/image/remove',
+            '/admin/product-variant/image/remove',
             {
                 method: 'DELETE',
                 headers: {
@@ -321,6 +333,9 @@ class RowImage {
      }
 
     addDefaultImage() {
+        const countRow = document.querySelectorAll('.load-images-container .load-image-row').length;
+        this.countRow = countRow;
+
         const htmlString = `
         <div class="default-image">
             <div class="overlay-image">
@@ -330,6 +345,8 @@ class RowImage {
             <div class="image-wrapper">
                 <img src="${this.data.data['url-image']}" alt="default-image">
             </div>
+            <input hidden name="images[${countRow}][0][id]" value="${this.data.image.id}">
+            <input hidden name="images[${countRow}][0][path]" value="${this.data.image.path}">
         </div>
         `;
 

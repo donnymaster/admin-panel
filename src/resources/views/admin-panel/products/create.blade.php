@@ -116,9 +116,9 @@
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
                 @if ($parent)
-                    <input  id="page_title" name="page_title" type="text" class="input" value="{{old('page_title') ? old('page_title') : $parent->page_title}}">
+                    <input  id="page_title" name="page_title" type="text" class="input slug-convert" value="{{old('page_title') ? old('page_title') : $parent->page_title}}">
                 @else
-                    <input  id="page_title" name="page_title" type="text" class="input" value="{{old('page_title')}}">
+                    <input  id="page_title" name="page_title" type="text" class="input slug-convert" value="{{old('page_title')}}">
                 @endif
             </div>
         </div>
@@ -129,9 +129,9 @@
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
                 @if ($parent)
-                    <input id="name_tile" name="name_tile" type="text" class="input" value="{{old('name_tile') ? old('name_tile') : $parent->name_tile}}">
+                    <input id="name_tile" name="name_tile" type="text" class="input slug-convert" value="{{old('name_tile') ? old('name_tile') : $parent->name_tile}}">
                 @else
-                    <input id="name_tile" name="name_tile" type="text" class="input" value=""{{old('name_tile')}}>
+                    <input id="name_tile" name="name_tile" type="text" class="input slug-convert" value=""{{old('name_tile')}}>
                 @endif
             </div>
             <div class="input-group">

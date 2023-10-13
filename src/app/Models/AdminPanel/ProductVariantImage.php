@@ -13,6 +13,7 @@ class ProductVariantImage extends Model
         'product_variant_id',
         'slug',
         'path',
+        'name',
     ];
 
     protected $casts = [

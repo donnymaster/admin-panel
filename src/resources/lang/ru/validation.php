@@ -176,6 +176,8 @@ return [
         'setting_value'         => 'Значение',
         'quantity'              => 'Количество',
         'percentages'           => 'Процент',
-        'code'                  => 'Код'
+        'code'                  => 'Код',
+        'price'                 => 'Цена',
+        'count'                 => 'Количество',
     ],
 ];

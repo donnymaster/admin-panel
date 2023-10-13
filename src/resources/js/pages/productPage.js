@@ -9,6 +9,7 @@ window.addEventListener('load', () => {
     window.dUnique = window.LaravelDataTables['productuniqueproperty-table'];
 
     window.dUnique.on('init', () => addEventClickRowTableUniqueProperties());
+    window.dVariants.on('init', () => addEventClickRowTableVariatns());
 
     window.dVariants.on('error', (error) => {
         window.location.reload();
@@ -173,6 +174,55 @@ function updateUniquePropertyById() {
             document.querySelector('.modal[data-modal="update-unique-property"] .close-modal').click();
         }
     }).finally(() => updateUniqueProductPropertyBtn.classList.remove('disabled'));
+}
+
+function addEventClickRowTableVariatns() {
+    document.querySelector('#productvariants-table_wrapper')
+    .addEventListener('click', ({target}) => {
+        if (target.classList.contains('edit')) {
+            // removeVariantById(target.dataset.id);
+        }
+
+        if (target.classList.contains('delete')) {
+            removeVariantById(target.dataset.id);
+        }
+    });
+}
+
+function removeVariantById(id) {
+    const productId = document.querySelector('#formUpdateProduct').dataset.product;
+    const table =  document.querySelector('#productvariants-table_wrapper');
+
+    if (table.classList.contains('load')) {
+        return;
+    }
+
+    table.classList.add('load');
+
+    fetch(
+        `/admin/catalog/products/${productId}/variants/${id}`,
+        {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': window._token,
+            },
+        }
+    )
+    .then(spreadResponse)
+    .then((response) => {
+        if (checkIsErrorResponse(response)) {
+            window.toast.push({
+                title: 'Успех!',
+                content: 'Вариант был удален!',
+                style: 'success',
+                dismissAfter: '2s'
+            });
+            window.dVariants.ajax.reload();
+        }
+    })
+    .finally(() => table.classList.remove('load'));
 }
 
 

@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('product_variant_images', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_variant_id');
+            $table->unsignedBigInteger('product_variant_id')->nullable();
             $table->string('slug');
+            $table->string('name')->nullable();
             $table->string('path');
 
             $table->timestamps();
 
-            $table->foreign('product_variant_id')->references('id')->on('product_variants');
+            $table->foreign('product_variant_id')->references('id')->on('product_variants')->cascadeOnDelete();
         });
     }
 

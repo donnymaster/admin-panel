@@ -3,42 +3,89 @@
 namespace App\Http\Controllers\AdminPanel;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AdminPanel\CreateProductVariantRequest;
 use App\Models\AdminPanel\Product;
 use App\Models\AdminPanel\ProductCategory;
+use App\Models\AdminPanel\ProductVariant;
+use App\Models\AdminPanel\ProductVariantImage;
+use App\Models\AdminPanel\PropertyValue;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 
 class ProductVariantController extends Controller
 {
     public function create(Product $product)
     {
-        $properties = $this->getPropertiesCategory(
-            ProductCategory::with('properties:id,name,description,product_category_id')->where('id', $product->category_id)->first()
+        $categories = [];
+
+        $this->getPropertiesCategory(
+             ProductCategory::with('properties:id,name,description,product_category_id')->where('id', $product->category_id)->first(),
+            $categories
         );
 
-        dd(array_reverse(Arr::flatten($properties)));
+        $categories = array_reverse($categories);
 
-        return view('admin-panel.variants.create', compact('product'));
+        return view('admin-panel.variants.create', compact('product', 'categories'));
     }
 
-    private function getPropertiesCategory(ProductCategory $category)
+    public function store(CreateProductVariantRequest $request, $productId)
+    // public function store(Request $request)
     {
-        $properties = [];
+        $val = array_merge(
+            $request->safe()->toArray(),
+            ['product_id' => $productId]
+        );
+        $variant = ProductVariant::create($val);
 
-        array_push($properties, $category);
-
-        if ($category->parent_id) {
-            $properties[] = $this->getPropertiesCategory(
-                ProductCategory::with('properties:id,name,description,product_category_id')->where('id', $category->parent_id)->first(),
-            );
-
-        //    $cat = ProductCategory::with('properties:id,name,description,product_category_id')->where('id', $category->parent_id)->first();
-
-        //    if ($cat) {
-        //     $properties[] = $cat;
-        //    }
+        foreach ($request->get('properties') as $arrays) {
+            foreach ($arrays as $property) {
+                if ($property['property-value']) {
+                    $variant->values()->create([
+                        'value' => $property['property-value'],
+                        'product_category_property_id' => $property['property-id'],
+                    ]);
+                }
+            }
         }
 
-        return $properties;
+        foreach ($request->get('images', []) as $arrays) {
+            foreach ($arrays as $image) {
+                ProductVariantImage::where('id', $image['id'])->update(['product_variant_id' => $variant->id]);
+            }
+        }
+
+        return redirect()->route('admin.products.show', ['product' => $productId]);
+
     }
+
+    public function remove($productId, ProductVariant $variant)
+    {
+        // удалить картинки
+        $images = ProductVariantImage::where('product_variant_id', $variant->id)->get();
+
+        if ($images) {
+            foreach ($images as $image) {
+                Storage::delete('public/'.$image->path);
+            }
+        }
+
+        $variant->delete();
+
+        return [
+            'message' => 'Вариант был удален!'
+        ];
+    }
+
+    private function getPropertiesCategory(ProductCategory $category, &$array = null)
+    {
+        array_push($array, $category);
+
+        if ($category->parent_id) {
+            $this->getPropertiesCategory(
+                ProductCategory::with('properties:id,name,description,product_category_id')->where('id', $category->parent_id)->first(),
+                $array
+            );
+        }
+    }
+
 }

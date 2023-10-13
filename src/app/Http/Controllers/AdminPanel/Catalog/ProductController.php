@@ -8,16 +8,19 @@ use App\DataTables\AdminPanel\ProductVariantsDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminPanel\CreateProductRequest;
 use App\Http\Requests\AdminPanel\CreateProductUniquePropertyRequest;
+use App\Http\Requests\AdminPanel\UpdateProductRequest;
 use App\Http\Requests\AdminPanel\UpdateProductUniquePropertyRequest;
 use App\Models\AdminPanel\Product;
 use App\Models\AdminPanel\ProductCategory;
 use App\Models\AdminPanel\ProductCategoryProperty;
 use App\Models\AdminPanel\ProductUniqueValue;
 use App\Models\AdminPanel\ProductVariant;
+use App\Models\AdminPanel\ProductVariantImage;
 use App\Services\AdminPanel\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -108,6 +111,32 @@ class ProductController extends Controller
             ->getProduct();
 
         return redirect()->route('admin.products');
+    }
+
+    public function remove(Product $product)
+    {
+        $product->variants()->get()->each(function ($variant) {
+            $images = ProductVariantImage::where('product_variant_id', $variant->id)->get();
+
+            foreach ($images as $image) {
+                Storage::delete('public/'.$image->path);
+            }
+
+            $variant->values()->delete();
+        });
+
+        $product->delete();
+
+        return [
+            'message' => 'Продукт был удален!'
+        ];
+    }
+
+    public function update(UpdateProductRequest $request, Product $product)
+    {
+        $product->update($request->safe()->toArray());
+
+        return back()->with('successfully', 'Товар была обновлена!');
     }
 
     public function productVariants(Request $request)

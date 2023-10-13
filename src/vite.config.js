@@ -22,6 +22,7 @@ export default defineConfig({
                 'resources/js/pages/productPage.js',
                 'resources/js/pages/ordersPage.js',
                 'resources/js/pages/createVariantPage.js',
+                'resources/js/pages/productsPage.js',
             ],
             refresh: true,
         }),

@@ -26,7 +26,14 @@ class ProductVariantsDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            // ->addColumn('action', 'productvariants.action')
+            ->addColumn('action', function ($variant) {
+                return "
+                <div class=\"flex\">
+                    <div data-id=\"{$variant->id}\"class=\" mr-2 btn edit\"></div>
+                    <div data-id=\"{$variant->id}\" class=\"btn delete bg-red\"></div>
+                </div>
+                ";
+            })
             ->setRowId('id');
     }
 
@@ -72,10 +79,15 @@ class ProductVariantsDataTable extends DataTable
     {
         return [
             Column::make('id'),
-            Column::make('title'),
-            Column::make('price'),
-            Column::make('count'),
-            Column::make('created_at'),
+            Column::make('title')->title('Название'),
+            Column::make('price')->title('Цена'),
+            Column::make('count')->title('Количество'),
+            Column::make('created_at')->title('Добавлен'),
+            Column::computed('action')
+            ->exportable(false)
+            ->printable(false)
+            ->title('Действия'),
+
         ];
     }
 

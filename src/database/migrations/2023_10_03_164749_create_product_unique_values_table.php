@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('unique_value');
             $table->timestamps();
 
-            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete();
         });
     }
 

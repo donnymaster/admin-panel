@@ -171,3 +171,30 @@ document.querySelector('#updateCaregoryPropertyBtn')
             table.classList.remove('load');
         });
     });
+
+document.querySelector('.delete-category')
+    .addEventListener('click', ({target}) => {
+        const id = target.dataset.id;
+
+        if (target.classList.contains('load')) {
+            return;
+        }
+
+        target.classList.add('load');
+
+        fetch(
+            `/admin/catalog/categories/${id}`,
+            {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': window._token,
+                }
+            },
+        )
+        .then(spreadResponse)
+        .then((response) => {
+            if (checkIsErrorResponse(response)) {
+                window.open('/admin/catalog/categories/page/list', '_top');
+            }
+        }).finally(() => target.classList.remove('load'));
+    });
