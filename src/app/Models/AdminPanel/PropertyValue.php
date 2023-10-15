@@ -20,7 +20,7 @@ class PropertyValue extends Model
 
     public function product_category()
     {
-        return $this->belongsTo(ProductCategoryProperty::class);
+        return $this->belongsTo(ProductCategoryProperty::class, 'product_category_property_id');
     }
 
     public function property_value()

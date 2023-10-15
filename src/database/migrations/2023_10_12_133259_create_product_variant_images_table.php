@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('product_variant_id')->nullable();
             $table->string('slug');
+            $table->unsignedBigInteger('parent_id')->nullable();
             $table->string('name')->nullable();
             $table->string('path');
 

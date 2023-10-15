@@ -55,6 +55,7 @@ class ImageProcessingProductVariantController extends Controller
         $imageWidth = $request->get('image-width');
         $imageHeight = $request->get('image-height');
         $imageName = $request->get('image-name');
+        $parentId = $request->get('parent_id');
 
         $filename = pathinfo($imagePath)['filename'];
 
@@ -69,7 +70,8 @@ class ImageProcessingProductVariantController extends Controller
         $image = ProductVariantImage::create([
             'name' => $imageName,
             'slug' => Str::slug($imageName),
-            'path' => $pathNewImage
+            'path' => $pathNewImage,
+            'parent_id' => $parentId
         ]);
 
         return [
@@ -87,9 +89,9 @@ class ImageProcessingProductVariantController extends Controller
         if (is_array($imagePath)) {
             foreach ($imagePath as $path) {
                 Storage::delete('public/'.$path);
-            }
 
-            ProductVariantImage::where('path', $path)->delete();
+                ProductVariantImage::where('path', $path)->delete();
+            }
 
             return [
                 'message' => 'Картинки была удалены!'

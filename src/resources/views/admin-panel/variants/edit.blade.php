@@ -1,9 +1,9 @@
 @extends('admin-panel.layouts.main')
 
-@section('title', 'Новый вариант')
+@section('title', $variant->title)
 
 @section('content')
-<form method="POST" action="{{route('admin.products.variants.store', ['product' => $product->id])}}">
+<form method="POST" action="{{route('admin.products.variants.update', ['product' => $variant->product_id, 'variant' => $variant->id])}}">
     @csrf
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -19,18 +19,19 @@
             {{session()->get('successfully')}}
         </div>
     @endif
+    @method('PATCH')
     <div class="columns-1 flex justify-between mb-9 divide-x pb-2 text-white text-3xl border-b-2 border-b-white">
         <span>Общие сведения</span>
-        <button type="submit" class="btn load-applications small-btn border-none">Добавить</button>
+        <button type="submit" class="btn load-applications small-btn border-none">Обновить</button>
     </div>
-    <div data-product="{{ $product->id }}" id="information" class="variant-product flex flex-col">
+    <div data-product="{{ $variant->product_id }}" id="information" class="variant-product flex flex-col">
         <div class="columns-2 mb-4">
             <div class="input-group">
                 <label for="title" class="label">
                     Название
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
-                <input id="title" name="title" type="text" class="input" value="{{old('title')}}">
+                <input id="title" name="title" type="text" class="input" value="{{old('title') ? old('title') : $variant->title}}">
             </div>
             <div class="input-group">
                 <label for="name_tile" class="label">
@@ -38,7 +39,7 @@
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
                 <input id="name_tile" name="name_tile"
-                    type="text" class="input" value="{{old('name_tile')}}">
+                    type="text" class="input" value="{{old('name_tile') ? old('name_tile') : $variant->name_tile}}">
             </div>
         </div>
         <div class="columns-2 mb-4">
@@ -48,7 +49,7 @@
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
                 <input id="price" name="price"
-                    type="text" class="input" value="{{old('price')}}">
+                    type="text" class="input" value="{{old('price') ? old('price') : $variant->price}}">
             </div>
             <div class="input-group">
                 <label for="count" class="label">
@@ -56,7 +57,7 @@
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
                 <input id="count" name="count"
-                    type="number" min="1" class="input" value="{{old('count')}}">
+                    type="number" min="1" class="input" value="{{old('count') ? old('count') : $variant->count}}">
             </div>
         </div>
 
@@ -93,6 +94,9 @@
                                         class="input"
                                         value="{{old('properties')[$category->id][$loop->index]['property-value']}}"
                                     >
+                                    @if (isset(old('properties')[$category->id][$loop->index]['property-value-id']))
+                                        <input hidden name="properties[{{$category->id}}][{{$loop->index}}][property-value-id]" type="text" class="input" value="{{old('properties')[$category->id][$loop->index]['property-value-id']}}"">
+                                    @endif
                                 </div>
                             </div>
                         @empty
@@ -125,7 +129,22 @@
                                     <input hidden name="properties[{{$category->id}}][{{$loop->index}}][property-id]" type="text" class="input" value="{{$property->id}}">
                                     <input hidden name="properties[{{$category->id}}][{{$loop->index}}][category]" type="text" class="input" value="{{$category->id}}">
                                     <input hidden name="properties[{{$category->id}}][{{$loop->index}}][property-name]" type="text" class="input" value="{{$property->name}}">
-                                    <input id="properties[{{$category->id}}][{{$loop->index}}][property-value]" name="properties[{{$category->id}}][{{$loop->index}}][property-value]" type="text" class="input">
+                                    <input
+                                        id="properties[{{$category->id}}][{{$loop->index}}][property-value]"
+                                        name="properties[{{$category->id}}][{{$loop->index}}][property-value]"
+                                        type="text"
+                                        class="input"
+                                        @if (isset($variantValues[$category->id]))
+                                            @if (isset($variantValues[$category->id][$property->id]))
+                                                value="{{$variantValues[$category->id][$property->id][0]->value}}"
+                                            @endif
+                                        @endif
+                                    >
+                                    @if (isset($variantValues[$category->id]))
+                                        @if (isset($variantValues[$category->id][$property->id]))
+                                        <input hidden name="properties[{{$category->id}}][{{$loop->index}}][property-value-id]" type="text" class="input" value="{{$variantValues[$category->id][$property->id][0]->id}}">
+                                        @endif
+                                    @endif
                                 </div>
                             </div>
                         @empty
@@ -154,26 +173,51 @@
                 <div class="empty-data">
                 </div>
                <div class="old-data hidden">
-                    @if (old('images'))
-                        @foreach (old('images') as $images)
+
+                @if (old('images'))
+                    @foreach (old('images') as $imagesOld)
+                        <div class="wrap">
+                            @foreach ($imagesOld as $image)
+                                <div class="image">
+                                    <input type="text" hidden name="id" value="{{$image['id']}}">
+                                    <input type="text" hidden name="path" value="{{$image['path']}}">
+                                    <input type="text" hidden name="size" value="{{$image['size']}}">
+                                    <input type="text" hidden name="url-path" value="{{$image['url-path']}}">
+                                    <input type="text" hidden name="width" value="{{$image['width']}}">
+                                    <input type="text" hidden name="heigth" value="{{$image['heigth']}}">
+                                </div>
+                            @endforeach
+                        </div>
+                    @endforeach
+                @else
+                    @foreach ($images as $imageVariant)
                             <div class="wrap">
-                                @foreach ($images as $image)
-                                    <div class="image">
-                                        <input type="text" hidden name="id" value="{{$image['id']}}">
-                                        <input type="text" hidden name="path" value="{{$image['path']}}">
-                                        <input type="text" hidden name="size" value="{{$image['size']}}">
-                                        <input type="text" hidden name="url-path" value="{{$image['url-path']}}">
-                                        <input type="text" hidden name="width" value="{{$image['width']}}">
-                                        <input type="text" hidden name="heigth" value="{{$image['heigth']}}">
-                                    </div>
-                                @endforeach
+                                <div class="image">
+                                    <input type="text" hidden name="id" value="{{$imageVariant['id']}}">
+                                    <input type="text" hidden name="path" value="{{$imageVariant['path']}}">
+                                    <input type="text" hidden name="size" value="{{$imageVariant['size']}}">
+                                    <input type="text" hidden name="url-path" value="{{$imageVariant['url-path']}}">
+                                    <input type="text" hidden name="width" value="{{$imageVariant['width']}}">
+                                    <input type="text" hidden name="heigth" value="{{$imageVariant['heigth']}}">
+                                </div>
+                                @if (isset($imageVariant['children']))
+                                    @foreach ($imageVariant['children'] as $child)
+                                        <div class="image">
+                                            <input type="text" hidden name="id" value="{{$child['id']}}">
+                                            <input type="text" hidden name="path" value="{{$child['path']}}">
+                                            <input type="text" hidden name="size" value="{{$child['size']}}">
+                                            <input type="text" hidden name="url-path" value="{{$child['url-path']}}">
+                                            <input type="text" hidden name="width" value="{{$child['width']}}">
+                                            <input type="text" hidden name="heigth" value="{{$child['heigth']}}">
+                                        </div>
+                                    @endforeach
+                                @endif
                             </div>
                         @endforeach
-                    @endif
+                @endif
                </div>
             </div>
         </div>
-
     @endsection
 </form>
 @section('sidebar')
@@ -181,7 +225,7 @@
 @endsection
 
 @section('scripts')
-    @vite(['resources/js/pages/createVariantPage.js'])
+    @vite(['resources/js/pages/updateVariantProduct.js'])
 @endsection
 
 @push('modals')

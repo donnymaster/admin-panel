@@ -180,7 +180,11 @@ function addEventClickRowTableVariatns() {
     document.querySelector('#productvariants-table_wrapper')
     .addEventListener('click', ({target}) => {
         if (target.classList.contains('edit')) {
-            // removeVariantById(target.dataset.id);
+            const productId = document.querySelector('#formUpdateProduct').dataset.product;
+            window.open(
+                `${window.location.origin}/admin/catalog/products/${productId}/variants/${target.dataset.id}/edit`,
+                '_top'
+            );
         }
 
         if (target.classList.contains('delete')) {

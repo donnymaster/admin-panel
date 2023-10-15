@@ -102,13 +102,13 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
         Route::get('/categories/{category}/products', [CategoryController::class, 'products'])->name('catalog.category.products');
         Route::get('/', [CategoryController::class, 'index'])->name('catalogs');
 
-        Route::get('/products', [ProductController::class, 'index'])->where('id', '[0-9]+')->name('products');
-        Route::get('/products/create', [ProductController::class, 'create'])->where('id', '[0-9]+')->name('products.create');
-        Route::post('/products', [ProductController::class, 'store'])->where('id', '[0-9]+')->name('products.store');
-        Route::delete('/products/{product}', [ProductController::class, 'remove'])->where('id', '[0-9]+')->name('products.remove');
-        Route::patch('/products/{product}', [ProductController::class, 'update'])->where('id', '[0-9]+')->name('products.update');
+        Route::get('/products', [ProductController::class, 'index'])->name('products');
+        Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+        Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+        Route::delete('/products/{product}', [ProductController::class, 'remove'])->name('products.remove');
+        Route::patch('/products/{product}', [ProductController::class, 'update'])->name('products.update');
 
-        Route::get('/products/{product}', [ProductController::class, 'show'])->where('id', '[0-9]+')->name('products.show');
+        Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
         Route::get('/product-variants', [ProductController::class, 'productVariants'])->name('product-variants');
 
         Route::post('/products/{product}/unique-properties', [ProductController::class, 'createUniqueProperty'])->name('products.unique-property.create');
@@ -116,8 +116,10 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
         Route::patch('/products/{product}/unique-properties/{property}', [ProductController::class, 'updateUniqueProperty'])->name('products.unique-property.update');
 
         Route::get('/products/{product}/variants', [ProductVariantController::class, 'create'])->name('products.variants.create');
+        Route::get('/products/{product}/variants/{variant}/edit', [ProductVariantController::class, 'edit'])->name('products.variants.edit');
         Route::post('/products/{product}/variants', [ProductVariantController::class, 'store'])->name('products.variants.store');
         Route::delete('/products/{product}/variants/{variant}', [ProductVariantController::class, 'remove'])->name('products.variants.remove');
+        Route::patch('/products/{product}/variants/{variant}', [ProductVariantController::class, 'update'])->name('products.variants.update');
 
 
         Route::get('/product-reviews', [ProductReviewController::class, 'index'])->name('product-reviews.index');
@@ -126,8 +128,8 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
 
 
         Route::prefix('/{catalogId}')->group(function() {
-            Route::get('/', [CatalogController::class, 'show'])->where('id', '[0-9]+')->name('catalog');
-            Route::get('/product/{productId}', [ProductController::class, 'index'])->where('id', '[0-9]+')->name('product');
+            Route::get('/', [CatalogController::class, 'show'])->name('catalog');
+            Route::get('/product/{productId}', [ProductController::class, 'index'])->name('product');
         });
     });
 
@@ -181,13 +183,15 @@ Route::get('routes', function () {
 
     echo "<table style='width:100%'>";
     echo "<tr>";
-    echo "<td width='10%'><h4>HTTP Method</h4></td>";
+    echo "<td width='2%'><h4>key</h4></td>";
+    echo "<td width='8%'><h4>HTTP Method</h4></td>";
     echo "<td width='10%'><h4>Route</h4></td>";
     echo "<td width='10%'><h4>Name</h4></td>";
     echo "<td width='70%'><h4>Corresponding Action</h4></td>";
     echo "</tr>";
-    foreach ($routeCollection as $value) {
+    foreach ($routeCollection as $key => $value) {
         echo "<tr>";
+        echo "<td>" . $key . "</td>";
         echo "<td>" . $value->methods()[0] . "</td>";
         echo "<td>" . $value->uri() . "</td>";
         echo "<td>" . $value->getName() . "</td>";

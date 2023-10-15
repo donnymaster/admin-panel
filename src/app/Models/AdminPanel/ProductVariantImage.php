@@ -14,6 +14,7 @@ class ProductVariantImage extends Model
         'slug',
         'path',
         'name',
+        'parent_id'
     ];
 
     protected $casts = [
@@ -23,5 +24,10 @@ class ProductVariantImage extends Model
     public function productVariant()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function children()
+    {
+        return $this->hasMany(self::class, 'parent_id');
     }
 }

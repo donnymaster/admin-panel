@@ -110,7 +110,7 @@ class ProductController extends Controller
             ->createUnuqieProperty($request)
             ->getProduct();
 
-        return redirect()->route('admin.products');
+        return redirect()->route('admin.products.show', ['product' => $product->id]);
     }
 
     public function remove(Product $product)
@@ -134,7 +134,14 @@ class ProductController extends Controller
 
     public function update(UpdateProductRequest $request, Product $product)
     {
+
         $product->update($request->safe()->toArray());
+
+        if ($request->isJson()) {
+            return [
+                'message' => 'Товар был обновлен!'
+            ];
+        }
 
         return back()->with('successfully', 'Товар была обновлена!');
     }

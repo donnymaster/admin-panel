@@ -13,6 +13,12 @@ export default class LoaderImage {
 
         this.createBufferInput();
         this.addEventHandlers();
+
+        const oldDataElement = this.imageRowsContainer.querySelector('.old-data');
+
+        if (oldDataElement.querySelectorAll('.wrap').length > 0) {
+            this.generateOldData(oldDataElement);
+        }
     }
 
     addEventHandlers() {
@@ -77,13 +83,44 @@ export default class LoaderImage {
 
         this.bufferInput = input;
     }
+
+    generateOldData(el) {
+        const rows = el.querySelectorAll('.wrap');
+
+        rows.forEach((row) => {
+            const images = [...row.querySelectorAll('.image')];
+
+            const firstImage = images.shift();
+
+            const data = {
+                data: {
+                    width: firstImage.querySelector('input[name="width"]').value,
+                    heigth: firstImage.querySelector('input[name="heigth"]').value,
+                    size: firstImage.querySelector('input[name="size"]').value,
+                    'url-image': firstImage.querySelector('input[name="url-path"]').value,
+                    'path-image': firstImage.querySelector('input[name="path"]').value,
+                },
+                image: {
+                    id: firstImage.querySelector('input[name="id"]').value,
+                    path: firstImage.querySelector('input[name="path"]').value,
+                }
+            };
+
+            console.log(images);
+
+            this.imageRows.push(
+                new RowImage(data, this.imageRowsContainer, images)
+            );
+        });
+    }
 }
 
 
 class RowImage {
-    constructor(data, parent) {
+    constructor(data, parent, oldData = []) {
         this.data = data;
         this.parent = parent;
+        this.parentImageId = 0;
 
         this.handlersRemoveItems = [];
         this.handlersEvents = [];
@@ -91,6 +128,10 @@ class RowImage {
         this.createContainer();
         this.addDefaultImage();
         this.modal = document.querySelector('.modal[data-modal="add-image"]');
+
+        if (oldData.length > 0) {
+            this.generateOldData(oldData);
+        }
     }
 
     createContainer() {
@@ -216,6 +257,7 @@ class RowImage {
         formData.append('image-width', parseInt(size.width));
         formData.append('image-path', this.data.data['path-image']);
         formData.append('image-name', name);
+        formData.append('parent_id', this.parentImageId);
 
         fetch(
             '/admin/product-variant/image/save/resize',
@@ -350,6 +392,30 @@ class RowImage {
         </div>
         `;
 
+        this.parentImageId = this.data.image.id;
+
         this.container.querySelector('.body').insertAdjacentHTML('beforeend', htmlString);
+    }
+
+
+    generateOldData(el) {
+        el.forEach((image) => {
+            const data = {
+                size: image.querySelector('input[name="size"]').value,
+                'url-image': image.querySelector('input[name="url-path"]').value,
+            };
+
+            const size = {
+                width: image.querySelector('input[name="width"]').value,
+                height: image.querySelector('input[name="heigth"]').value,
+            };
+
+            const obj = {
+                id: image.querySelector('input[name="id"]').value,
+                path: image.querySelector('input[name="path"]').value,
+            };
+
+            this.addNewVariantResizeImage(data, size, obj);
+        });
     }
 }

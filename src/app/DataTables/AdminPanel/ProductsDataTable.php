@@ -115,7 +115,7 @@ class ProductsDataTable extends DataTable
             Column::make('id'),
             Column::make('title')->title('Название'),
             Column::make('category_id')->title('Категория'),
-            Column::make('count_variants')->title('Вариантов'),
+            Column::make('count_variants')->title('<div class="variants-icon"></div>'),
             Column::make('visible')->title('Статус'),
             Column::make('copy')->title('Копировать'),
             Column::make('created_at')->title('Добавлен'),
