@@ -23,4 +23,9 @@ class Order extends Model
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:m',
     ];
+
+    public function variants()
+    {
+        return $this->belongsToMany(ProductVariant::class, 'product_orders', 'order_id')->withPivot(['count_product']);
+    }
 }

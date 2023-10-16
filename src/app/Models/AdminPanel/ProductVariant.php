@@ -46,4 +46,9 @@ class ProductVariant extends Model
     {
         return $this->hasMany(Promocode::class, 'product_variant_id');
     }
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'product_orders', 'product_variant_id')->withPivot(['count_product']);;
+    }
 }

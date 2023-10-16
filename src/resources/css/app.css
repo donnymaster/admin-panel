@@ -38,6 +38,7 @@
 @import './pages/create-product';
 @import './pages/promocodes';
 @import './pages/board';
+@import './pages/order';
 /* @import './pages/create-page'; */
 
 @import 'choices.js/public/assets/styles/choices.min.css';

@@ -46,6 +46,8 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        dd($order);
+        $products = $order->variants()->with('product')->get()->groupBy('product_id');
+        // dd($products);
+        return view('admin-panel.orders.order', compact('order', 'products'));
     }
 }
