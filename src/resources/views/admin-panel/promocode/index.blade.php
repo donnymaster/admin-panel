@@ -101,12 +101,12 @@
                     </label>
                     <input id="percentages" type="text" class="input border border-theme-blue border-solid">
                 </div>
-                <div class="input-group mb-2 input-search-parent relative">
+                {{-- <div class="input-group mb-2 input-search-parent relative">
                     <label for="product" class="label black pb-1">
                         Продукт
                     </label>
                     <input id="product" type="text" class="input border border-theme-blue border-solid">
-                </div>
+                </div> --}}
             </div>
             <div class="modal-footer flex justify-end">
                 <div class="btn bg-green mr-2" id="createPromocodeBtn">
@@ -172,12 +172,12 @@
                     </label>
                     <input id="new-percentages" type="text" class="input border border-theme-blue border-solid">
                 </div>
-                <div class="input-group mb-2 input-search-parent relative">
+                {{-- <div class="input-group mb-2 input-search-parent relative">
                     <label for="new-product" class="label black pb-1">
                         Продукт
                     </label>
                     <input id="new-product" type="text" class="input border border-theme-blue border-solid">
-                </div>
+                </div> --}}
             </div>
             <div class="modal-footer flex justify-end">
                 <div class="btn bg-green mr-2" id="updatePromocodeBtn">

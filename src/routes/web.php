@@ -63,6 +63,8 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
         Route::get('/orders', [OrderController::class, 'index'])->name('orders');
         Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
         Route::patch('/orders/change-status', [OrderController::class, 'changeStatus'])->name('orders.change-status');
+        Route::patch('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
+        Route::patch('/orders/{order}/add-variant', [OrderController::class, 'addVariantInOrder'])->name('orders.addVariant');
 
         Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews');
         Route::patch('/reviews/{review}', [ReviewController::class, 'store'])->name('reviews.store')->where('review', '[0-9]+');

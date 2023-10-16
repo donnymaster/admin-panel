@@ -53,7 +53,7 @@ class OrdersDataTable extends DataTable
                 ";
             })
             ->editColumn('count_products', function ($order) {
-                return 5;
+                return $order->variants()->get()->sum('pivot.count_product');
             })
             ->addColumn('raw_count_statuses', function () {
                 return OrderService::getCountOrdersByStatuses();

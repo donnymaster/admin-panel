@@ -19,8 +19,8 @@ return new class extends Migration
             $table->decimal('total_quantity');
             $table->string('delivery_address')->nullable();
             $table->string('type_delivery')->nullable();
-            $table->string('user_annotation')->nullable();
-            $table->string('admin_annotation')->nullable();
+            $table->text('user_annotation')->nullable();
+            $table->text('admin_annotation')->nullable();
 
             $table->timestamps();
         });

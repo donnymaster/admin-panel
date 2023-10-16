@@ -42,9 +42,9 @@ class ProductVariant extends Model
         return $this->hasMany(ProductVariantImage::class, 'product_variant_id');
     }
 
-    public function promocodes()
+    public function promocode()
     {
-        return $this->hasMany(Promocode::class, 'product_variant_id');
+        return $this->hasOne(Promocode::class, 'product_variant_id');
     }
 
     public function orders()

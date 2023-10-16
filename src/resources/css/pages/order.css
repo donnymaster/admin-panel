@@ -1,10 +1,11 @@
 .products-list {
     & .variant-item {
+        margin-left: auto;
         display: flex;
-        width: 100%;
+        width: calc(100% - 30px);
         justify-content: space-between;
         padding: 10px 20px;
-        border-radius: 25px;
+        border-radius: 8px;
         background-color: white;
         margin-top: 15px;
     }

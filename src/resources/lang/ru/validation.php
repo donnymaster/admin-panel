@@ -179,5 +179,7 @@ return [
         'code'                  => 'Код',
         'price'                 => 'Цена',
         'count'                 => 'Количество',
+        'promocode'             => 'Промокод',
+        'count_variants'        => 'Количество'
     ],
 ];

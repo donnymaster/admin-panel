@@ -1,5 +1,6 @@
 import checkIsErrorResponse from "../utils/checkIsErrorResponse";
 import spreadResponse from "../utils/spreadResponse";
+// import SearchEngineInputProductVariant from "../components/SearchEngineInputProductVariant";
 
 const codeGenerateContainers = document.querySelectorAll('.container-generate-code');
 const promocodeVariantsContainers = document.querySelectorAll('.promocode-variants');
@@ -8,121 +9,13 @@ const changeStatePromocode = document.querySelector('.modal-header .status');
 const updatePromocodeBtn = document.querySelector('.modal-btn[data-modal="update-promocode"]');
 const createPromocodeBtn = document.querySelector('.modal-btn[data-modal="create-promocode"]');
 
-
-class SearchEngineInput {
-    constructor(
-        url,
-        parent,
-        inputSearchSelector,
-        inputNewName,
-        parentlementSelector,
-    ) {
-        this.url = url;
-        this.inputSearch = parent.querySelector(inputSearchSelector);
-        this.inputNewName = inputNewName;
-        this.parent = parent.querySelector(parentlementSelector);
-        this.limit = 10;
-        this.init();
-    }
-
-    init() {
-        this.inputSearch.addEventListener('input', this.debounce(this.search.bind(this), 500));
-        this.parent.insertAdjacentHTML('beforeend', `
-            <input hidden name="${this.inputNewName}"/>
-        `);
-
-        this.parent.insertAdjacentHTML("afterbegin", `
-            <div class="input-search-results"></div>
-        `);
-
-        this.resultContainer = this.parent.querySelector('.input-search-results');
-
-        document.querySelector('body')
-            .addEventListener('click', ({ target }) => {
-                if (!!target.closest('.input-search-parent')) {
-                    return;
-                }
-
-                this.resultContainer.style = 'display:none';
-            });
-
-        this.resultContainer.addEventListener('click', this.handlerClickToResultContainer.bind(this));
-    }
-
-    search({ target }) {
-
-        fetch(
-            `/admin/catalog/product-variants?limit=${this.limit}&search=${target.value}`,
-        )
-            .then(spreadResponse)
-            .then((response) => {
-                if (checkIsErrorResponse(response)) {
-                    this.renderProducts(response.data);
-                    this.resultContainer.style = 'display:flex';
-                }
-            });
-
-        if (target.value === '') {
-            this.parent.querySelector(`input[name="${this.inputNewName}"]`).value = '';
-        }
-    }
-
-    handlerClickToResultContainer({ target }) {
-        if (!target.classList.contains('search-element')) {
-            return;
-        }
-
-        this.parent.querySelector(`input[name="${this.inputNewName}"]`).value = target.dataset.id;
-        this.inputSearch.value = target.textContent;
-        this.resultContainer.style = 'display:none';
-    }
-
-    renderProducts(products = []) {
-        while (this.resultContainer.firstChild) {
-            this.resultContainer.removeChild(this.resultContainer.lastChild);
-        }
-
-        if (products.length === 0) {
-            this.resultContainer.insertAdjacentHTML('afterbegin', `
-                <div class="empty-data">Ничего не найдено!</div>
-            `);
-        }
-
-        products.forEach((product) => {
-            const productElement = document.createElement('div');
-            productElement.classList.add('search-element');
-            productElement.setAttribute('data-id', product.id);
-            productElement.textContent = product.title;
-
-            this.resultContainer.append(productElement);
-        });
-    }
-
-    debounce(func, timeout = 300) {
-        let timer;
-        return (...args) => {
-            clearTimeout(timer);
-            timer = setTimeout(() => { func.apply(this, args); }, timeout);
-        };
-    }
-
-    setValueSearchInput(value = '') {
-        this.inputSearch.value = value;
-    }
-
-    setValueInputHidden(value = '') {
-        this.parent.querySelector(`input[name="${this.inputNewName}"]`).value = value;
-    }
-
-}
-
-const searchEngineInputUpdatePromocode = new SearchEngineInput(
-    '/',
-    document.querySelector('.modal[data-modal="update-promocode"]'),
-    'input[id="new-product"]',
-    'product_id',
-    '.input-search-parent'
-);
+// const searchEngineInputUpdatePromocode = new SearchEngineInputProductVariant(
+//     '/',
+//     document.querySelector('.modal[data-modal="update-promocode"]'),
+//     'input[id="new-product"]',
+//     'product_id',
+//     '.input-search-parent'
+// );
 
 
 window.addEventListener('load', () => {
@@ -203,7 +96,7 @@ function initUpdatePromocode() {
         const quantity = modal.querySelector('#new-quantity').value;
         const code = modal.querySelector('#new-code').value;
         const percentages = modal.querySelector('#new-percentages').value;
-        const product_variant_id = modal.querySelector('input[name="product_id"]').value;
+        // const product_variant_id = modal.querySelector('input[name="product_id"]').value;
 
         fetch(
             `/admin/catalog/promocodes/${id}`,
@@ -214,7 +107,7 @@ function initUpdatePromocode() {
                     'Accept': 'application/json',
                     'X-CSRF-TOKEN': window._token,
                 },
-                body: JSON.stringify({ name, quantity, code, percentages, product_variant_id })
+                body: JSON.stringify({ name, quantity, code, percentages })
             }
         )
             .then(spreadResponse)
@@ -339,13 +232,13 @@ function createPromocode({ target }) {
     const code = modal.querySelector('input[id="code"').value;
     const percentages = modal.querySelector('input[id="percentages"').value;
     const status = modal.querySelector('input[id="status"').value;
-    const product_variant_id = modal.querySelector('input[name="product_id"').value;
+    // const product_variant_id = modal.querySelector('input[name="product_id"').value;
 
     const data = { name, quantity, code, percentages, status };
 
-    if (product_variant_id) {
-        data.product_variant_id = product_variant_id;
-    }
+    // if (product_variant_id) {
+    //     data.product_variant_id = product_variant_id;
+    // }
 
     fetch(
         '/admin/catalog/promocodes',
@@ -462,10 +355,10 @@ async function copyContent(text) {
 }
 
 
-new SearchEngineInput(
-    '/',
-    document.querySelector('.modal[data-modal="create-promocode"]'),
-    'input[id="product"]',
-    'product_id',
-    '.input-search-parent'
-);
+// new SearchEngineInput(
+//     '/',
+//     document.querySelector('.modal[data-modal="create-promocode"]'),
+//     'input[id="product"]',
+//     'product_id',
+//     '.input-search-parent'
+// );

@@ -26,6 +26,6 @@ class Order extends Model
 
     public function variants()
     {
-        return $this->belongsToMany(ProductVariant::class, 'product_orders', 'order_id')->withPivot(['count_product']);
+        return $this->belongsToMany(ProductVariant::class, 'product_orders', 'order_id')->withPivot(['id', 'count_product', 'promocode_id'])->using(ProductOrderPivot::class);
     }
 }

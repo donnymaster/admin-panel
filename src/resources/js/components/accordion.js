@@ -11,7 +11,8 @@ export default class ItcAccordion {
     addEventListener() {
       this._el.addEventListener('click', (e) => {
         const elHeader = e.target.closest('.accordion__header');
-        if (!elHeader) {
+
+        if (!elHeader || e.target.classList.contains('remove-product')) {
           return;
         }
         if (!this._config.alwaysOpen) {
