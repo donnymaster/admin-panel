@@ -24,12 +24,9 @@ class AddVariantInOrderRequest extends FormRequest
     {
         $variant = ProductVariant::where('id', $this->variant_id)->firstOrFail();
 
-        // dd($variant->count);
         $maxProductVariant = $variant->count;
 
         return [
-            'promocode' => 'nullable|exists:promocodes,code',
-            'count_variants' => "required|numeric|min:1|max:$maxProductVariant",
             'variant_id' => 'required|exists:product_variants,id',
         ];
     }

@@ -16,9 +16,12 @@ export default class SearchEngineInputProductVariant {
         this.parent = parent.querySelector(parentlementSelector);
         this.limit = limit;
         this.init();
+
+        this.LOAD = 'load';
     }
 
     init() {
+        this.handlers = [];
         this.inputSearch.addEventListener('input', this.debounce(this.search.bind(this), 500));
         this.parent.insertAdjacentHTML('beforeend', `
             <input hidden name="${this.inputNewName}"/>
@@ -40,6 +43,16 @@ export default class SearchEngineInputProductVariant {
             });
 
         this.resultContainer.addEventListener('click', this.handlerClickToResultContainer.bind(this));
+    }
+
+    addEventSelectVariant(callback, type) {
+        if (Array.isArray(this.handlers[type])) {
+            this.handlers[type].push(callback);
+        }
+        else {
+            this.handlers[type] = [ callback ];
+        }
+        return this;
     }
 
     search({ target }) {
@@ -68,6 +81,10 @@ export default class SearchEngineInputProductVariant {
         this.parent.querySelector(`input[name="${this.inputNewName}"]`).value = target.dataset.id;
         this.inputSearch.value = target.textContent;
         this.resultContainer.style = 'display:none';
+
+        this.handlers[this.LOAD].forEach(callback => {
+            callback({id: target.dataset.id});
+        });
     }
 
     renderProducts(products = []) {

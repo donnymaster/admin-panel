@@ -23,6 +23,7 @@ class ReviewFactory extends Factory
             'is_show' => true,
             'comment' => fake()->word(),
             'rating' => fake()->randomElement([1, 2, 3, 4, 5]),
+            'created_at' => fake()->dateTimeBetween('-1 month'),
         ];
     }
 }

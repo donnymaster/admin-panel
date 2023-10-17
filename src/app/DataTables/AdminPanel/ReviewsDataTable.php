@@ -11,6 +11,8 @@ use Yajra\DataTables\Services\DataTable;
 
 class ReviewsDataTable extends DataTable
 {
+    private $productVariantId = null;
+
     /**
      * Build the DataTable class.
      *

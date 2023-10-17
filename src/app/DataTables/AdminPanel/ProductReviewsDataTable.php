@@ -23,7 +23,7 @@ class ProductReviewsDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('name_variant', function ($review) {
-                return $review->productVariant->product->name;
+                return $review->productVariant->title;
             })
             ->editColumn('visible', function ($review) {
                 if ($review->visible) {
@@ -64,11 +64,11 @@ class ProductReviewsDataTable extends DataTable
 
         if ($variant) {
             return $model->newQuery()->with(['productVariant' => function ($query) use ($variant) {
-                $query->where('id', $variant->id)->with('product');
+                $query->where('id', $variant->id);
             }]);
         }
 
-        return $model->newQuery()->with('productVariant.product');
+        return $model->newQuery()->with('productVariant');
     }
 
     /**

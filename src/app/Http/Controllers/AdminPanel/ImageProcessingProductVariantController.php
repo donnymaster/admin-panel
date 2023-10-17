@@ -36,6 +36,11 @@ class ImageProcessingProductVariantController extends Controller
             'path' => substr($pathWebp, 1)
         ]);
 
+        $image->update([
+            'name' => "default-{$image->id}",
+            'slug' => "default-{$image->id}",
+        ]);
+
         return [
             'message' => 'Картинка была добавлена',
             'data' => [

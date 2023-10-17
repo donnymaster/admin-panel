@@ -56,7 +56,7 @@ class PromocodesDataTable extends DataTable
      */
     public function query(Promocode $model): QueryBuilder
     {
-        return $model->newQuery()->with('productVariant:id,title');
+        return $model->newQuery();
     }
 
     /**

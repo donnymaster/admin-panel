@@ -28,6 +28,7 @@ class StatisticFactory extends Factory
             'city_visitor' => fake()->city(),
             'page_name_visit' => fake()->randomElement(['Главная', 'О нас', 'Товары', 'Примеры работ']),
             'page_url_visit' => fake()->randomElement(['/', '/about', '/products', '/works']),
+            'created_at' => fake()->dateTimeBetween('-1 month'),
         ];
     }
 }

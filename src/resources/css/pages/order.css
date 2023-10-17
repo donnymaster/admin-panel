@@ -2,11 +2,72 @@
     & .variant-item {
         margin-left: auto;
         display: flex;
-        width: calc(100% - 30px);
+        width: 100%;
         justify-content: space-between;
         padding: 10px 20px;
         border-radius: 8px;
         background-color: white;
         margin-top: 15px;
     }
+    & .table-container table.table thead tr th,
+    .table-container table.table tbody tr td {
+        text-align: center;
+        margin: 0 auto;
+
+        & .remove-icon {
+            display: inline-block;
+            text-align: center;
+        }
+
+        & img {
+            margin: 0 auto;
+        }
+    }
+}
+
+.input-order {
+    border: 1px solid;
+    width: 120px;
+}
+
+.parent-search {
+    & .input-search-parent {
+        font-size: 16px;
+        border: none;
+        color: black;
+        & input {
+            padding: 5px;
+        }
+    }
+}
+
+
+@media print {
+   .sidebar.static-sidebar {
+    display: none;
+   }
+   .admin-header {
+    display: none;
+   }
+   .content .page {
+    width: 100%;
+    color: black;
+        & span, label {
+            color: black;
+        }
+   }
+   .change-status-order {
+    display: none;
+   }
+
+   .print-hidden {
+    display: none;
+   }
+
+   .table-container {
+        & input {
+            width: auto;
+            border: none;
+        }
+   }
 }

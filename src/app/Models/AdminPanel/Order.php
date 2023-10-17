@@ -18,6 +18,7 @@ class Order extends Model
         'type_delivery',
         'user_annotation',
         'admin_annotation',
+        'promocode_id',
     ];
 
     protected $casts = [
@@ -26,6 +27,14 @@ class Order extends Model
 
     public function variants()
     {
-        return $this->belongsToMany(ProductVariant::class, 'product_orders', 'order_id')->withPivot(['id', 'count_product', 'promocode_id'])->using(ProductOrderPivot::class);
+        return $this
+            ->belongsToMany(ProductVariant::class, 'product_orders', 'order_id')
+            ->withPivot(['id', 'count_product'])
+            ->withTimestamps();
+    }
+
+    public function promocode()
+    {
+        return $this->belongsTo(Promocode::class);
     }
 }

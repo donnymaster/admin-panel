@@ -64,7 +64,9 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
         Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
         Route::patch('/orders/change-status', [OrderController::class, 'changeStatus'])->name('orders.change-status');
         Route::patch('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
+        Route::patch('/orders/{order}/update-count', [OrderController::class, 'updateCount'])->name('orders.updateCount');
         Route::patch('/orders/{order}/add-variant', [OrderController::class, 'addVariantInOrder'])->name('orders.addVariant');
+        Route::delete('/orders/{order}/remove-variant/{variant}', [OrderController::class, 'removeVariantInOrder'])->name('orders.removeVariant');
 
         Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews');
         Route::patch('/reviews/{review}', [ReviewController::class, 'store'])->name('reviews.store')->where('review', '[0-9]+');
@@ -102,7 +104,7 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
         Route::get('/categories/page/list', [CategoryController::class, 'page'])->name('catalog.categories.page.list');
 
         Route::get('/categories/{category}/products', [CategoryController::class, 'products'])->name('catalog.category.products');
-        Route::get('/', [CategoryController::class, 'index'])->name('catalogs');
+        Route::get('/', [CategoryController::class, 'page'])->name('catalogs');
 
         Route::get('/products', [ProductController::class, 'index'])->name('products');
         Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');

@@ -62,7 +62,6 @@ class PromocodeController extends Controller
         $promocode->update(
             array_merge(
                 $request->safe()->toArray(),
-                ['product_variant_id' => $request->get('product_variant_id')]
             )
         );
 

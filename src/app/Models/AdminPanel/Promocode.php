@@ -15,15 +15,14 @@ class Promocode extends Model
         'code',
         'quantity',
         'percentages',
-        'product_variant_id',
     ];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:m',
     ];
 
-    public function productVariant()
+    public function orders()
     {
-        return $this->belongsTo(ProductVariant::class);
+        return $this->hasMany(Order::class);
     }
 }

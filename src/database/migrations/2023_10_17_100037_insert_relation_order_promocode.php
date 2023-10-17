@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('product_orders', function (Blueprint $table) {
+        Schema::table('orders', function (Blueprint $table) {
             $table->unsignedBigInteger('promocode_id')->nullable();
 
             $table->foreign('promocode_id')->references('id')->on('promocodes');
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-
+        //
     }
 };

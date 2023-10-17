@@ -42,17 +42,24 @@ class OrderController extends Controller
 
         Order::whereIn('id', $data['orders_id'])->update(['status' => $data['type']]);
 
-        OrderService::log($data['orders_id'], 'update_status_'.$data['type']);
+        OrderService::log($data['orders_id'], 'update_status_' . $data['type']);
 
         return [
             'message' => 'Заказы были обновлены!',
         ];
     }
 
-    public function show(Order $order)
+    public function show($id)
     {
-        $products = $order->variants()->with(['product'])->get()->groupBy('product_id');
-        return view('admin-panel.orders.order', compact('order', 'products'));
+        $order = Order::where('id', $id)
+            ->with(['promocode', 'variants' => function ($query) {
+                $query->with('images', function ($query) {
+                    $query->where('slug', 'image-mini');
+                });
+            }])
+            ->first();
+
+        return view('admin-panel.orders.order', compact('order'));
     }
 
     public function update(UpdateOrderRequest $request, Order $order)
@@ -68,52 +75,58 @@ class OrderController extends Controller
 
     public function addVariantInOrder(AddVariantInOrderRequest $request, Order $order)
     {
-        $data = $request->safe()->toArray();
-        $promocodeId = null;
-        $promocode = null;
+        $variant_id = $request->get('variant_id');
 
-        if ($data['promocode']) {
-            $promocode = Promocode::where([
-                'code' => $data['promocode'],
-                'status' => true
-            ])->first();
-
-            if ($promocode) {
-                $promocode->decrement('quantity');
-                $promocodeId = $promocode->id;
-            }
-        }
+        $data = [
+            'type' => 'create',
+        ];
 
         $result = DB::table('product_orders')->where([
-            'product_variant_id' => $data['variant_id'],
+            'product_variant_id' => $variant_id,
             'order_id' => $order->id
         ])->first();
 
         if ($result) {
-            $dataUpdate = ['count_product' => $result->count_product + $data['count_variants']];
-
-            if ($result->promocode_id) {
-                $dataUpdate['promocode_id'] = $result->promocode_id;
-                if ($promocode) {
-                    $promocode->increment('quantity');
-                }
-            } else if ($promocodeId) {
-                $dataUpdate['promocode_id'] = $promocodeId;
-            }
-
             DB::table('product_orders')->where([
-                'product_variant_id' => $data['variant_id'],
+                'product_variant_id' => $variant_id,
                 'order_id' => $order->id
-            ])->update($dataUpdate);
+            ])->update([
+                'count_product' => $result->count_product + 1
+            ]);
+            $data['type'] = 'update';
         } else {
-            if ($promocodeId) {
-                $order->variants()->attach($data['variant_id'], ['promocode' => $promocodeId, 'count_product' => $data['count_variants']]);
-            } else {
-                $order->variants()->attach($data['variant_id'], ['count_product' => $data['count_variants']]);
-            }
+            $order->variants()->attach($variant_id, ['count_product' => 1]);
+            $data['variant'] = ProductVariant::where('id', $variant_id)->with(['images' => function ($query) {
+                $query->where('slug', 'image-mini');
+            }])->first();
+
         }
 
-        // decrement count variant
-        ProductVariant::where('id', $data['variant_id'])->decrement('count', $data['count_variants']);
+        return response($data);
+    }
+
+    public function removeVariantInOrder(Request $request, Order $order, $variant)
+    {
+        $order->variants()->detach($variant);
+
+        return [
+            'message' => 'Товар был удален!'
+        ];
+    }
+
+    public function updateCount(Request $request, $orderId)
+    {
+        $data = $request->all();
+
+        DB::table('product_orders')->where([
+            'product_variant_id' => $data['variant_id'],
+            'order_id' => $orderId
+        ])->update([
+            'count_product' => $data['count']
+        ]);
+
+        return [
+            'message' => 'Заказ был обновлен!'
+        ];
     }
 }

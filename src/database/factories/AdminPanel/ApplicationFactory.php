@@ -19,6 +19,7 @@ class ApplicationFactory extends Factory
         return [
             'full_name_client' => fake()->name(),
             'phone_client' => fake()->phoneNumber(),
+            'created_at' => fake()->dateTimeBetween('-1 month'),
         ];
     }
 }

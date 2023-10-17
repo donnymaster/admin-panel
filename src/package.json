@@ -21,6 +21,7 @@
         "datatables.net-editor": "^2.2.2",
         "datatables.net-editor-bs5": "^2.2.0",
         "drag-on-drop": "^3.6.1",
+        "print-js": "^1.6.0",
         "select-pure": "^2.1.4",
         "sortablejs": "^1.15.0"
     }

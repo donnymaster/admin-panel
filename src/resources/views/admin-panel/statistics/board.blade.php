@@ -3,6 +3,7 @@
 @section('title', 'Доска')
 
 @inject('menuService', 'App\Services\AdminPanel\MenuService')
+@inject('orderService', 'App\Services\AdminPanel\OrderService')
 @inject('statisticService', 'App\Services\AdminPanel\StatisticService')
 
 @section('content')
@@ -50,7 +51,7 @@
                         </svg>
                 </div>
                 <div class="value">
-                    -
+                    {{ $orderService->getCountNewOrders() }}
                 </div>
                 <div class="name">
                     Заказов

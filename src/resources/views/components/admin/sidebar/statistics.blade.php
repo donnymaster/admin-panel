@@ -2,6 +2,8 @@
 
 @inject('menuService', 'App\Services\AdminPanel\MenuService')
 
+@inject('orderService', 'App\Services\AdminPanel\OrderService')
+
 <div class="sidebar static-sidebar">
 
     @if ($menuService->checkVisibleByPageName('admin.board'))
@@ -75,7 +77,12 @@
                         stroke-linejoin="round" />
                 </svg>
             </div>
-            Заказы
+            <div class="badge">
+                Заказы
+                <div class="value" id="applicationNotProcessedCountSideBar">
+                    {{ $orderService->getCountNewOrders() }}
+                </div>
+            </div>
         </a>
     @endif
 

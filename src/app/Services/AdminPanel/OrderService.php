@@ -14,6 +14,8 @@ class OrderService
 
     const STATUS_ORDER_PROCESSED = 'processed';
 
+    const LIMIT_MAX_COUNT_ORDERS = '+99';
+
     public static function getCountOrdersByStatuses()
     {
         return [
@@ -52,5 +54,17 @@ class OrderService
             'order_id' => $order_id,
             'type_operation' => $type_operation,
         ]);
+    }
+
+    public function getCountNewOrders()
+    {
+        $count =  Order::where('status', self::STATUS_ORDER_NEW)->count();
+
+
+        if ($count >= self::LIMIT_MAX_COUNT_ORDERS) {
+            return self::LIMIT_MAX_COUNT_ORDERS;
+        }
+
+        return $count;
     }
 }

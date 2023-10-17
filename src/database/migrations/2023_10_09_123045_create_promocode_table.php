@@ -18,11 +18,8 @@ return new class extends Migration
             $table->string('code');
             $table->integer('quantity');
             $table->decimal('percentages');
-            $table->unsignedBigInteger('product_variant_id')->nullable();
 
             $table->timestamps();
-
-            $table->foreign('product_variant_id')->references('id')->on('product_variants')->cascadeOnUpdate();
         });
     }
 
