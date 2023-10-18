@@ -4,7 +4,7 @@ namespace App\Http\Requests\AdminPanel;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreatePageRequest extends FormRequest
+class UpdatePageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,13 +17,13 @@ class CreatePageRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'name' => 'required|min:1|max:255|unique:pages,name',
-            'route' => 'required|min:1|max:255|unique:pages,route',
+            'name' => 'required|min:1|max:255',
+            'route' => 'required|min:1|max:255',
             'title' => 'required|min:1|max:255',
             'description' => 'nullable|min:1|max:65535',
             'keywords' => 'nullable|min:1|max:255',

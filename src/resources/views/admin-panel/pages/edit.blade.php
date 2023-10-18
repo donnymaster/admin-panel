@@ -1,23 +1,50 @@
 @extends('admin-panel.layouts.main')
 
-@section('title', $title)
+@section('title', $page->name)
 
 @inject('service', 'App\Services\AdminPanel\SiteSettingService')
 
 @section('content')
-    <form enctype="multipart/form-data" action="{{ route('admin.page.store') }}" method="POST" class="form-create-page">
+    <form enctype="multipart/form-data" action="{{ route('admin.page.update', ['page' => $page->id]) }}" method="POST">
         @csrf
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        @if (session()->has('successfully'))
+            <div class="alert alert-success">
+            {{session()->get('successfully')}}
+            </div>
+        @endif
+        @method('PATCH')
         <div class="columns-1 flex mb-9 divide-x pb-2 text-white text-3xl border-b-2 border-b-white">
             <span>Общие сведения</span>
             <div class="flex border-none">
-                <div class="flex visible-page not-visible">
-                    <input type="text" name="is_show" hidden value="0">
-                </div>
+               @if ($page->is_show)
+                    <div class="flex visible-page visible">
+                        <input type="text" name="is_show" hidden value="1">
+                    </div>
+               @else
+                    <div class="flex visible-page not-visible">
+                        <input type="text" name="is_show" hidden value="0">
+                    </div>
+               @endif
             </div>
             <div class="flex border-none">
-                <div class="flex is-track no-track-icon">
-                    <input type="text" name="is_track" hidden value="0">
-                </div>
+                @if ($page->is_track)
+                    <div class="flex is-track track-icon">
+                        <input type="text" name="is_track" hidden value="1">
+                    </div>
+                @else
+                    <div class="flex is-track no-track-icon">
+                        <input type="text" name="is_track" hidden value="0">
+                    </div>
+                @endif
             </div>
         </div>
         <div class="columns-3 mb-9">
@@ -26,30 +53,39 @@
                     <span>Название</span>
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
-                <input id="name" name="name" type="text" data-child="slug-convert" class="convert-parent input @error('name') is-invalid @enderror">
-                @error('name')
-                    <div class="alert-error">{{ $message }}</div>
-                @enderror
+                <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    class="input"
+                    value="{{ old('name') ?? $page->name }}"
+                >
             </div>
             <div class="input-group">
                 <label for="route" class="label">
                     Адрес в сети
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
-                <input id="route" name="route" type="text" class="slug-convert input @error('route') is-invalid @enderror">
-                @error('route')
-                    <div class="alert-error">{{ $message }}</div>
-                @enderror
+                <input
+                    id="route"
+                    name="route"
+                    type="text"
+                    class="input"
+                    value="{{ old('route') ?? $page->route }}"
+                >
             </div>
             <div class="input-group">
                 <label for="title" class="label">
                     Название в сети
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
-                <input id="title" name="title" type="text" class="input @error('title') is-invalid @enderror">
-                @error('title')
-                    <div class="alert-error">{{ $message }}</div>
-                @enderror
+                <input
+                    id="title"
+                    name="title"
+                    type="text"
+                    class="input"
+                    value="{{ old('title') ?? $page->title }}"
+                >
             </div>
         </div>
         <div class="columns-2 mb-9">
@@ -57,13 +93,13 @@
                 <label for="description" class="label flex">
                     <span>Описание для seo</span>
                 </label>
-                <textarea id="description" class="input" name="description" rows="5" cols="33"></textarea>
+                <textarea id="description" class="input" name="description" rows="5" cols="33">{{ old('description') ?? $page->description }}</textarea>
             </div>
             <div class="input-group">
                 <label for="keywords" class="label">
                     Ключевые слова для seo
                 </label>
-                <textarea id="keywords" name="keywords" class="input" name="story" rows="5" cols="33"></textarea>
+                <textarea id="keywords" name="keywords" class="input" name="story" rows="5" cols="33">{{ old('keywords') ?? $page->keywords }}</textarea>
             </div>
         </div>
         <div class="columns-2 mb-9">
@@ -71,13 +107,25 @@
                 <label for="old_route" class="label flex">
                     <span>Старый адрес</span>
                 </label>
-                <input id="old_route" name="old_route" type="text" class="input">
+                <input
+                    id="old_route"
+                    name="old_route"
+                    type="text"
+                    class="input"
+                    value="{{ old('old_route') ?? $page->old_route }}"
+                >
             </div>
             <div class="input-group">
                 <label for="canonical_address" class="label">
                     Каноническая ссылка
                 </label>
-                <input id="canonical_address" name="canonical_address" type="text" class="input">
+                <input
+                    id="canonical_address"
+                    name="canonical_address"
+                    type="text"
+                    class="input"
+                    value="{{ old('canonical_address') ?? $page->canonical_address }}"
+                >
             </div>
         </div>
         <div class="columns-1 mb-9">
@@ -89,7 +137,7 @@
                         <span class="mr-2">Подключите TinyMCE установив переменную 'redaktor-tiny-url'</span>
                     @endif
                 </label>
-                <textarea name="page_description" id="page_description" class="input" name="story" rows="5" cols="33"></textarea>
+                <textarea name="page_description" id="page_description" class="input" name="story" rows="5" cols="33">{{ old('page_description') ?? $page->page_description }}</textarea>
             </div>
         </div>
         <div class="columns-1 mb-9 divide-x pb-2 text-white text-3xl border-b-2 border-b-white">
@@ -100,19 +148,37 @@
                 <label for="og_title" class="label">
                     Open Graph Заголовок
                 </label>
-                <input id="og_title" name="og_title" type="text" class="input">
+                <input
+                    id="og_title"
+                    name="og_title"
+                    type="text"
+                    class="input"
+                    value="{{ old('og_title') ?? $page->og_title }}"
+                >
             </div>
             <div class="input-group">
                 <label for="og_type" class="label">
                     Open Graph Тип
                 </label>
-                <input id="og_type" name="og_type" type="text" class="input">
+                <input
+                    id="og_type"
+                    name="og_type"
+                    type="text"
+                    class="input"
+                    value="{{ old('og_type') ?? $page->og_type }}"
+                >
             </div>
             <div class="input-group">
                 <label for="og_url" class="label">
                     Open Graph Адрес
                 </label>
-                <input id="og_url" name="og_url" type="text" class="input">
+                <input
+                    id="og_url"
+                    name="og_url"
+                    type="text"
+                    class="input"
+                    value="{{ old('og_url') ?? $page->og_url }}"
+                >
             </div>
         </div>
         <div class="mb-9 flex justify-between columns-1">
@@ -120,7 +186,7 @@
                 <label for="og_description" class="label">
                     Open Graph Описание
                 </label>
-                <textarea id="og_description" class="input" name="og_description" rows="5" style="width: 100%"></textarea>
+                <textarea id="og_description" class="input" name="og_description" rows="5" style="width: 100%">{{ old('og_description') ?? $page->og_description }}</textarea>
             </div>
         </div>
         <div class="columns-4 mb-9">
@@ -128,8 +194,12 @@
                 <label for="og_image" class="label">
                     Картинка
                 </label>
-                <div class="image-create-page">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="173" height="173" viewBox="0 0 173 173"
+                @if ($page->og_image)
+                    <div class="image-create-page" style="background-image: url('/storage/{{$page->og_image}}')">
+                @else
+                    <div class="image-create-page">
+                @endif
+                    <svg class="@if ($page->og_image) hidden @endif" xmlns="http://www.w3.org/2000/svg" width="173" height="173" viewBox="0 0 173 173"
                         fill="none">
                         <path
                             d="M64.8749 43.25C56.9458 43.25 50.4583 49.7375 50.4583 57.6667C50.4583 65.5958 56.9458 72.0833 64.8749 72.0833C72.8041 72.0833 79.2916 65.5958 79.2916 57.6667"
@@ -152,8 +222,12 @@
                 <label class="label">
                     Картинка Вконтакте
                 </label>
-                <div class="image-create-page">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="173" height="173" viewBox="0 0 173 173"
+                @if ($page->og_vk_image)
+                    <div class="image-create-page" style="background-image: url('/storage/{{$page->og_vk_image}}')">
+                @else
+                    <div class="image-create-page">
+                @endif
+                    <svg class="@if ($page->og_vk_image) hidden @endif" xmlns="http://www.w3.org/2000/svg" width="173" height="173" viewBox="0 0 173 173"
                         fill="none">
                         <path
                             d="M64.8749 43.25C56.9458 43.25 50.4583 49.7375 50.4583 57.6667C50.4583 65.5958 56.9458 72.0833 64.8749 72.0833C72.8041 72.0833 79.2916 65.5958 79.2916 57.6667"
@@ -176,8 +250,12 @@
                 <label class="label">
                     Картинка Facebook
                 </label>
-                <div class="image-create-page">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="173" height="173" viewBox="0 0 173 173"
+                @if ($page->og_fb_image)
+                    <div class="image-create-page" style="background-image: url('/storage/{{$page->og_fb_image}}')">
+                @else
+                    <div class="image-create-page">
+                @endif
+                    <svg class="@if ($page->og_fb_image) hidden @endif" xmlns="http://www.w3.org/2000/svg" width="173" height="173" viewBox="0 0 173 173"
                         fill="none">
                         <path
                             d="M64.8749 43.25C56.9458 43.25 50.4583 49.7375 50.4583 57.6667C50.4583 65.5958 56.9458 72.0833 64.8749 72.0833C72.8041 72.0833 79.2916 65.5958 79.2916 57.6667"
@@ -200,8 +278,12 @@
                 <label class="label">
                     Картинка Twitter
                 </label>
-                <div class="image-create-page">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="173" height="173" viewBox="0 0 173 173"
+                @if ($page->og_twitter_image)
+                    <div class="image-create-page" style="background-image: url('/storage/{{$page->og_twitter_image}}')">
+                @else
+                    <div class="image-create-page">
+                @endif
+                    <svg class="@if ($page->og_twitter_image) hidden @endif" xmlns="http://www.w3.org/2000/svg" width="173" height="173" viewBox="0 0 173 173"
                         fill="none">
                         <path
                             d="M64.8749 43.25C56.9458 43.25 50.4583 49.7375 50.4583 57.6667C50.4583 65.5958 56.9458 72.0833 64.8749 72.0833C72.8041 72.0833 79.2916 65.5958 79.2916 57.6667"
@@ -218,7 +300,7 @@
                             stroke="#9900FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </div>
-                <input hidden type="file" class="input" name="og_twitter_image">
+                <input hidden type="file" class="input" name="og_twitter_image" @if ($page->og_twitter_image) value="{{$page->og_twitter_image}}" @endif>
             </div>
         </div>
         <div class="flex">
@@ -243,7 +325,7 @@
                         </g>
                     </svg>
                 </span>
-                Добавить
+                Обновить
             </button>
         </div>
         @isSuperAdmin

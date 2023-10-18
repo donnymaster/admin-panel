@@ -21,9 +21,11 @@ use App\Models\AdminPanel\MenuLink;
 use App\Models\AdminPanel\Product;
 use App\Models\AdminPanel\ProductCategory;
 use App\Models\AdminPanel\Review;
+use App\Models\AdminPanel\SiteSetting;
 use App\Models\AdminPanel\Statistic;
 use App\Models\User;
 use App\Services\AdminPanel\ApplicationService;
+use App\Services\AdminPanel\PageService;
 use App\Services\AdminPanel\SiteSettingService;
 use App\Services\AdminPanel\StatisticService;
 use Illuminate\Http\Client\Request;
@@ -77,10 +79,12 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
     Route::get('/pages/date-limit', [PagesController::class, 'getValidDatePeriod'])->name('pages.date-limit');
     Route::get('/pages/create', [PagesController::class, 'create'])->name('page.create');
     Route::post('/page/store', [PagesController::class, 'store'])->name('page.store');
+    Route::patch('/pages/{page}', [PagesController::class, 'update'])->name('page.update');
     Route::get('/pages-list', [PagesController::class, 'pageList'])->name('page.list');
     Route::get('/pages/valid-pages', [PagesController::class, 'validPages'])->name('page.valid-pages');
     Route::get('/pages/info-visit', [StatisticController::class, 'informationPages'])->name('pages.info-visits');
-    Route::get('/pages/{pageId}', [PagesController::class, 'index'])->name('page');
+    Route::get('/pages/{page}', [PagesController::class, 'edit'])->name('page.edit');
+    Route::delete('/pages/statistics', [PagesController::class, 'removeStatistics'])->name('pages.statistics.remove');
 
     Route::prefix('/catalog')->group(function() {
         Route::get('/promocodes', [PromocodeController::class, 'index'])->name('promocode.index');
@@ -165,24 +169,14 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
 
 Route::view('/components-admin', 'admin-components');
 
+Route::get('/test-2', function() {
+    return '1';
+})->middleware(['page.visible', 'page.track']);
+
 Route::get('routes', function () {
+    SiteSetting::where('setting_key', 'image_mini')->delete();
 
-    // dd(file_exists('/var/www/laravel/storage/app/public/product/1/variants/harHeOUrNfhI3iv3EC4V3KhQRATII5HjO4PYa6Yl.png'));
-    // dd(Storage::url('product/1/variants/harHeOUrNfhI3iv3EC4V3KhQRATII5HjO4PYa6Yl.png'));
-    // dd(StatisticService::getUniqueVisitors());
-    // dd(Str::slug('картинка 2'));
-    // dd(Product::with('variants')->first());
-    // dd(ProductCategory::with(['parent', 'children'])->get());
-    // $service = new SiteSettingService();
-    // dd($service->getValueVariable('redaktor-tiny-url'));
-    // dd(ApplicationService::getNumberUnprocessedApplication());
-    // dd(FacadesRequest::ip(), FacadesRequest::userAgent());
     $routeCollection = Route::getRoutes();
-    // $agent = new Agent();
-    // dd($agent->isPhone(), $agent->browser(), $agent->platform(), $agent->version($agent->platform()), $agent->version($agent->browser()), $agent->languages());
-    // dd(Auth::user()->isSuperAdmin());
-    // dd(Location::get('217.199.231.202'));
-
 
 
     echo "<table style='width:100%'>";

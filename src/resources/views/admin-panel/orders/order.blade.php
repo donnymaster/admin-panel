@@ -22,7 +22,7 @@
                         <div class="role-badge ml-2">Закрытый</div>
                     @endif
                 </div>
-                <div class="role-badge ml-2 print-order">Печатать</div>
+                <div class="role-badge ml-2 print-order cursor-pointer">Печатать</div>
             </span>
             <div class="flex ml-auto change-status-order" data-id="{{ $order->id }}">
                 @if ($service::STATUS_ORDER_NEW == $order->status)

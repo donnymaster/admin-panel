@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('route');
             $table->string('title');
+            $table->boolean('is_track')->nullable();
             $table->text('description')->nullable();
             $table->mediumText('keywords')->nullable();
             $table->string('old_route')->nullable();

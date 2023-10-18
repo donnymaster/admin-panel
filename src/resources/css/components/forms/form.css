@@ -44,3 +44,21 @@ form {
         }
     }
 }
+
+.track-icon {
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" height="36" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19Z" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 19V21" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 12H3" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 5V3" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 12H21" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+}
+
+.no-track-icon {
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="36" viewBox="0 0 24 36" fill="none"><path d="M12 25C15.866 25 19 21.866 19 18C19 14.134 15.866 11 12 11C8.13401 11 5 14.134 5 18C5 21.866 8.13401 25 12 25Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 25V27" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 18H3" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 11V9" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 18H21" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="2.64645" y1="28.4454" x2="22.4454" y2="8.64644" stroke="black"/></svg>');
+}

@@ -32,22 +32,32 @@
                 Страницы
             </div>
             <span class="loader" id="loadingChoicePages"></span>
-            <div class="flex w-2/4">
+            <div class="empty-data-pages text-xl text-white hidden">Данные отсутствуют!</div>
+            <div class="flex w-full">
                <select id="selected-pages" class="hidden" multiple>
                </select>
             </div>
         </div>
-        <div class="btn update-applications small-btn">Обновить</div>
+        <div class="btn update-applications bg-green small-btn">Обновить</div>
     </div>
     <div class="flex bg-white rounded-3xl" style="width: 100%;">
         <canvas id="line-chart" class="hidden" style="width: 100%;"></canvas>
+        <div class="empty-data-chart text-xl text-black p-9 text-center hidden w-full">Данные отсутствуют!</div>
         <div id="loadingChartPages" class="loading-data flex items-center w-full h-24 justify-center">
             <span class="loader dark"></span>
         </div>
     </div>
 
-    <div class="flex mt-10 mb-5 text-2xl text-white">
-        Статистика по страницам
+    <div class="flex mt-10 mb-5 text-2xl text-white items-center">
+        <span class="mr-3">Статистика по страницам</span>
+        <div class="text-xl flex remove-history-pages">
+            <div data-type="all" class="btn bg-green mr-2 small-btn ml-auto">
+                Очистить
+            </div>
+            <div data-type="30days" class="btn bg-green mr-2 small-btn ml-auto">
+                Очистить за последние 30 дней
+            </div>
+        </div>
     </div>
 
     {{ $dataTable->table() }}

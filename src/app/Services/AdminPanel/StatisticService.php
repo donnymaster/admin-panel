@@ -3,7 +3,6 @@
 namespace App\Services\AdminPanel;
 
 use App\Models\AdminPanel\Application;
-use App\Models\AdminPanel\Pages;
 use App\Models\AdminPanel\Review;
 use App\Models\AdminPanel\Statistic;
 use Carbon\Carbon;

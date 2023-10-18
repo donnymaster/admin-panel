@@ -9,7 +9,11 @@ function init() {
 
     loadDatePeriod();
 
-    document.querySelector('.update-applications').addEventListener('click', () => {
+    document.querySelector('.update-applications').addEventListener('click', ({target}) => {
+        if (target.classList.contains('load')) return;
+
+        target.classList.add('load');
+
         updateChart();
     });
 
@@ -42,6 +46,11 @@ function loadDatePeriod() {
 
 function _redrerChoice(data) {
     if (!data.length) {
+        document.querySelector('.empty-data-pages').classList.remove('hidden');
+        document.querySelector('#loadingChoicePages').classList.add('hidden');
+        document.querySelector('.update-applications').classList.add('load');
+        document.querySelector('.empty-data-chart').classList.remove('hidden');
+        document.querySelector('#loadingChartPages').classList.add('hidden');
         return;
     }
 
@@ -68,15 +77,11 @@ function _redrerChoice(data) {
     });
 
     data.slice(0, 5).forEach((page) => {
-        console.log(page);
         window.choice.setChoiceByValue(page.page_name_visit);
     });
 
     loadInfo();
 }
-
-
-
 
 function updateChart() {
     const pages = window.choice.getValue().map(item => item.value);
@@ -84,6 +89,7 @@ function updateChart() {
     const endDate = document.querySelector('#endDate').value;
 
     if (!pages.length) {
+        document.querySelector('.update-applications').classList.remove('load')
         return;
     }
 
@@ -94,9 +100,7 @@ function updateChart() {
     )
     .then(spreadResponse)
     .then((res) => {
-        if (!checkIsErrorResponse(res)) {
-            console.log('error empty data');
-        }
+        if (!checkIsErrorResponse(res)) return;
 
         const { data } = res;
 
@@ -134,7 +138,7 @@ function updateChart() {
         window.chart.data.datasets = renderData;
 
         window.chart.update();
-    });
+    }).finally(() => document.querySelector('.update-applications').classList.remove('load'));
 }
 
 const skipped = (ctx, value) => ctx.p0.skip || ctx.p1.skip ? value : undefined;
@@ -239,3 +243,42 @@ function renderDate(data) {
 function _compareByData(x, y) {
     return new Date(x) - new Date(y);
 }
+
+const btnContainer = document.querySelector('.remove-history-pages');
+
+btnContainer.addEventListener('click', ({target}) => {
+        const type = target.dataset.type;
+        let url = '/admin/pages/statistics';
+
+        if (target.classList.contains('load')) return;
+
+        btnContainer.querySelectorAll('div').forEach(div => div.classList.add('load'));
+
+        if (!type) {
+            return;
+        } else if (type == '30days') {
+            url += '?last-days=30'
+        }
+
+        fetch(
+            url,
+            {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': window._token,
+                },
+            }
+        )
+        .then(spreadResponse)
+        .then((response) => {
+            if(checkIsErrorResponse(response)) {
+                window.toast.push({
+                    title: 'Успех!',
+                    content: 'Записи были удалены!',
+                    style: 'success',
+                    dismissAfter: '1s'
+                });
+                window.LaravelDataTables.dataTableBuilder.ajax.reload();
+            }
+        }).finally(() => btnContainer.querySelectorAll('div').forEach(div => div.classList.remove('load')));
+    });

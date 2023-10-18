@@ -124,10 +124,7 @@ class ProductVariantController extends Controller
                 'width' => $wC,
                 'heigth' => $hC,
             ];
-        }
-
-        // dd($images);
-
+        };
        }
 
         return view('admin-panel.variants.edit', compact('variant', 'categories', 'variantValues', 'images'));

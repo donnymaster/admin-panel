@@ -5,7 +5,7 @@ namespace App\Models\AdminPanel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pages extends Model
+class Page extends Model
 {
     use HasFactory;
 
@@ -28,5 +28,6 @@ class Pages extends Model
         'og_fb_image',
         'og_twitter_image',
         'is_show',
+        'is_track',
     ];
 }

@@ -3,6 +3,8 @@
 namespace App\Http;
 
 use App\Http\Middleware\AdminPanel\CheckPageIsShow;
+use App\Http\Middleware\AdminPanel\SitePageCheck;
+use App\Http\Middleware\AdminPanel\TrackPage;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -65,6 +67,8 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'admin.visible' => CheckPageIsShow::class
+        'admin.visible' => CheckPageIsShow::class,
+        'page.track' => TrackPage::class,
+        'page.visible' => SitePageCheck::class,
     ];
 }

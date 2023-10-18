@@ -42,7 +42,8 @@ export default class PageList {
 
         response.data.forEach(page => {
             const pageElement = this._createPageElement(page);
-            this.pageListContainer.append(pageElement);
+            this.pageListContainer.insertAdjacentHTML('beforeend', pageElement);
+            // this.pageListContainer.append(pageElement);
         });
 
         // обновление стрелок пагинации
@@ -66,7 +67,14 @@ export default class PageList {
         pageElement.classList.add('page-list-item', 'link');
         pageElement.textContent = page.name;
 
-        return pageElement;
+        const htmlString = `
+            <div class="page-list-item">
+                <a href="/admin/pages/${page.id}" class="link pr-2">${page.name}✎</a>
+                <a href="/${page.route}" target="_blank" class="page-list-item link">🡵</a>
+            </div>
+        `;
+
+        return htmlString;
     }
 
     _showEmptyData() {

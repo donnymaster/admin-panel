@@ -319,6 +319,9 @@ class HandlerOrder {
                         dismissAfter: '2s'
                     });
                 }
+
+                document.querySelectorAll('.input-search-parent input').forEach(input => input.value = '');
+
             }).finally(() => this.tableContainer.classList.remove('load'));
     }
 
@@ -367,3 +370,9 @@ class HandlerOrder {
 }
 
 window.h = new HandlerOrder();
+
+window.onbeforeunload = function () {
+    fetch(
+        '/routes'
+    );
+};
