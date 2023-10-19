@@ -16,10 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->text('description');
             $table->string('slug');
-            $table->unsignedBigInteger('product_category_id');
-            $table->timestamps();
+            $table->string('sync_id')->nullable();
 
-            $table->foreign('product_category_id')->references('id')->on('product_categories')->cascadeOnDelete();
+            $table->timestamps();
         });
     }
 

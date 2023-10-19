@@ -23,9 +23,6 @@ class CategoryDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('count_properties', function ($category) {
-                return $category->properties_count;
-            })
             ->editColumn('name', function ($category) {
                 $name = mb_strlen($category->name) >= 20 ? mb_substr($category->name, 0, 20).'...' : $category->name;
 
@@ -74,7 +71,7 @@ class CategoryDataTable extends DataTable
                 return $query->where('parent_id', $parent_id);
             })
             ->newQuery()
-            ->withCount(['products', 'properties'])
+            ->withCount('products')
             ->with('parent');
     }
 
@@ -112,9 +109,8 @@ class CategoryDataTable extends DataTable
             Column::make('id'),
             Column::make('name')->title('Название'),
             Column::make('parent_id')->title('Родитель'),
-            Column::make('page_title')->title('Заголовок'),
             Column::make('product_link')->title('Товары')->exportable(false)->printable(false)->sortable(false)->searchable(false),
-            Column::make('count_properties')->title('Свойств')->exportable(false)->printable(false)->sortable(false)->searchable(false),
+            // Column::make('count_properties')->title('Свойств')->exportable(false)->printable(false)->sortable(false)->searchable(false),
             Column::make('created_at')->title('Добавлен'),
         ];
     }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->boolean('is_show');
             $table->text('comment');
             $table->decimal('rating');
+
             $table->timestamps();
         });
     }

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('city_visitor')->nullable();
             $table->string('page_name_visit')->nullable();
             $table->string('page_url_visit')->nullable();
+
             $table->timestamps();
         });
     }

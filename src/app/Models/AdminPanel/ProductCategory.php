@@ -19,6 +19,7 @@ class ProductCategory extends Model
         'description',
         'page_description',
         'image',
+        'sync_id',
     ];
 
     protected $casts = [
@@ -42,6 +43,6 @@ class ProductCategory extends Model
 
     public function properties()
     {
-        return $this->hasMany(ProductCategoryProperty::class, 'product_category_id');
+        return $this->hasMany(ProductCategoryProperty::class);
     }
 }

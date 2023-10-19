@@ -56,9 +56,9 @@ return new class extends Migration
             ],
         ];
 
-        foreach ($data as $category) {
-            ProductCategory::create($category);
-        }
+        // foreach ($data as $category) {
+        //     ProductCategory::create($category);
+        // }
     }
 
     /**

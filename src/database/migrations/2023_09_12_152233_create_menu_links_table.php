@@ -18,6 +18,7 @@ return new class extends Migration
             $table->boolean('is_main_menu_link')->nullable()->default(false);
             $table->unsignedBigInteger('parent')->nullable();
             $table->boolean('is_show');
+
             $table->timestamps();
         });
     }

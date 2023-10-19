@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('setting_name');
             $table->string('setting_key');
             $table->string('setting_value');
+
             $table->timestamps();
         });
     }

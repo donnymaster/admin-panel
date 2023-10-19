@@ -97,9 +97,9 @@ return new class extends Migration
             ],
         ];
 
-        foreach($data as $value) {
-            ProductCategoryProperty::create($value);
-        }
+        // foreach($data as $value) {
+        //     ProductCategoryProperty::create($value);
+        // }
     }
 
     /**

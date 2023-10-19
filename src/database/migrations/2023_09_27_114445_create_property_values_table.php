@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_category_property_id');
             $table->morphs('property_value');
             $table->string('value');
+
             $table->timestamps();
 
             $table->foreign('product_category_property_id')->references('id')->on('product_category_properties');

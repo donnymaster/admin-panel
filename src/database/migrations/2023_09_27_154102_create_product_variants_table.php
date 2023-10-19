@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('price')->nullable();
             $table->integer('count')->nullable();
             $table->string('sync_id')->nullable();
+
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete();

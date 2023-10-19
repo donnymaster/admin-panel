@@ -17,11 +17,13 @@ return new class extends Migration
             $table->string('name') ->nullable();
             $table->string('slug');
             $table->unsignedInteger('position');
+            $table->string('sync_id')->nullable();
             $table->string('page_title')->nullable();
             $table->string('keywords')->nullable();
             $table->text('description')->nullable();
             $table->text('page_description')->nullable();
             $table->string('image')->nullable();
+
             $table->timestamps();
         });
     }

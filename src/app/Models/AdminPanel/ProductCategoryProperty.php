@@ -13,7 +13,7 @@ class ProductCategoryProperty extends Model
         'name',
         'description',
         'slug',
-        'product_category_id',
+        'sync_id',
     ];
 
     protected $casts = [
@@ -25,8 +25,8 @@ class ProductCategoryProperty extends Model
         return $this->hasMany(PropertyValue::class);
     }
 
-    public function category()
+    public function categoryies()
     {
-        return $this->belongsTo(ProductCategory::class);
+        return $this->hasMany(ProductCategory::class);
     }
 }

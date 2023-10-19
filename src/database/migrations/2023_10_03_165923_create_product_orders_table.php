@@ -16,8 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('product_variant_id');
             $table->unsignedBigInteger('order_id');
             $table->integer('count_product');
-            $table->timestamps();
 
+            $table->timestamps();
 
             $table->foreign('product_variant_id')->references('id')->on('product_variants')->cascadeOnDelete();
             $table->foreign('order_id')->references('id')->on('orders')->cascadeOnDelete();

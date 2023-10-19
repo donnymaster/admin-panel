@@ -20,10 +20,14 @@ class ProductVariantController extends Controller
     {
         $categories = [];
 
+        // $mem_start = memory_get_usage();
+
         $this->getPropertiesCategory(
              ProductCategory::with('properties:id,name,description,product_category_id')->where('id', $product->category_id)->first(),
             $categories
         );
+
+        // dd(memory_get_usage() - $mem_start);
 
         $categories = array_reverse($categories);
 
@@ -166,7 +170,8 @@ class ProductVariantController extends Controller
 
         if ($category->parent_id) {
             $this->getPropertiesCategory(
-                ProductCategory::with('properties:id,name,description,product_category_id')->where('id', $category->parent_id)->first(),
+                ProductCategory::with('properties:id,name,description,product_category_id')
+                    ->where('id', $category->parent_id)->first(),
                 $array
             );
         }

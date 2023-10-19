@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminPanel\DataExchangeController;
 use App\Http\Controllers\AdminPanel\ImageProcessingProductVariantController;
 use App\Http\Controllers\AdminPanel\OrderController;
 use App\Http\Controllers\AdminPanel\PagesController;
+use App\Http\Controllers\AdminPanel\ProductCategoryPropertyController;
 use App\Http\Controllers\AdminPanel\ProductReviewController;
 use App\Http\Controllers\AdminPanel\ProductVariantController;
 use App\Http\Controllers\AdminPanel\PromocodeController;
@@ -25,6 +26,7 @@ use App\Models\AdminPanel\SiteSetting;
 use App\Models\AdminPanel\Statistic;
 use App\Models\User;
 use App\Services\AdminPanel\ApplicationService;
+use App\Services\AdminPanel\DataEchange1C;
 use App\Services\AdminPanel\PageService;
 use App\Services\AdminPanel\SiteSettingService;
 use App\Services\AdminPanel\StatisticService;
@@ -87,6 +89,8 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
     Route::delete('/pages/statistics', [PagesController::class, 'removeStatistics'])->name('pages.statistics.remove');
 
     Route::prefix('/catalog')->group(function() {
+        Route::get('/properties', [ProductCategoryPropertyController::class, 'index'])->name('properties');
+
         Route::get('/promocodes', [PromocodeController::class, 'index'])->name('promocode.index');
         Route::post('/promocodes', [PromocodeController::class, 'store'])->name('promocode.store');
         Route::delete('/promocodes/{promocode}', [PromocodeController::class, 'delete'])->name('promocode.delete');
@@ -174,7 +178,8 @@ Route::get('/test-2', function() {
 })->middleware(['page.visible', 'page.track']);
 
 Route::get('routes', function () {
-    SiteSetting::where('setting_key', 'image_mini')->delete();
+
+    (new DataEchange1C())->exchange();
 
     $routeCollection = Route::getRoutes();
 

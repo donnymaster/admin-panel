@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('unique_name');
             $table->string('unique_slug');
             $table->string('unique_value');
+
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete();

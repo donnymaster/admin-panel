@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('og_fb_image')->nullable();
             $table->string('og_twitter_image')->nullable();
             $table->boolean('is_show')->default(true);
+
             $table->timestamps();
         });
     }

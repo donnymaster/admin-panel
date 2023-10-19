@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('phone_client');
             $table->boolean('processed')->default(false);
             $table->text('additional_information')->nullable();
+
             $table->timestamps();
         });
     }
