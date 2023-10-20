@@ -10,8 +10,6 @@ use App\Models\AdminPanel\ProductCategory;
 use App\Models\AdminPanel\ProductVariant;
 use App\Models\AdminPanel\ProductVariantImage;
 use App\Models\AdminPanel\PropertyValue;
-use Illuminate\Contracts\Cache\Store;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ProductVariantController extends Controller
@@ -21,9 +19,11 @@ class ProductVariantController extends Controller
         $categories = [];
 
         // $mem_start = memory_get_usage();
+        dd(ProductCategory::with('properties')->where('id', $product->category_id)->first());
 
         $this->getPropertiesCategory(
-             ProductCategory::with('properties:id,name,description,product_category_id')->where('id', $product->category_id)->first(),
+             ProductCategory::with('properties:id,name,description,product_category_id')
+                ->where('id', $product->category_id)->first(),
             $categories
         );
 
@@ -86,9 +86,13 @@ class ProductVariantController extends Controller
         $categories = [];
 
         $this->getPropertiesCategory(
-            ProductCategory::with('properties:id,name,description,product_category_id')->where('id', $product->category_id)->first(),
+            ProductCategory::with('properties:id,name,description')->where('id', $product->category_id)->first(),
            $categories
        );
+
+       dd($categories);
+
+        dd($variant->values()->get());
 
        $variantValues = $variant
         ->values()
@@ -170,7 +174,7 @@ class ProductVariantController extends Controller
 
         if ($category->parent_id) {
             $this->getPropertiesCategory(
-                ProductCategory::with('properties:id,name,description,product_category_id')
+                ProductCategory::with('properties:id,name,description')
                     ->where('id', $category->parent_id)->first(),
                 $array
             );

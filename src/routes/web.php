@@ -150,6 +150,8 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
     Route::delete('/product-variant/image/remove', [ImageProcessingProductVariantController::class, 'delete'])->name('image.delete');
 
     Route::get('/data-exchange', [DataExchangeController::class, 'index'])->name('data-exchange');
+    Route::get('/data-exchange/run', [DataExchangeController::class, 'runDataExchange'])->name('data-exchange.run');
+
     // other statistic pages
 
     Route::get('/settings', [SettingSiteController::class, 'index'])->name('settings');

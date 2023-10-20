@@ -2,6 +2,7 @@
 
 namespace App\DataTables\AdminPanel;
 
+use App\Models\AdminPanel\ProductCategory;
 use App\Models\AdminPanel\ProductCategoryProperty;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
@@ -49,7 +50,7 @@ class ProductCategoryPropertiesDataTable extends DataTable
      */
     public function query(ProductCategoryProperty $model): QueryBuilder
     {
-        return $model->newQuery()->where('product_category_id', $this->categoryId);
+        return $model->newQuery()->whereRelation('categoryies', 'category_id', $this->categoryId);
     }
 
     /**

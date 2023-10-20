@@ -16,6 +16,9 @@ class ProductVariant extends Model
         'price',
         'count',
         'sync_id',
+        'vendor_code',
+        'slug',
+        'model',
     ];
 
     protected $casts = [

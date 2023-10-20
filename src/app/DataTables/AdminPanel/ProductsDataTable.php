@@ -26,17 +26,26 @@ class ProductsDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->editColumn('category_id', function ($product) {
+                $title = strlen($product->category->name) >= 35
+                    ? mb_substr($product->category->name, 0, 35) . '...'
+                    : $product->category->name;
                 return "<a
-                class=\"link\"
-                href=\"".route('admin.catalog.category.edit', ['category' => $product->category_id])."\">
-                {$product->category->name}
+                    title=\"{$product->category->name}\"
+                    class=\"link\"
+                    href=\"".route('admin.catalog.category.edit', ['category' => $product->category_id])."\">
+                        {$title}
                 </a>";
             })
             ->editColumn('title', function ($product) {
+                $title = strlen($product->title) >= 35
+                    ? mb_substr($product->title, 0, 35) . '...'
+                    : $product->title;
+
                 return "<a
+                title=\"{$product->title}\"
                 class=\"link\"
                 href=\"".route('admin.products.show', ['product' => $product->id])."\">
-                {$product->title}
+                    {$title}
                 </a>";
             })
             ->addColumn('count_variants', function ($product) {
@@ -99,6 +108,7 @@ class ProductsDataTable extends DataTable
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->parameters([
+                        'pageLength' => 25,
                         'buttons' => [],
                         'language' => [
                             'url' => url('/vendor/datatables/lang/'.app()->getLocale().'.json'),

@@ -21,6 +21,7 @@ class Product extends Model
         'vendor_code',
         'page_description',
         'description',
+        'sync_model',
     ];
 
     protected $casts = [

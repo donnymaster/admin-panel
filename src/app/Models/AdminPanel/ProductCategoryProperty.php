@@ -27,6 +27,10 @@ class ProductCategoryProperty extends Model
 
     public function categoryies()
     {
-        return $this->hasMany(ProductCategory::class);
+        return $this->belongsToMany(ProductCategory::class, 'category_properties', 'property_id', 'category_id');
+    }
+    public function categoryById($id)
+    {
+        return $this->belongsToMany(ProductCategory::class, 'category_properties', 'property_id', 'category_id')->wherePivot('category_id', $id);
     }
 }

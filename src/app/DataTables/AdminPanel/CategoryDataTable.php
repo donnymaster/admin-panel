@@ -49,6 +49,9 @@ class CategoryDataTable extends DataTable
                     </div>
                 ";
             })
+            ->addColumn('properties_count', function ($category) {
+                return $category->properties_count;
+            })
             ->setRowId('id');
     }
 
@@ -71,7 +74,7 @@ class CategoryDataTable extends DataTable
                 return $query->where('parent_id', $parent_id);
             })
             ->newQuery()
-            ->withCount('products')
+            ->withCount(['products', 'properties'])
             ->with('parent');
     }
 
@@ -84,18 +87,11 @@ class CategoryDataTable extends DataTable
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->parameters([
-                        // 'select' => true,
-                        // 'rowReorder' => ['dataSrc' => 'id', 'editor' => 'editor'],
+                        'pageLength' => 25,
                         'buttons' => [],
                         'language' => [
                             'url' => url('/vendor/datatables/lang/'.app()->getLocale().'.json'),
                         ]])
-                        // ->editors([
-                        //     Editor::make()
-                        //         ->fields([
-                        //             Fields\Text::make('id')
-                        //         ])
-                        // ])
                     ->orderBy(0, 'asc');
     }
 
@@ -110,7 +106,7 @@ class CategoryDataTable extends DataTable
             Column::make('name')->title('Название'),
             Column::make('parent_id')->title('Родитель'),
             Column::make('product_link')->title('Товары')->exportable(false)->printable(false)->sortable(false)->searchable(false),
-            // Column::make('count_properties')->title('Свойств')->exportable(false)->printable(false)->sortable(false)->searchable(false),
+            Column::make('properties_count')->title('Свойств')->exportable(false)->printable(false)->sortable(false)->searchable(false),
             Column::make('created_at')->title('Добавлен'),
         ];
     }

@@ -56,6 +56,7 @@ class ProductCategoryPropertyDataTable extends DataTable
             Column::make('id'),
             Column::make('name')->title('Названия'),
             Column::make('description')->title('Описание'),
+            Column::make('slug')->title('Slug'),
             Column::make('created_at')->title('Добавлен'),
         ];
     }

@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug');
             $table->string('page_title');
-            $table->string('vendor_code');
+            $table->string('sync_model')->nullable();
+            $table->string('vendor_code')->nullable();
             $table->unsignedBigInteger('category_id');
             $table->integer('position_in_category')->default(0);
             $table->boolean('visible')->nullable();

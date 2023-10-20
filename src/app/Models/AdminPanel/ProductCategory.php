@@ -43,6 +43,6 @@ class ProductCategory extends Model
 
     public function properties()
     {
-        return $this->hasMany(ProductCategoryProperty::class);
+        return $this->belongsToMany(ProductCategoryProperty::class, 'category_properties', 'category_id', 'property_id');
     }
 }
