@@ -89,8 +89,15 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
     Route::delete('/pages/statistics', [PagesController::class, 'removeStatistics'])->name('pages.statistics.remove');
 
     Route::prefix('/catalog')->group(function() {
+        /**
+         * Properties
+         */
         Route::get('/properties', [ProductCategoryPropertyController::class, 'index'])->name('properties');
+        Route::get('/properties/ajax', [ProductCategoryPropertyController::class, 'ajax'])->name('properties.ajax');
 
+        /**
+         * Promocode
+         */
         Route::get('/promocodes', [PromocodeController::class, 'index'])->name('promocode.index');
         Route::post('/promocodes', [PromocodeController::class, 'store'])->name('promocode.store');
         Route::delete('/promocodes/{promocode}', [PromocodeController::class, 'delete'])->name('promocode.delete');
@@ -181,7 +188,7 @@ Route::get('/test-2', function() {
 
 Route::get('routes', function () {
 
-    (new DataEchange1C())->exchange();
+    // (new DataEchange1C())->exchange();
 
     $routeCollection = Route::getRoutes();
 

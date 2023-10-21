@@ -23,6 +23,7 @@
         "drag-on-drop": "^3.6.1",
         "print-js": "^1.6.0",
         "select-pure": "^2.1.4",
+        "select2": "^4.1.0-rc.0",
         "sortablejs": "^1.15.0"
     }
 }

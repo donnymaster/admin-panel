@@ -1,3 +1,4 @@
+import AjaxSearchInput from "../components/AjaxSearchInput";
 import ConvertWordsToTranscription from "../components/ConvertWordsToTranscription";
 
 new ConvertWordsToTranscription();
@@ -80,35 +81,37 @@ class HandlerCategoryProperty {
     createVariable(event, name = '', description = '') {
         const countCategoryProperty = ++this.store.store.countCategoryProperty;
 
-        const htmlStringElement = `
+        const html = `
             <div class="category-property flex flex-col" data-number="${countCategoryProperty}">
                 <div class="input-group mb-5">
                     <label for="category-property-name[${countCategoryProperty}]" class="label flex">
-                        <span>Название</span>
+                        <span>Свойство</span>
                         <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                     </label>
                     <input value="${name}" id="category-property-name[${countCategoryProperty}]" name="category-property[${countCategoryProperty}][name]" type="text" class="input">
                 </div>
-                <div class="input-group">
-                    <label for="category-property-description[${countCategoryProperty}]" class="label">
-                        <span>Описание</span>
-                        <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
-                    </label>
-                    <textarea id="category-property-description[${countCategoryProperty}]" name="category-property[${countCategoryProperty}][description]" class="input" rows="5" cols="33">${description}</textarea>
-                </div>
-                <div class="btn delete-property small-btn border-none bg-red self-end mt-4">Удалить</div>
+                <div class="btn delete-property small-btn border-none bg-red self-end">Удалить</div>
             </div>
         `;
 
-        this.containerElement.insertAdjacentHTML('beforeend', htmlStringElement);
+        this.containerElement.insertAdjacentHTML('beforeend', html);
 
         const lastCategoryProperty = this.containerElement.querySelector('.category-property:last-child');
         const btn = lastCategoryProperty.querySelector('.delete-property');
         const handler = this.handlerRemovePropertyElement.bind(this, lastCategoryProperty, btn);
 
+
+
         this.store.store.handlerPoolBtnDelete.push({
             id: countCategoryProperty,
-            handler: handler
+            handler: handler,
+            ajax: new AjaxSearchInput(
+                '/admin/catalog/properties/ajax?fields=id,name',
+                `.category-property[data-number="${countCategoryProperty}"]`,
+                `input[id="category-property-name[${countCategoryProperty}]"]`,
+                'search[name]',
+                `category-property[${countCategoryProperty}][id]`
+            )
         })
 
         btn.addEventListener('click', handler);
@@ -127,6 +130,12 @@ class HandlerCategoryProperty {
 
         this.containerElement.querySelectorAll('.category-property').forEach((val, key) => {
             val.setAttribute('data-number', ++key);
+        });
+
+        this.containerElement.querySelectorAll('input').forEach((input, key) => {
+            const val = ++key;
+            input.setAttribute('id', `category-property-name[${val}]`);
+            input.setAttribute('name', `category-property[${val}][name]`);
         });
 
         --this.store.store.countCategoryProperty;

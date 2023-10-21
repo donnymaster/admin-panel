@@ -97,7 +97,7 @@
             <div class="btn add-property small-btn border-none">Добавить</div>
         </div>
         <div class="category-properties-container flex flex-col">
-            @if (old('category-property'))
+            {{-- @if (old('category-property'))
                 <div class="old-data hidden">
                     @foreach (old('category-property') as $item)
                         <div class="old-row">
@@ -106,7 +106,7 @@
                         </div>
                     @endforeach
                 </div>
-            @endif
+            @endif --}}
         </div>
     </form>
 

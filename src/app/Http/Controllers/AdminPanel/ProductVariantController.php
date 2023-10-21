@@ -22,7 +22,7 @@ class ProductVariantController extends Controller
         dd(ProductCategory::with('properties')->where('id', $product->category_id)->first());
 
         $this->getPropertiesCategory(
-             ProductCategory::with('properties:id,name,description,product_category_id')
+            ProductCategory::with('properties:id,name,description,product_category_id')
                 ->where('id', $product->category_id)->first(),
             $categories
         );
@@ -60,7 +60,6 @@ class ProductVariantController extends Controller
         }
 
         return redirect()->route('admin.products.show', ['product' => $productId]);
-
     }
 
     public function remove($productId, ProductVariant $variant)
@@ -70,7 +69,7 @@ class ProductVariantController extends Controller
 
         if ($images) {
             foreach ($images as $image) {
-                Storage::delete('public/'.$image->path);
+                Storage::delete('public/' . $image->path);
             }
         }
 
@@ -84,58 +83,68 @@ class ProductVariantController extends Controller
     public function edit(Product $product, ProductVariant $variant)
     {
         $categories = [];
+        $propertyWithCategory = [];
 
         $this->getPropertiesCategory(
             ProductCategory::with('properties:id,name,description')->where('id', $product->category_id)->first(),
-           $categories
-       );
+            $categories
+        );
 
-       dd($categories);
+        $variantProperty = $variant->values()->get();
 
-        dd($variant->values()->get());
+        foreach ($categories as $category) {
+            $propertyWithCategory[$category->id]['category'] = $category;
 
-       $variantValues = $variant
-        ->values()
-        ->with('product_category:id,product_category_id')
-        ->get()
-        ->groupBy([function ($item) {
-            return $item['product_category']['product_category_id'];
-       }, 'product_category_property_id']);
+            $propertyWithCategory[$category->id]['properties'] = $category->properties->map(function ($propertyCategory) use ($variantProperty) {
+                $search = $variantProperty
+                    ->first(fn ($item) => $item->product_category_property_id == $propertyCategory->pivot->property_id);
 
-       $categories = array_reverse($categories);
+                if ($search) {
+                    $propertyCategory->value = $search;
+                    return [
+                        $propertyCategory,
+                        $search,
+                    ];
+                }
 
-       $imagesRaw = $variant->images()->where('parent_id', null)->with('children')->get();
-       $images = [];
+                return $propertyCategory;
+            });
+        }
 
-       foreach ($imagesRaw as $key => $image) {
-        $path = Storage::path('public/' . $image->path);
-        list($w, $h) = getimagesize($path);
+        $propertyWithCategory = array_reverse($propertyWithCategory);
 
-        $images[$key] = [
-            'id' => $image->id,
-            'path' => $image->path,
-            'size' => $this->formatBytes(Storage::size('public/'.$image->path)),
-            'url-path' => Storage::url($image->path),
-            'width' => $w,
-            'heigth' => $h,
-        ];
+        $imagesRaw = $variant->images()->where('parent_id', null)->with('children')->get();
+        $images = [];
 
-        foreach ($image->children as $childrenKey => $childrenValue) {
-            $pathChildren = Storage::path('public/' . $childrenValue->path);
-            list($wC, $hC) = getimagesize($pathChildren);
+        foreach ($imagesRaw as $key => $image) {
+            $path = Storage::path('public/' . $image->path);
+            list($w, $h) = getimagesize($path);
 
-            $images[$key]['children'][] = [
-                'id' => $childrenValue->id,
-                'path' => $childrenValue->path,
-                'size' => $this->formatBytes(Storage::size('public/'.$childrenValue->path)),
-                'url-path' => Storage::url($childrenValue->path),
-                'width' => $wC,
-                'heigth' => $hC,
+            $images[$key] = [
+                'id' => $image->id,
+                'path' => $image->path,
+                'size' => $this->formatBytes(Storage::size('public/' . $image->path)),
+                'url-path' => Storage::url($image->path),
+                'width' => $w,
+                'heigth' => $h,
             ];
-        };
-       }
 
-        return view('admin-panel.variants.edit', compact('variant', 'categories', 'variantValues', 'images'));
+            foreach ($image->children as $childrenKey => $childrenValue) {
+                $pathChildren = Storage::path('public/' . $childrenValue->path);
+                list($wC, $hC) = getimagesize($pathChildren);
+
+                $images[$key]['children'][] = [
+                    'id' => $childrenValue->id,
+                    'path' => $childrenValue->path,
+                    'size' => $this->formatBytes(Storage::size('public/' . $childrenValue->path)),
+                    'url-path' => Storage::url($childrenValue->path),
+                    'width' => $wC,
+                    'heigth' => $hC,
+                ];
+            };
+        }
+
+        return view('admin-panel.variants.edit', compact('variant', 'propertyWithCategory', 'images'));
     }
 
     public function update(UpdateProductVariantRequest $request, $product, ProductVariant $variant)
@@ -193,5 +202,4 @@ class ProductVariantController extends Controller
 
         return round($bytes, $precision) . ' ' . $units[$pow];
     }
-
 }
