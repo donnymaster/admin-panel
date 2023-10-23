@@ -2,12 +2,13 @@
 
 namespace App\Models\AdminPanel;
 
+use App\Traits\Model\DateFormatTimeZoneTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    use HasFactory;
+    use HasFactory, DateFormatTimeZoneTrait;
 
     protected $fillable = [
         'client_name',
@@ -19,10 +20,6 @@ class Order extends Model
         'user_annotation',
         'admin_annotation',
         'promocode_id',
-    ];
-
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:m',
     ];
 
     public function variants()

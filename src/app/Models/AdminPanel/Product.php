@@ -2,12 +2,13 @@
 
 namespace App\Models\AdminPanel;
 
+use App\Traits\Model\DateFormatTimeZoneTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, DateFormatTimeZoneTrait;
 
     protected $fillable = [
         'title',
@@ -22,10 +23,6 @@ class Product extends Model
         'page_description',
         'description',
         'sync_model',
-    ];
-
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:m',
     ];
 
     public function category()

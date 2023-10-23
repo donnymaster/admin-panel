@@ -18,9 +18,14 @@ return new class extends Migration
             $table->string('data_formations_import_file');
             $table->string('data_formations_offers_file');
             $table->string('status');
+            $table->unsignedBigInteger('user_id');
             $table->string('uniique_id');
+            $table->timestamp('date_end')->nullable();
+            $table->text('error_message')->nullable();
 
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

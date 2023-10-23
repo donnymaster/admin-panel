@@ -112,6 +112,7 @@ return [
             'product_link',
             'copy',
             'is_show',
+            'error_message',
         ],
 
         /*

@@ -309,7 +309,42 @@
                                         </div>
                                     </div>
                                 @else
-                                // просто выводить свойство
+                                    <div class="columns-1 mt-5">
+                                        <div class="input-group">
+                                            <label title="{{ $property->description }}"
+                                                for="properties[{{ $value['category']->id }}][{{ $loop->index }}][property-value]"
+                                                class="label flex mb-2">
+                                                <span class="mr-2">{{ $property->name }}</span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none">
+                                                    <path
+                                                        d="M17 18.4302H13L8.54999 21.3902C7.88999 21.8302 7 21.3602 7 20.5602V18.4302C4 18.4302 2 16.4302 2 13.4302V7.43018C2 4.43018 4 2.43018 7 2.43018H17C20 2.43018 22 4.43018 22 7.43018V13.4302C22 16.4302 20 18.4302 17 18.4302Z"
+                                                        stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                                                        stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path
+                                                        d="M12.0001 11.3599V11.1499C12.0001 10.4699 12.4201 10.1099 12.8401 9.81989C13.2501 9.53989 13.66 9.1799 13.66 8.5199C13.66 7.5999 12.9201 6.85986 12.0001 6.85986C11.0801 6.85986 10.3401 7.5999 10.3401 8.5199"
+                                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+                                                    <path d="M11.9955 13.75H12.0045" stroke="white" stroke-width="1.5"
+                                                        stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
+                                            </label>
+                                            <input hidden
+                                                name="properties[{{ $value['category']->id }}][{{ $loop->index }}][property-id]"
+                                                type="text" class="input" value="{{ $property->id }}">
+                                            <input hidden
+                                                name="properties[{{ $value['category']->id }}][{{ $loop->index }}][category]"
+                                                type="text" class="input" value="{{ $value['category']->id }}">
+                                            <input hidden
+                                                name="properties[{{ $value['category']->id }}][{{ $loop->index }}][property-name]"
+                                                type="text" class="input" value="{{ $property->name }}">
+                                            <input id="properties[{{ $value['category']->id }}][{{ $loop->index }}][property-value]"
+                                                name="properties[{{ $value['category']->id }}][{{ $loop->index }}][property-value]"
+                                                type="text" class="input"
+                                            >
+
+                                        </div>
+                                    </div>
                                 @endif
                             @empty
                                 <div class="empty-property text-center mt-3 mb-3 text-xl">

@@ -4,6 +4,7 @@ namespace App\Jobs\AdminPanel;
 
 use App\Models\AdminPanel\DataExchange;
 use App\Services\AdminPanel\DataEchange1C;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -30,10 +31,16 @@ class ExchangeData1C implements ShouldQueue
      */
     public function handle(): void
     {
-        (new DataEchange1C())->exchange();
-
         $m = DataExchange::where('id', $this->id);
 
-        $m->update(['status' => 'complete']);
+        $m->update(['status' => 'run']);
+
+        try {
+            (new DataEchange1C())->exchange();
+            $m->update(['status' => 'complete', 'date_end' => Carbon::now()->format('Y-m-d H:i')]);
+
+        } catch (\Throwable $th) {
+            $m->update(['status' => 'error', 'error_message' => $th->getMessage(), 'date_end' => Carbon::now()->format('Y-m-d H:i')]);
+        }
     }
 }

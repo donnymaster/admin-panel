@@ -2,12 +2,13 @@
 
 namespace App\Models\AdminPanel;
 
+use App\Traits\Model\DateFormatTimeZoneTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Statistic extends Model
 {
-    use HasFactory;
+    use HasFactory, DateFormatTimeZoneTrait;
 
     protected $fillable = [
         'ip_visitor',
@@ -21,9 +22,5 @@ class Statistic extends Model
         'city_visitor',
         'page_name_visit',
         'page_url_visit',
-    ];
-
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:m',
     ];
 }

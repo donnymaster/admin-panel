@@ -110,9 +110,8 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
         Route::delete('/categories/{category}', [CategoryController::class, 'delete'])->name('catalog.categories.delete');
         Route::get('/categories/{category}', [CategoryController::class, 'edit'])->name('catalog.category.edit');
         Route::patch('/categories/{category}', [CategoryController::class, 'update'])->name('catalog.category.update');
-        Route::post('/categories/{category}/addProperty', [CategoryController::class, 'addProperty'])->name('catalog.category.addProperty');
-        Route::delete('/categories/{category}/property/{property}', [CategoryController::class, 'deleteProperty'])->name('catalog.category.deleteProperty');
-        Route::patch('/categories/{category}/property/{property}', [CategoryController::class, 'updateProperty'])->name('catalog.category.updateProperty');
+        Route::post('/categories/{category}/properties/{property}', [CategoryController::class, 'addProperty'])->name('catalog.category.addProperty');
+        Route::delete('/categories/{category}/properties/{property}', [CategoryController::class, 'deleteProperty'])->name('catalog.category.deleteProperty');
 
         Route::get('/categories/{category}/properties', [CategoryController::class, 'properties'])->name('catalog.category.properties');
         Route::get('/categories/list', [CategoryController::class, 'list'])->name('catalog.categories.list');
@@ -157,6 +156,8 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
     Route::delete('/product-variant/image/remove', [ImageProcessingProductVariantController::class, 'delete'])->name('image.delete');
 
     Route::get('/data-exchange', [DataExchangeController::class, 'index'])->name('data-exchange');
+    Route::get('/data-exchange/files/health', [DataExchangeController::class, 'checkIsExistsData'])->name('data-exchange.checkIsExistsData');
+    Route::delete('/data-exchange/files/delete', [DataExchangeController::class, 'removeFiles'])->name('data-exchange.removeFiles');
     Route::get('/data-exchange/run', [DataExchangeController::class, 'runDataExchange'])->name('data-exchange.run');
 
     // other statistic pages

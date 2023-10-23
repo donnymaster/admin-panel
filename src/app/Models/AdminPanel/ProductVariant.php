@@ -2,12 +2,13 @@
 
 namespace App\Models\AdminPanel;
 
+use App\Traits\Model\DateFormatTimeZoneTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ProductVariant extends Model
 {
-    use HasFactory;
+    use HasFactory, DateFormatTimeZoneTrait;
 
     protected $fillable = [
         'product_id',
@@ -21,13 +22,14 @@ class ProductVariant extends Model
         'model',
     ];
 
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:m',
-    ];
-
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function productByCategoryId($id)
+    {
+        return $this->belongsTo(Product::class)->whereRelation('category', 'id', $id);
     }
 
     public function values()

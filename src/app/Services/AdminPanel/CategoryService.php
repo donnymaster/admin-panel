@@ -17,7 +17,7 @@ class CategoryService
         'category-property',
     ];
 
-    const REQUEST_FIELD_CATEGORY_PROPERTY = 'category-property';
+    const REQUEST_FIELD_CATEGORY_PROPERTY = 'categories-properties';
 
     public function getCategory()
     {
@@ -86,7 +86,7 @@ class CategoryService
         }
     }
 
-    public function createProductCategoryPropertiesByCategoryId(Request $request, int $categoryId): void
+    public function createProductCategoryPropertiesByCategoryId(Request $request, ProductCategory $category): void
     {
         $properties = $request->get(self::REQUEST_FIELD_CATEGORY_PROPERTY);
 
@@ -94,13 +94,8 @@ class CategoryService
             return;
         }
 
-        foreach ($properties as $property) {
-            ProductCategoryProperty::create([
-                'name' => $property['name'],
-                'description' => $property['description'],
-                'product_category_id' => $categoryId,
-                'slug' => Str::slug($property['name']),
-            ]);
+        foreach ($properties as $propertyId) {
+            $category->properties()->attach($propertyId);
         }
     }
 }

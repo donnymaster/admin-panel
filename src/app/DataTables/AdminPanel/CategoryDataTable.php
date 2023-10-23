@@ -24,28 +24,48 @@ class CategoryDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->editColumn('name', function ($category) {
-                $name = mb_strlen($category->name) >= 20 ? mb_substr($category->name, 0, 20).'...' : $category->name;
+                $name = mb_strlen($category->name) >= 20 ? mb_substr($category->name, 0, 20) . '...' : $category->name;
 
-                return "<a class=\"link\" href=\"".route('admin.catalog.category.edit', ['category' => $category->id])."\">$name ✎</a>";
+                return "
+                    <div class=\"flex\">
+                    <a
+                        class=\"link mr-2\" href=\"" . route('admin.catalog.category.edit', ['category' => $category->id]) . "\"
+                        >
+                            $name ✎
+                    </a>
+                    <a
+                        class=\"link mr-2\"
+                        href=\"". route('admin.catalog.categories.new') ."?category_id={$category->id}\"
+                    >
+                    +
+                    </a>
+                    <a
+                        class=\"link\"
+                        href=\"". route('admin.catalog.categories.page.list') ."?parent={$category->id}\"
+                    >
+                    🡵
+                    </a>
+                    </div>
+                ";
             })
             ->editColumn('page_title', function ($category) {
-                $name = mb_strlen($category->page_title) >= 20 ? mb_substr($category->page_title, 0, 20).'...' : $category->page_title;
+                $name = mb_strlen($category->page_title) >= 20 ? mb_substr($category->page_title, 0, 20) . '...' : $category->page_title;
 
                 return $name;
             })
             ->editColumn('parent_id', function ($category) {
                 if ($category->parent) {
-                    $nameParent = mb_strlen($category->parent->name) >= 10 ? mb_substr($category->parent->name, 0, 10).'...' : $category->parent->name;
+                    $nameParent = mb_strlen($category->parent->name) >= 10 ? mb_substr($category->parent->name, 0, 10) . '...' : $category->parent->name;
 
-                    return "<a class=\"link\" href=\"".route('admin.catalog.categories.page.list')."?parent={$category->parent->id}\">$nameParent 🡵</a>";
+                    return "<a class=\"link\" href=\"" . route('admin.catalog.categories.page.list') . "?parent={$category->parent->id}\">$nameParent 🡵</a>";
                 }
                 return '-';
             })
             ->addColumn('product_link', function ($category) {
                 return "
                     <div class=\"flex\">
-                        <a class=\"link mr-3\" href=\"".route('admin.products')."?category={$category->id}\">🡵 ({$category->products_count})</a>
-                        <a class=\"link\" href=\"".route('admin.products.create')."?category-id={$category->id}\">+</a>
+                        <a class=\"link mr-3\" href=\"" . route('admin.products') . "?category={$category->id}\">🡵 ({$category->products_count})</a>
+                        <a class=\"link\" href=\"" . route('admin.products.create') . "?category-id={$category->id}\">+</a>
                     </div>
                 ";
             })
@@ -84,15 +104,16 @@ class CategoryDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->parameters([
-                        'pageLength' => 25,
-                        'buttons' => [],
-                        'language' => [
-                            'url' => url('/vendor/datatables/lang/'.app()->getLocale().'.json'),
-                        ]])
-                    ->orderBy(0, 'asc');
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->parameters([
+                'pageLength' => 25,
+                'buttons' => [],
+                'language' => [
+                    'url' => url('/vendor/datatables/lang/' . app()->getLocale() . '.json'),
+                ]
+            ])
+            ->orderBy(0, 'asc');
     }
 
     /**

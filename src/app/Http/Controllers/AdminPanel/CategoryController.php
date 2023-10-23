@@ -9,8 +9,10 @@ use App\Http\Requests\AdminPanel\CreateProductCategoryPropertyRequest;
 use App\Http\Requests\AdminPanel\CreateProductCategoryRequest;
 use App\Http\Requests\AdminPanel\UpdateProductCategoryPropertyRequest;
 use App\Http\Requests\AdminPanel\UpdateProductCategoryRequest;
+use App\Models\AdminPanel\Product;
 use App\Models\AdminPanel\ProductCategory;
 use App\Models\AdminPanel\ProductCategoryProperty;
+use App\Models\AdminPanel\ProductVariant;
 use App\Services\AdminPanel\CategoryService;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -69,8 +71,7 @@ class CategoryController extends Controller
 
     public function store(CreateProductCategoryRequest $request)
     {
-        // сохранить кратинку
-
+        //TODO: сохранить кратинку
         // создать категорию
         $category = $this->service->createDefaultCategory($request, true);
 
@@ -78,7 +79,7 @@ class CategoryController extends Controller
         $this->service->positionRecalculationByCreate($category, $request->get('position'));
 
         // создать свойства если они существуют
-        $this->service->createProductCategoryPropertiesByCategoryId($request, $category->id);
+        $this->service->createProductCategoryPropertiesByCategoryId($request, $category);
 
         return redirect()->route('admin.catalog.categories.page.list');
         // return redirect()->back()->with('successfully-created', 'Категория успешно создана!');
@@ -92,32 +93,29 @@ class CategoryController extends Controller
         return $dataTable->setIdCategory($id)->render('admin-panel.catalogs.category', compact('category', 'categories'));
     }
 
-    public function addProperty(CreateProductCategoryPropertyRequest $request, $categoryId)
+    public function addProperty(ProductCategory $category, int $property)
     {
-        $data = $request->safe()->toArray();
-
-        $slug = Str::slug($data['name']);
-
-        $data['slug'] = $slug;
-        $data['product_category_id'] = $categoryId;
-
-        ProductCategoryProperty::create($data);
+        $category->properties()->syncWithoutDetaching([$property]);
 
         return [
             'message' => 'Свойство создано!',
         ];
     }
 
-    public function deleteProperty($categoryId, ProductCategoryProperty $property)
+    public function deleteProperty(ProductCategory $category, ProductCategoryProperty $property)
     {
-        try {
-            $property->delete();
-        } catch (QueryException $th) {
+
+        $count = Product::where('category_id', $category->id)
+            ->whereRelation('variants.values', 'product_category_property_id', $property->id)->count();
+
+        if ($count >= 1) {
             return response(
-                ['message' => 'Ошибка при удалении записи, удалите все значения, которые используют это свойство!'],
+                ['message' => "Вы не можете отвязать это свойство, потому что оно используется в $count товарах!"],
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
         }
+
+        $category->properties()->detach($property->id);
 
         return [
             'message' => 'Свойство было удалено!'
@@ -158,11 +156,13 @@ class CategoryController extends Controller
 
     public function delete(ProductCategory $category)
     {
+        $category->properties()->detach();
+
         try {
             $category->delete();
         } catch (QueryException $th) {
             return response(
-                ['message' => 'Ошибка при удалении категории, категория является родительской для другой категории или у нее есть свойства!'],
+                ['message' => 'Ошибка при удалении категории, категория является родительской для другой категории!'],
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
         }

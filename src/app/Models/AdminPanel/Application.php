@@ -2,12 +2,13 @@
 
 namespace App\Models\AdminPanel;
 
+use App\Traits\Model\DateFormatTimeZoneTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Application extends Model
 {
-    use HasFactory;
+    use HasFactory, DateFormatTimeZoneTrait;
 
     protected $fillable = [
         'full_name_client',
@@ -16,7 +17,4 @@ class Application extends Model
         'processed',
     ];
 
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:m',
-    ];
 }

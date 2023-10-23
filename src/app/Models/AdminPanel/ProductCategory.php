@@ -2,12 +2,13 @@
 
 namespace App\Models\AdminPanel;
 
+use App\Traits\Model\DateFormatTimeZoneTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ProductCategory extends Model
 {
-    use HasFactory;
+    use HasFactory, DateFormatTimeZoneTrait;
 
     protected $fillable = [
         'parent_id',
@@ -20,10 +21,6 @@ class ProductCategory extends Model
         'page_description',
         'image',
         'sync_id',
-    ];
-
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:m',
     ];
 
     public function parent()
@@ -43,6 +40,6 @@ class ProductCategory extends Model
 
     public function properties()
     {
-        return $this->belongsToMany(ProductCategoryProperty::class, 'category_properties', 'category_id', 'property_id');
+        return $this->belongsToMany(ProductCategoryProperty::class, 'category_properties', 'category_id', 'property_id')->withTimestamps();
     }
 }

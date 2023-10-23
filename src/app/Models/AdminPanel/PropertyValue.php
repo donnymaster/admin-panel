@@ -2,22 +2,18 @@
 
 namespace App\Models\AdminPanel;
 
+use App\Traits\Model\DateFormatTimeZoneTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class PropertyValue extends Model
 {
-    use HasFactory;
+    use HasFactory, DateFormatTimeZoneTrait;
 
     protected $fillable = [
         'product_category_property_id',
         'value',
     ];
-
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:m',
-    ];
-
     public function product_category()
     {
         return $this->belongsTo(ProductCategoryProperty::class, 'product_category_property_id');

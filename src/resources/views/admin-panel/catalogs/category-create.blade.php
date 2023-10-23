@@ -3,7 +3,7 @@
 @section('title', 'Новая категория')
 
 @section('content')
-    <form action="{{ route('admin.catalog.categories.store') }}" method="POST" enctype="multipart/form-data">
+    <form id="createProductCategoryForm" action="{{ route('admin.catalog.categories.store') }}" method="POST" enctype="multipart/form-data">
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -58,7 +58,7 @@
                     <span>Родительская категория</span>
                     <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                 </label>
-                <select class="select" name="parent_id" id="parent_id" @if ($selectedCategory) disabled @endif>
+                <select class="select" style="padding: 16.5px" name="parent_id" id="parent_id" @if ($selectedCategory) disabled @endif>
                     @if ($selectedCategory)
                         <option selected value="{{$selectedCategory->id}}">{{$selectedCategory->name}}</option>
                     @endif
@@ -69,7 +69,7 @@
                 </select>
             </div>
         </div>
-        <div class="columns-2 mb-9">
+        <div class="columns-2 mb-5 mt-5">
             <div class="input-group">
                 <label for="description" class="label flex">
                     <span>Описание для seo</span>
@@ -86,7 +86,7 @@
         <div class="columns-1 mb-9">
             <div class="input-group">
                 <label for="page_description" class="label">
-                    Описание страницы
+                    Описание категории
                     <x-admin.tinymce.message />
                 </label>
                 <textarea name="page_description" id="page_description" class="input" name="story" rows="5" cols="33">{{old('page_description')}}</textarea>

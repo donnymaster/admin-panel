@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\AdminPanel;
 
+use App\DataTables\AdminPanel\DataExchangeDataTable;
 use App\Http\Controllers\Controller;
 use App\Jobs\AdminPanel\ExchangeData1C;
 use App\Models\AdminPanel\DataExchange;
 use App\Services\AdminPanel\DataEchange1C;
-use Illuminate\Http\Request;
 
 class DataExchangeController extends Controller
 {
@@ -19,9 +19,9 @@ class DataExchangeController extends Controller
     {
         $this->service = new DataEchange1C();
     }
-    public function index()
+    public function index(DataExchangeDataTable $datatable)
     {
-        return view('admin-panel.data-exchange.index');
+        return $datatable->render('admin-panel.data-exchange.index');
     }
 
     public function checkIsExistsData()
@@ -31,21 +31,35 @@ class DataExchangeController extends Controller
 
     public function runDataExchange()
     {
-        $out = '';
-        $code = '';
+        $check = DataExchange::whereIn('status', ['run', 'create'])->get();
 
-        $check = DataExchange::where('status', 'df')->get();
+        if ($check->count() >= 1) {
+            return response([
+                'message' => 'Обмен уже создан или запущен!'
+            ], 422);
+        }
 
-        // if ($check->count() >= 1) {
-        //     return response([
-        //         'message' => 'Обмен уже запущен!'
-        //     ], 422);
-        // }
+        if (!$this->service->checkExistsFiles()) {
+            return response([
+                'message' => 'Файла импорта отсутствуют!'
+            ], 422);
+        }
 
-        $exchangeData = $this->service->makeModel('run');
+        $exchangeData = $this->service->makeModel('create');
 
         ExchangeData1C::dispatch($exchangeData->id);
 
-        return 'пашла жара';
+        return response([
+            'message' => 'Задача добавлена в очередь!'
+        ]);
+    }
+
+    public function removeFiles()
+    {
+        $this->service->removeFiles();
+
+        return response([
+            'message' => 'Файлы были удалены!'
+        ]);
     }
 }

@@ -46,8 +46,9 @@ class CreateProductCategoryRequest extends FormRequest
             'description' => 'nullable',
             'page_description' => 'nullable',
             'image' => 'nullable',
-            'category-property.*.name' => 'required|min:1|max:255|unique:product_category_properties,name',
-            'category-property.*.description' => 'required|min:1|max:255',
+
+            'categories-properties' => 'nullable|array',
+            'categories-properties.*' => 'nullable|exists:product_category_properties,id',
         ];
     }
 }

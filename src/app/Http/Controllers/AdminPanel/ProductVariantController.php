@@ -18,16 +18,11 @@ class ProductVariantController extends Controller
     {
         $categories = [];
 
-        // $mem_start = memory_get_usage();
-        dd(ProductCategory::with('properties')->where('id', $product->category_id)->first());
-
         $this->getPropertiesCategory(
-            ProductCategory::with('properties:id,name,description,product_category_id')
+            ProductCategory::with('properties:id,name,description')
                 ->where('id', $product->category_id)->first(),
             $categories
         );
-
-        // dd(memory_get_usage() - $mem_start);
 
         $categories = array_reverse($categories);
 
@@ -95,7 +90,9 @@ class ProductVariantController extends Controller
         foreach ($categories as $category) {
             $propertyWithCategory[$category->id]['category'] = $category;
 
-            $propertyWithCategory[$category->id]['properties'] = $category->properties->map(function ($propertyCategory) use ($variantProperty) {
+            $propertyWithCategory[$category->id]['properties']
+                = $category->properties->map(function ($propertyCategory) use ($variantProperty) {
+
                 $search = $variantProperty
                     ->first(fn ($item) => $item->product_category_property_id == $propertyCategory->pivot->property_id);
 

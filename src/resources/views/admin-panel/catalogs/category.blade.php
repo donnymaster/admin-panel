@@ -97,13 +97,21 @@
             </div>
         </div>
     </form>
-    <div class="columns-1 flex justify-between mt-9 mb-9 divide-x pb-2 text-white text-3xl border-b-2 border-b-white">
-        <span>Свойства категории</span>
-        <div class="btn bg-green mr-2 modal-btn" data-modal="create-category-property">
-            Добавить
+    <input type="text" hidden name="category_id" value="{{$category->id}}">
+    <div class="flex">
+        <div class="columns-1 w-full flex justify-between mt-9 mb-9 divide-x pb-2 text-white text-3xl border-b-2 border-b-white">
+            <span>Свойства категории</span>
+            </div>
         </div>
-        <div class="btn modal-btn" style="display: none" data-modal="update-category-property">
-            Добавить
+        <div class="flex items-center mb-6">
+            <div class="w-4/12 mr-4">
+                <select id="new-property-category" name="new-property-category">
+                    <option value="">Выберете свойство</option>
+                </select>
+            </div>
+            <div class="btn bg-green" id="addCaregoryPropertyBtn">
+                <span class="loader dark"></span>
+                Добавить
         </div>
     </div>
 
@@ -125,7 +133,7 @@
 @endsection
 
 
-@push('modals')
+{{-- @push('modals')
     <div class="modal-container hidden">
         <div class="modal-overlay hidden"></div>
         <div class="modal hidden" data-modal="create-category-property">
@@ -138,17 +146,11 @@
             <div class="modal-content scrollbar">
                 <div class="input-group mb-3">
                     <label for="property-name" class="label black pb-1">
-                        Название
+                        Свойство
                     </label>
-                    <input id="property-name" type="text" class="input border border-theme-blue border-solid"
-                        placeholder="">
-                </div>
-                <div class="input-group mb-3">
-                    <label for="property-description" class="label black pb-1">
-                        Описание
-                    </label>
-                    <input id="property-description" type="text" class="input border border-theme-blue border-solid"
-                        placeholder="">
+                    <select id="new-property-category" name="new-property-category">
+                        <option value="">Выберете свойство</option>
+                    </select>
                 </div>
             </div>
             <div class="modal-footer flex justify-end">
@@ -194,4 +196,4 @@
             <input type="hidden" name="property_id" value="">
         </div>
     </div>
-@endpush
+@endpush --}}

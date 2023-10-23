@@ -1,5 +1,6 @@
 import AjaxSearchInput from "../components/AjaxSearchInput";
 import ConvertWordsToTranscription from "../components/ConvertWordsToTranscription";
+import WrapperChoicesJs from "../components/WrapperChoicesJs";
 
 new ConvertWordsToTranscription();
 
@@ -41,8 +42,6 @@ class Store {
         Object.values(this.store);
     }
 }
-
-// document.querySelector('.add-variant').addEventListener('click', )
 
 class HandlerCategoryProperty {
     constructor() {
@@ -88,7 +87,9 @@ class HandlerCategoryProperty {
                         <span>Свойство</span>
                         <span class="text-black pl-2 font-bold cursor-pointer" title="обязательное поле">*</span>
                     </label>
-                    <input value="${name}" id="category-property-name[${countCategoryProperty}]" name="category-property[${countCategoryProperty}][name]" type="text" class="input">
+                        <select id="category-property-name[${countCategoryProperty}]" name="category-property[${countCategoryProperty}][name]">
+                            <option value="">Выберете свойство</option>
+                        </select>
                 </div>
                 <div class="btn delete-property small-btn border-none bg-red self-end">Удалить</div>
             </div>
@@ -100,19 +101,15 @@ class HandlerCategoryProperty {
         const btn = lastCategoryProperty.querySelector('.delete-property');
         const handler = this.handlerRemovePropertyElement.bind(this, lastCategoryProperty, btn);
 
-
-
         this.store.store.handlerPoolBtnDelete.push({
             id: countCategoryProperty,
             handler: handler,
-            ajax: new AjaxSearchInput(
+            ajax: new WrapperChoicesJs(
                 '/admin/catalog/properties/ajax?fields=id,name',
-                `.category-property[data-number="${countCategoryProperty}"]`,
-                `input[id="category-property-name[${countCategoryProperty}]"]`,
-                'search[name]',
-                `category-property[${countCategoryProperty}][id]`
-            )
-        })
+                lastCategoryProperty.querySelector('select'),
+                '&search[name]=',
+            ),
+        });
 
         btn.addEventListener('click', handler);
 
@@ -124,9 +121,11 @@ class HandlerCategoryProperty {
 
         parent.remove();
 
-       const handler = this.store.store.handlerPoolBtnDelete.find(el => el.id == id).handler;
+       const h = this.store.store.handlerPoolBtnDelete.find(el => el.id == id);
 
-        btn.removeEventListener('click', handler);
+        btn.removeEventListener('click', h.handler);
+
+        h.ajax.destroy();
 
         this.containerElement.querySelectorAll('.category-property').forEach((val, key) => {
             val.setAttribute('data-number', ++key);
@@ -145,3 +144,21 @@ class HandlerCategoryProperty {
 }
 
 new HandlerCategoryProperty();
+
+document.querySelector('#createProductCategoryForm')
+    .addEventListener('submit', (e) => {
+        const container = document.querySelector('.category-properties-container');
+
+        container.querySelectorAll('select')
+            .forEach(select => {
+                if (!select.value) return;
+
+                const input = document.createElement('input');
+                input.name = 'categories-properties[]';
+                input.type = 'number';
+                input.hidden = true;
+                input.value = select.value;
+
+                container.append(input);
+            });
+    });

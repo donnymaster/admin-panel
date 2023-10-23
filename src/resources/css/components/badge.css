@@ -17,6 +17,29 @@
     }
 }
 
+.badge-mini {
+    color: white;
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 25px;
+
+    &.red {
+        background-color: red;
+    }
+
+    &.orange {
+        background-color: orange;
+    }
+
+    &.blue {
+        background-color: blue;
+    }
+
+    &.green {
+        background-color: green;
+    }
+}
+
 .badge-table {
     @apply
         inline

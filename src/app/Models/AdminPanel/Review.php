@@ -2,12 +2,13 @@
 
 namespace App\Models\AdminPanel;
 
+use App\Traits\Model\DateFormatTimeZoneTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Review extends Model
 {
-    use HasFactory;
+    use HasFactory, DateFormatTimeZoneTrait;
 
     protected $fillable = [
         'client_name',
@@ -15,9 +16,5 @@ class Review extends Model
         'is_show',
         'comment',
         'rating',
-    ];
-
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:m',
     ];
 }

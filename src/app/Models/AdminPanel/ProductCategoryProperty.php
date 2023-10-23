@@ -2,12 +2,13 @@
 
 namespace App\Models\AdminPanel;
 
+use App\Traits\Model\DateFormatTimeZoneTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ProductCategoryProperty extends Model
 {
-    use HasFactory;
+    use HasFactory, DateFormatTimeZoneTrait;
 
     protected $fillable = [
         'name',
@@ -16,13 +17,14 @@ class ProductCategoryProperty extends Model
         'sync_id',
     ];
 
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:m',
-    ];
-
     public function values()
     {
         return $this->hasMany(PropertyValue::class);
+    }
+
+    public function countValues()
+    {
+        return $this->hasMany(PropertyValue::class)->count();
     }
 
     public function categoryies()

@@ -9,6 +9,7 @@ use App\Models\AdminPanel\ProductCategoryProperty;
 use App\Models\AdminPanel\ProductVariant;
 use Exception;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -104,11 +105,6 @@ class DataEchange1C
 
     public function __construct()
     {
-        if (!$this->checkExistsFiles()) {
-            throw new Exception('Файлы экспорта отсутствуют!');
-            return;
-        }
-
         $this->categoryIds = collect();
         $this->categoryPropertyids = collect();
         $this->productVariantsIds = collect();
@@ -116,6 +112,11 @@ class DataEchange1C
 
     public function exchange(): void
     {
+        if (!$this->checkExistsFiles()) {
+            throw new Exception('Файлы экспорта отсутствуют!');
+            return;
+        }
+
         $messages = [];
 
         $xmlObjectImport = $this->generateXmlObject(self::FILE_IMPORT);
@@ -156,10 +157,18 @@ class DataEchange1C
             'uniique_id' => Hash::make(
                 (string) $xmlObjectImport['classificator']->id . (string) $xmlObjectOffers['info']->id
             ),
+            'user_id' => Auth::user()->id,
         ]);
     }
 
-    private function checkExistsFiles(): bool
+    public function removeFiles()
+    {
+        Storage::delete(self::FOLDER . '/' . self::FILE_OFFERS);
+        Storage::delete(self::FOLDER . '/' . self::FILE_IMPORT);
+        Storage::deleteDirectory(self::FOLDER . '/' . self::IMPORT_FILES);
+    }
+
+    public function checkExistsFiles(): bool
     {
         return Storage::exists(self::FOLDER . '/' . self::FILE_IMPORT)
             && Storage::exists(self::FOLDER . '/' . self::FILE_OFFERS)
