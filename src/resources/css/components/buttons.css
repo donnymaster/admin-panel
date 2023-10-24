@@ -54,6 +54,22 @@
     }
 }
 
+
+.btn.bg-blue {
+    background-color: blue;
+
+    &:active {
+        background-color: rgb(57, 57, 255);
+    }
+
+    &.disabled {
+        background-color: rgb(2, 0, 117);
+        &:active {
+            background-color: rgb(2, 0, 117);
+        }
+    }
+}
+
 .btn.bg-green {
     @apply bg-theme-green active:bg-theme-green-active;
 

@@ -103,6 +103,8 @@ class DataEchange1C
      */
     private $listProductModel = [];
 
+    private $message = '';
+
     public function __construct()
     {
         $this->categoryIds = collect();
@@ -110,28 +112,39 @@ class DataEchange1C
         $this->productVariantsIds = collect();
     }
 
-    public function exchange(): void
+    public function exchange(): string
     {
         if (!$this->checkExistsFiles()) {
             throw new Exception('Файлы экспорта отсутствуют!');
-            return;
+            return 'error';
         }
-
-        $messages = [];
 
         $xmlObjectImport = $this->generateXmlObject(self::FILE_IMPORT);
         $xmlObjectOffers = $this->generateXmlObject(self::FILE_OFFERS);
 
-        $messages[] = $this->handlerCategories(((array) $xmlObjectImport->classificator->categories)['category']);
+        $countUpdate = 0;
+        $countCreate = 0;
 
-        $messages[] = $this->handlerProperties(((array) $xmlObjectImport->classificator->properties)['property']);
+        $this->handlerCategories(
+            $countUpdate,
+            $countCreate,
+            ((array) $xmlObjectImport->classificator->categories)['category']
+        );
 
-        $messages[] = $this->handlerProduct(
+        $this->message .= "Количество обновленных категорий: $countUpdate\n Количество добавленных категорий: $countCreate\n";
+
+        $this->handlerProperties(((array) $xmlObjectImport->classificator->properties)['property']);
+
+        $this->handlerProduct(
             ((array) $xmlObjectImport->catalog->items)['item'],
             collect(((array) $xmlObjectOffers->info->items)['item'])
         );
 
+        dd($this->relationProductCategoryToProperty);
+
         $this->tieCategoryToProperty();
+
+        return $this->message;
     }
 
     public function checkStatusFiles(): array
@@ -183,7 +196,7 @@ class DataEchange1C
         return new \SimpleXMLElement(preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', $xmlStringNew));
     }
 
-    private function handlerCategories($categories = [], $parent = []): array
+    private function handlerCategories(&$countUpdate, &$countCreate, $categories = [], $parent = []): void
     {
         foreach ($categories as $category) {
             $parentCategory = ProductCategory::where('sync_id', $category->id)->first();
@@ -197,12 +210,14 @@ class DataEchange1C
                     'sync_id' => $id,
                     ...$parent,
                 ]);
+                ++$countCreate;
             } else {
                 $parentCategory->update([
                     'name' => $category->title,
                     'slug' => Str::slug($category->title),
                     ...$parent,
                 ]);
+                ++$countUpdate;
             }
 
             $this->categoryIds->push([
@@ -212,13 +227,13 @@ class DataEchange1C
 
             if ($category->categories) {
                  $this->handlerCategories(
+                    $countUpdate,
+                    $countCreate,
                     ((array) $category->categories)['category'],
                     ['parent_id' => $parentCategory->id]
                 );
             }
         }
-
-        return [ '' ];
     }
 
     private function getNewPositionProductCategory($parent_id = null): int
@@ -250,7 +265,7 @@ class DataEchange1C
         return collect($result)->filter( fn ($items) => count($items) >= 1);
     }
 
-    private function handlerProperties($properties): array
+    private function handlerProperties($properties): void
     {
         $countCreate = 0;
         $countUpdate = 0;
@@ -278,18 +293,21 @@ class DataEchange1C
             $this->categoryPropertyids->push([
                 'sync_id' => $id,
                 'db_id' => $dbProperty->id,
+                'name' => (string) $property->title,
             ]);
 
         }
 
-        return [
-            "Количество добавленных свойств: $countCreate\n",
-            "Количество обновленных свойств: $countUpdate\n",
-        ];
+        $this->message .= "Количество добавленных свойств: $countCreate\nКоличество обновленных свойств: $countUpdate\n";
     }
 
     private function handlerProduct($items, Collection $informationList): void
     {
+        $countCreateProduct = 0;
+        $countUpdateProduct = 0;
+        $countCreateVariant = 0;
+        $countUpdateCariant = 0;
+
         list($products, $productsWithVariants) = collect($items)
             ->filter( fn ($item) => !empty($item->image))
             ->groupBy('model')
@@ -297,28 +315,45 @@ class DataEchange1C
 
         foreach ($productsWithVariants as $variants)
         {
-            foreach ($variants as $variant) {
-                $product = $this->createOrUpdateProduct($variant);
-                $variant = $this->createOrUpdateProductVariant($variant, $product->id, $informationList);
+            foreach ($variants as $variantMany) {
+                $product = $this->createOrUpdateProduct($variantMany, $countCreateProduct, $countUpdateProduct);
+                $this->createOrUpdateProductVariant(
+                    $variantMany,
+                    $product->id,
+                    $informationList,
+                    $countCreateVariant,
+                    $countUpdateCariant
+                );
             }
         }
 
-        foreach ($products->first() as $variant)
+
+        foreach ($products->first() as $variantSimple)
         {
-            $product = $this->createOrUpdateProduct($variant);
-            $variant = $this->createOrUpdateProductVariant($variant, $product->id, $informationList);
+            $product = $this->createOrUpdateProduct($variantSimple, $countCreateProduct, $countUpdateProduct);
+            $this->createOrUpdateProductVariant(
+                $variantSimple,
+                $product->id,
+                $informationList,
+                $countCreateVariant,
+                $countUpdateCariant
+            );
         }
 
+        $this->message .= "Количество обновленных товаров: $countUpdateProduct\n";
+        $this->message .= "Количество добавленных товаров: $countCreateProduct\n";
+        $this->message .= "Количество обновленных вариаций товаров: $countUpdateCariant\n";
+        $this->message .= "Количество добавленных вариаций товаров: $countCreateVariant\n";
     }
 
-    private function createOrUpdateProduct($xmlProduct): Product
+    private function createOrUpdateProduct($xmlProduct, &$countCreateProduct, &$countUpdateProduct): Product
     {
         $dbCategory = $this->categoryIds
             ->first( fn ($items) => $items['sync_id'] == (string) $xmlProduct->categories->id);
 
-        $product = Product::where('sync_model', $xmlProduct->model)->first();
-
         $model = $this->getModel($xmlProduct);
+
+        $product = Product::where('sync_model', $model)->first();
 
         if ($product) {
             $product->update([
@@ -327,15 +362,17 @@ class DataEchange1C
                 'page_title' => (string) $xmlProduct->title,
                 'category_id' => $dbCategory['db_id'],
             ]);
+            ++$countUpdateProduct;
         } else {
             $product = Product::create([
                 'title' => (string) $xmlProduct->title,
                 'slug' => Str::slug((string) $xmlProduct->title),
                 'page_title' => (string) $xmlProduct->title,
                 'category_id' => $dbCategory['db_id'],
-                'sync_model' => $this->getModel($xmlProduct),
+                'sync_model' => $model,
                 'visible' => false,
             ]);
+            ++$countCreateProduct;
         }
 
         $this->listProductModel[] = [
@@ -350,10 +387,16 @@ class DataEchange1C
     {
         if (!empty($xml->model)) return (string) $xml->model;
 
-        return Hash::make($xml->title . $xml->categories->id);
+        return (string) $xml->id;
     }
 
-    private function createOrUpdateProductVariant($xmlVariant, $productId, Collection $informationList): ProductVariant
+    private function createOrUpdateProductVariant(
+        $xmlVariant,
+        $productId,
+        Collection $informationList,
+        &$countCreateVariant,
+        &$countUpdateCariant
+        ): ProductVariant
     {
         $id = (string) $xmlVariant->id;
 
@@ -378,6 +421,7 @@ class DataEchange1C
                 'count' => $quantity,
                 'price' => $price,
             ]);
+            ++$countUpdateCariant;
         } else {
             $variant = ProductVariant::create([
                 'product_id' => $productId,
@@ -390,6 +434,7 @@ class DataEchange1C
                 'price' => $price,
                 'sync_id' => $id,
             ]);
+            ++$countCreateVariant;
         }
 
         $this->productVariantsIds->push([
@@ -419,10 +464,17 @@ class DataEchange1C
                 ->first( fn ($items) => $items['sync_id'] == (string) $property->id);
 
             if ($dbProperty == null) continue;
+            dd($this->categoryPropertyids);
+            // $this->push_unique(
+            //     $this->relationProductCategoryToProperty[$dbCategory['db_id']],
+            //     $dbProperty['db_id']
+            // );
 
+            //sync_id
             $this->push_unique(
-                $this->relationProductCategoryToProperty[$dbCategory['db_id']],
-                $dbProperty['db_id']
+                $this->relationProductCategoryToProperty[$dbCategory['sync_id']],
+                $dbProperty['db_id'],
+                [(string) $property->title, (string) $property->id]
             );
 
             $variant->values()->updateOrCreate([
@@ -432,13 +484,13 @@ class DataEchange1C
         }
     }
 
-    private function push_unique(&$array, $value): void
+    private function push_unique(&$array, $value, $otherData): void
     {
         $array ??= [];
 
-        if (in_array($value, $array)) return;
+        if (array_key_exists($value, $array)) return;
 
-        $array[] = $value;
+        $array[$value] = $otherData;
     }
 
     private function tieCategoryToProperty(): void
@@ -448,7 +500,7 @@ class DataEchange1C
 
             if (!$category) continue;
 
-            $category->properties()->attach($properties);
+            $category->properties()->syncWithoutDetaching($properties);
         }
     }
 

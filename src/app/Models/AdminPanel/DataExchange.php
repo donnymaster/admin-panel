@@ -4,6 +4,7 @@ namespace App\Models\AdminPanel;
 
 use App\Models\User;
 use App\Traits\Model\DateFormatTimeZoneTrait;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,9 +23,10 @@ class DataExchange extends Model
         'uniique_id',
         'user_id',
         'date_end',
-        'error_message',
+        'message',
+        'time_spent',
+        'date_start',
     ];
-
 
     public function user()
     {

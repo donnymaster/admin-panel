@@ -147,18 +147,21 @@
                 </thead>
                 <tbody>
                     @foreach ($order->variants as $variant)
+                        @php
+                            $name = mb_strlen($variant->title) >= 20 ? mb_substr($variant->title, 0, 20) . '...' : $variant->title;
+                        @endphp
                         <tr data-id="{{$variant->id}}">
                             <td>
                                 @if (!is_null($variant->images->where('slug', 'image-mini')->first()))
                                     <img src="/storage/{{ $variant->images->where('slug', 'image-mini')->first()->path }}"
-                                        alt="{{ $variant->title }}">
+                                        alt="{{ $name }}">
                                 @else
-                                    <img alt="{{ $variant->title }}">
+                                    <img alt="{{ $name }}">
                                 @endif
                             </td>
                             <td>
                                 <div class="inline-flex flex-col items-center">
-                                    <div class="text-start variant-name">{{ $variant->title }}</div>
+                                    <div title="{{ $variant->title }}" class="text-start variant-name">{{ $name }}</div>
                                     <div data-count="{{ $variant->count }}"
                                         class="text-sm self-start font-light total-variant">
                                         <span>{{ $variant->count }}</span> шт.

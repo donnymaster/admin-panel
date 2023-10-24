@@ -31,16 +31,40 @@ class ExchangeData1C implements ShouldQueue
      */
     public function handle(): void
     {
+        $timeStart = Carbon::now()->format('Y-m-d H:i:s');
+
         $m = DataExchange::where('id', $this->id);
 
-        $m->update(['status' => 'run']);
+        $m->update(['status' => 'run', 'date_start' => $timeStart]);
 
         try {
-            (new DataEchange1C())->exchange();
-            $m->update(['status' => 'complete', 'date_end' => Carbon::now()->format('Y-m-d H:i')]);
+            $message = (new DataEchange1C())->exchange();
+
+            $timeEnd = Carbon::now()->format('Y-m-d H:i:s');
+
+            $m->update([
+                'status' => 'complete',
+                'message' => $message . $this->getTime($timeStart, $timeEnd)[1],
+                'date_end' => Carbon::now()->format('Y-m-d H:i:s'),
+                'time_spent' => $this->getTime($timeStart, $timeEnd)[0],
+            ]);
 
         } catch (\Throwable $th) {
-            $m->update(['status' => 'error', 'error_message' => $th->getMessage(), 'date_end' => Carbon::now()->format('Y-m-d H:i')]);
+
+            $m->update([
+                'status' => 'error',
+                'message' => $th->getMessage(),
+                'date_end' => $timeEnd,
+                'time_spent' => $this->getTime($timeStart, $timeEnd)[0],
+            ]);
         }
+    }
+
+    private function getTime($start, $end)
+    {
+        $to = Carbon::createFromFormat('Y-m-d H:i:s', $start);
+        $from = Carbon::createFromFormat('Y-m-d H:i:s', $end);
+
+        return [$from->diff($to)->format('%H:%I:%S'), serialize($from->diff($to))];
     }
 }

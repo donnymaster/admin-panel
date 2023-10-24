@@ -37,11 +37,11 @@ class DataExchangeDataTable extends DataTable
                     return "<div class=\"badge-mini red\">ошибка</div>";
                 }
             })
-            ->editColumn('error_message', function ($data) {
-                $message = mb_strlen($data->error_message) >= 20 ? mb_substr($data->error_message, 0, 20) . '...' : $data->error_message;
+            ->editColumn('message', function ($data) {
+                $message = mb_strlen($data->message) >= 20 ? mb_substr($data->message, 0, 20) . '...' : $data->message;
 
                 return "
-                    <div title=\"{$data->error_message}\">{$message}</div>
+                    <div title=\"{$data->message}\">{$message}</div>
                 ";
             })
             ->setRowId('id');
@@ -82,10 +82,11 @@ class DataExchangeDataTable extends DataTable
             Column::make('status')->title('Статус'),
             Column::make('user')->title('Инициатор'),
             Column::make('version_schema_import_file')->title('Версия файлов'),
-            Column::make('data_formations_import_file')->title('Дата файлов'),
             Column::make('created_at')->title('Добавлен'),
+            Column::make('date_start')->title('Запущен'),
             Column::make('date_end')->title('Остановлен'),
-            Column::make('error_message')->title('Ошибка'),
+            Column::make('time_spent')->title('Время'),
+            Column::make('message')->title('Сообщение'),
         ];
     }
 

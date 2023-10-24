@@ -101,3 +101,24 @@ document.querySelector('.delete-files-import')
             });
         }).finally(() => target.classList.remove('disabled'));
     });
+
+document.querySelector('.check-queue-status')
+    .addEventListener('click', ({target}) => {
+        if (target.classList.contains('disabled')) return;
+
+        target.classList.add('disabled');
+
+        fetch(
+            '/admin/data-exchange/check/queque',
+        )
+        .then(spreadResponse)
+        .then(response => {
+            if (!checkIsErrorResponse(response)) return;
+            window.toast.push({
+                title: 'Успех!',
+                content: response.data.message,
+                style: 'success',
+                dismissAfter: '2s'
+            });
+        }).finally(() => target.classList.remove('disabled'));
+    });

@@ -32,8 +32,9 @@ export default defineConfig({
         }),
     ],
     server: {
+        origin: 'http://192.168.0.108:5173',
         hmr: {
-            host: 'localhost',
+            host: '192.168.0.108',
         },
       }
 });

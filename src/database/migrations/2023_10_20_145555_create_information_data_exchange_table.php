@@ -20,8 +20,10 @@ return new class extends Migration
             $table->string('status');
             $table->unsignedBigInteger('user_id');
             $table->string('uniique_id');
+            $table->string('time_spent')->nullable();
+            $table->timestamp('date_start')->nullable();
             $table->timestamp('date_end')->nullable();
-            $table->text('error_message')->nullable();
+            $table->text('message')->nullable();
 
             $table->timestamps();
 

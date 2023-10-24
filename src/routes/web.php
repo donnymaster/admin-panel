@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use App\Http\Controllers\AdminPanel\AccountController;
 use App\Http\Controllers\AdminPanel\ApplicationController;
 use App\Http\Controllers\AdminPanel\Catalog\CatalogController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\AdminPanel\SettingSiteController;
 use App\Http\Controllers\AdminPanel\StatisticController;
 use App\Http\Controllers\AdminPanel\UserController;
 use App\Models\AdminPanel\AdminRole;
+use App\Models\AdminPanel\DataExchange;
 use App\Models\AdminPanel\MenuLink;
 use App\Models\AdminPanel\Product;
 use App\Models\AdminPanel\ProductCategory;
@@ -159,7 +161,7 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
     Route::get('/data-exchange/files/health', [DataExchangeController::class, 'checkIsExistsData'])->name('data-exchange.checkIsExistsData');
     Route::delete('/data-exchange/files/delete', [DataExchangeController::class, 'removeFiles'])->name('data-exchange.removeFiles');
     Route::get('/data-exchange/run', [DataExchangeController::class, 'runDataExchange'])->name('data-exchange.run');
-
+    Route::get('/data-exchange/check/queque', [DataExchangeController::class, 'checkQueque'])->name('data-exchange.checkQueque');
     // other statistic pages
 
     Route::get('/settings', [SettingSiteController::class, 'index'])->name('settings');
@@ -188,6 +190,21 @@ Route::get('/test-2', function() {
 })->middleware(['page.visible', 'page.track']);
 
 Route::get('routes', function () {
+
+    (new DataEchange1C())->exchange();
+
+    // $f = DataExchange::where('id', 5)->first();
+
+    // $f->update(['message' => 'new message', 'status' => 'new1 s3tatus']);
+
+    // $to = Carbon::createFromFormat('Y-m-d H:s:i', $f->date_start);
+
+    // $from = Carbon::createFromFormat('Y-m-d H:s:i', $f->date_end);
+
+    // $diff_in_hours = $to->diff($from)->format('%H:%S:%I');
+
+
+    // dd($diff_in_hours);
 
     // (new DataEchange1C())->exchange();
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Jobs\AdminPanel\ExchangeData1C;
 use App\Models\AdminPanel\DataExchange;
 use App\Services\AdminPanel\DataEchange1C;
+use Illuminate\Support\Facades\DB;
 
 class DataExchangeController extends Controller
 {
@@ -60,6 +61,29 @@ class DataExchangeController extends Controller
 
         return response([
             'message' => 'Файлы были удалены!'
+        ]);
+    }
+
+    public function checkQueque()
+    {
+        $countRecords = DB::table('jobs')->count();
+
+        if ($countRecords == 0) {
+            return response([
+                'message' => 'Никакие задачи не выполняются!'
+            ]);
+        }
+
+        $countInWork = DB::table('jobs')->whereNotNull('reserved_at')->count();
+
+        if ($countInWork == 0) {
+            return response([
+                'message' => 'Работник не запущен!'
+            ]);
+        }
+
+        return response([
+            'message' => 'Работник запущен!'
         ]);
     }
 }

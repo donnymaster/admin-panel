@@ -23,6 +23,9 @@
             <div class="run-import border-none btn bg-green small-btn mr-3">
                 Запустить
             </div>
+            <div class="check-queue-status border-none btn bg-blue small-btn mr-3">
+                Проверить
+            </div>
             <div class="delete-files-import border-none btn bg-red small-btn">
                 Удалить файлы
             </div>
