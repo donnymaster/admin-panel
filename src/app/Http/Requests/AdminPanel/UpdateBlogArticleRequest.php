@@ -11,7 +11,7 @@ class UpdateBlogArticleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,18 @@ class UpdateBlogArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'sometimes|min:1|max:255',
+            'time_read' => 'nullable|numeric',
+            'description' => 'nullable|min:1|max:65535',
+            'tiny_description' => 'nullable|min:1|max:65535',
+            'visible' => 'nullable|boolean',
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'visible' => (boolean) $this->visible,
+        ]);
     }
 }

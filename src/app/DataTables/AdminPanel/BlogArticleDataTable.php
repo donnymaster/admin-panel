@@ -22,7 +22,24 @@ class BlogArticleDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'blogarticle.action')
+            ->addColumn('action', function ($article) {
+                return "
+                <div class=\"flex\">
+                    <div data-id=\"{$article->id}\"class=\" mr-2 btn edit\"></div>
+                    <div data-id=\"{$article->id}\" class=\"btn delete bg-red\"></div>
+                </div>
+                ";
+            })
+            ->addColumn('user', function ($article) {
+                return $article->user->name;
+            })
+            ->editColumn('visible', function ($article) {
+                if ($article->visible) {
+                    return "<div data-id=\"{$article->id}\" class=\"visible\"></div>";
+                }
+
+                return "<div data-id=\"{$article->id}\" class=\"not-visible\"></div>";
+            })
             ->setRowId('id');
     }
 
@@ -31,7 +48,7 @@ class BlogArticleDataTable extends DataTable
      */
     public function query(BlogArticle $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->with('user');
     }
 
     /**
@@ -44,7 +61,7 @@ class BlogArticleDataTable extends DataTable
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->parameters([
-                        'pageLength' => 25,
+                        'pageLength' => 10,
                         'buttons' => [],
                         'language' => [
                             'url' => url('/vendor/datatables/lang/' . app()->getLocale() . '.json'),
@@ -59,15 +76,15 @@ class BlogArticleDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            // Column::computed('action')
-            //       ->exportable(false)
-            //       ->printable(false)
-            //       ->width(60)
-            //       ->addClass('text-center'),
             Column::make('id'),
-            Column::make(''),
-            Column::make('created_at'),
-            Column::make('updated_at'),
+            Column::make('title')->title('Заголовок'),
+            Column::make('user')->title('Автор'),
+            Column::make('visible')->title('Состояние'),
+            Column::make('created_at')->title('Добавлен'),
+            Column::computed('action')
+                ->title('Действия')
+                ->exportable(false)
+                ->printable(false),
         ];
     }
 

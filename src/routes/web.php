@@ -101,7 +101,9 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
      * Blog
      */
     Route::get('/articles', [BlogArticleController::class, 'index'])->name('articles');
+    Route::get('/articles/create', [BlogArticleController::class, 'create'])->name('articles.create');
     Route::post('/articles', [BlogArticleController::class, 'store'])->name('articles.store');
+    Route::get('/articles/{article}', [BlogArticleController::class, 'edit'])->name('articles.edit');
     Route::patch('/articles/{article}', [BlogArticleController::class, 'update'])->name('articles.update');
     Route::delete('/articles/{article}', [BlogArticleController::class, 'delete'])->name('articles.delete');
 

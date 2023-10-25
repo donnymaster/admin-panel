@@ -28,14 +28,16 @@ export default defineConfig({
                 'resources/js/pages/createNewPage.js',
                 'resources/js/pages/dataExchangePage.js',
                 'resources/js/pages/propertiesPage.js',
+                'resources/js/pages/articlesPage.js',
+                'resources/js/pages/createArticlePage.js',
             ],
             refresh: true,
         }),
     ],
     server: {
-        origin: 'http://192.168.0.108:5173',
+        origin: 'http://192.168.1.101:5173',
         hmr: {
-            host: '192.168.0.108',
+            host: '192.168.1.101',
         },
       }
 });

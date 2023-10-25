@@ -11,7 +11,7 @@ class CreateBlogArticleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,18 @@ class CreateBlogArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required|min:1|max:255',
+            'time_read' => 'required|numeric',
+            'description' => 'required|min:1|max:65535',
+            'tiny_description' => 'required|min:1|max:65535',
+            'visible' => 'required|boolean',
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'visible' => (boolean) $this->visible,
+        ]);
     }
 }

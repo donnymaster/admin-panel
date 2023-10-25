@@ -24,7 +24,7 @@ class ProductCategoryPropertyDataTable extends DataTable
                 <div class=\"flex\">
                     <div data-id=\"{$property->id}\"class=\" mr-2 btn edit\"></div>
                     <div data-id=\"{$property->id}\" class=\"btn delete bg-red\"></div>
-            </div>
+                </div>
                 ";
             })
             ->setRowId('id');

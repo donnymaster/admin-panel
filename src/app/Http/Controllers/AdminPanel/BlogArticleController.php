@@ -8,6 +8,8 @@ use App\Http\Requests\AdminPanel\CreateBlogArticleRequest;
 use App\Http\Requests\AdminPanel\UpdateBlogArticleRequest;
 use App\Models\AdminPanel\BlogArticle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class BlogArticleController extends Controller
 {
@@ -16,18 +18,42 @@ class BlogArticleController extends Controller
         return $datatable->render('admin-panel.articles.index');
     }
 
-    public function store(CreateBlogArticleRequest $request, BlogArticle $article)
+    public function edit(Request $request, BlogArticle $article)
     {
-        // save
+        return view('admin-panel.articles.edit', compact('article'));
+    }
+
+    public function create(Request $request)
+    {
+        return view('admin-panel.articles.create');
+    }
+
+    public function store(CreateBlogArticleRequest $request)
+    {
+        $data = $request->safe()->toArray();
+        $data['slug'] = Str::slug($data['title']);
+        $data['user_id'] = Auth::user()->id;
+
+        $article = BlogArticle::create($data);
+
+        return redirect()->route('admin.articles.edit', ['article' => $article->id]);
     }
 
     public function update(UpdateBlogArticleRequest $request, BlogArticle $article)
     {
-        // update
+        $article->update($request->safe()->toArray());
+
+        return back()->with('successfully', 'Статья была обновлена!');
     }
 
     public function delete(Request $request, BlogArticle $article)
     {
-        // delete
+        $article->images()->delete();
+
+        $article->delete();
+
+        return response([
+            'message' => 'Статья была удалена!'
+        ]);
     }
 }
