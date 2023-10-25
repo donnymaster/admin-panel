@@ -48,11 +48,11 @@ class ProductVariantController extends Controller
             }
         }
 
-        foreach ($request->get('images', []) as $arrays) {
-            foreach ($arrays as $image) {
-                ProductVariantImage::where('id', $image['id'])->update(['product_variant_id' => $variant->id]);
-            }
-        }
+        // foreach ($request->get('images', []) as $arrays) {
+        //     foreach ($arrays as $image) {
+        //         ProductVariantImage::where('id', $image['id'])->update(['product_variant_id' => $variant->id]);
+        //     }
+        // }
 
         return redirect()->route('admin.products.show', ['product' => $productId]);
     }
@@ -60,13 +60,13 @@ class ProductVariantController extends Controller
     public function remove($productId, ProductVariant $variant)
     {
         // удалить картинки
-        $images = ProductVariantImage::where('product_variant_id', $variant->id)->get();
+        // $images = ProductVariantImage::where('product_variant_id', $variant->id)->get();
 
-        if ($images) {
-            foreach ($images as $image) {
-                Storage::delete('public/' . $image->path);
-            }
-        }
+        // if ($images) {
+        //     foreach ($images as $image) {
+        //         Storage::delete('public/' . $image->path);
+        //     }
+        // }
 
         $variant->delete();
 
@@ -165,11 +165,11 @@ class ProductVariantController extends Controller
             }
         }
 
-        foreach ($request->get('images', []) as $imageList) {
-            foreach ($imageList as $image) {
-                ProductVariantImage::where('id', $image['id'])->update(['product_variant_id' => $variant->id]);
-            }
-        }
+        // foreach ($request->get('images', []) as $imageList) {
+        //     foreach ($imageList as $image) {
+        //         ProductVariantImage::where('id', $image['id'])->update(['product_variant_id' => $variant->id]);
+        //     }
+        // }
 
         return back()->with('successfully', 'Вариант был обновлен');
     }

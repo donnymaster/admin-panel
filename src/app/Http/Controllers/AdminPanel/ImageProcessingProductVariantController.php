@@ -19,8 +19,10 @@ class ImageProcessingProductVariantController extends Controller
         ), 'public');
 
         $path = Storage::path('public/' . $filePath);
+
         $fileName = pathinfo(basename($path), PATHINFO_FILENAME);
         $pathWebp = $this->getPathProductVariant($request->get('product-id'))."/$fileName.webp";
+
         list($w, $h) = getimagesize($path);
 
         Image::load($path)

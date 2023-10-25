@@ -2,14 +2,17 @@
 
 namespace App\DataTables\AdminPanel;
 
-use App\Models\AdminPanel\ProductCategoryProperty;
+use App\Models\AdminPanel\BlogArticle;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
+use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
+use Yajra\DataTables\Html\Editor\Editor;
+use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class ProductCategoryPropertyDataTable extends DataTable
+class BlogArticleDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -19,21 +22,14 @@ class ProductCategoryPropertyDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', function ($property) {
-                return "
-                <div class=\"flex\">
-                    <div data-id=\"{$property->id}\"class=\" mr-2 btn edit\"></div>
-                    <div data-id=\"{$property->id}\" class=\"btn delete bg-red\"></div>
-            </div>
-                ";
-            })
+            ->addColumn('action', 'blogarticle.action')
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(ProductCategoryProperty $model): QueryBuilder
+    public function query(BlogArticle $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -44,14 +40,16 @@ class ProductCategoryPropertyDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('productcategoryproperty-table')
+                    ->setTableId('blogarticle-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->parameters([
+                        'pageLength' => 25,
                         'buttons' => [],
                         'language' => [
-                            'url' => url('/vendor/datatables/lang/'.app()->getLocale().'.json'),
-                        ]])
+                            'url' => url('/vendor/datatables/lang/' . app()->getLocale() . '.json'),
+                        ]
+                    ])
                     ->orderBy(0, 'asc');
     }
 
@@ -61,16 +59,15 @@ class ProductCategoryPropertyDataTable extends DataTable
     public function getColumns(): array
     {
         return [
+            // Column::computed('action')
+            //       ->exportable(false)
+            //       ->printable(false)
+            //       ->width(60)
+            //       ->addClass('text-center'),
             Column::make('id'),
-            Column::make('name')->title('Названия'),
-            Column::make('description')->title('Описание'),
-            Column::make('slug')->title('Slug'),
-            Column::make('mark')->title('Пометка'),
-            Column::make('created_at')->title('Добавлен'),
-            Column::computed('action')
-                ->exportable(false)
-                ->printable(false)
-                ->title('Действие'),
+            Column::make(''),
+            Column::make('created_at'),
+            Column::make('updated_at'),
         ];
     }
 
@@ -79,6 +76,6 @@ class ProductCategoryPropertyDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'ProductCategoryProperty_' . date('YmdHis');
+        return 'BlogArticle_' . date('YmdHis');
     }
 }

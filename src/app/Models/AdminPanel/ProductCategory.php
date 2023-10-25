@@ -42,4 +42,9 @@ class ProductCategory extends Model
     {
         return $this->belongsToMany(ProductCategoryProperty::class, 'category_properties', 'category_id', 'property_id')->withTimestamps();
     }
+
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
+    }
 }

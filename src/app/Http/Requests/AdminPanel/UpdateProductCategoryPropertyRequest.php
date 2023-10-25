@@ -22,8 +22,9 @@ class UpdateProductCategoryPropertyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|min:1|max:255',
-            'description' => 'required|min:1|max:255',
+            'name' => 'nullable|min:1|max:255',
+            'description' => 'nullable|min:1|max:65535',
+            'mark' => 'nullable|min:1|max:255',
         ];
     }
 }

@@ -34,6 +34,11 @@ class ProductVariantsDataTable extends DataTable
                 </div>
                 ";
             })
+            ->editColumn('title', function ($variant) {
+                $name = mb_strlen($variant->title) >= 30 ? mb_substr($variant->title, 0, 30).'...' : $variant->title;
+
+                return '<span class="cursor-pointer" title="' . $variant->title . '">'. $name . '</span>';
+            })
             ->setRowId('id');
     }
 

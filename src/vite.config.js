@@ -27,6 +27,7 @@ export default defineConfig({
                 'resources/js/pages/orderPage.js',
                 'resources/js/pages/createNewPage.js',
                 'resources/js/pages/dataExchangePage.js',
+                'resources/js/pages/propertiesPage.js',
             ],
             refresh: true,
         }),

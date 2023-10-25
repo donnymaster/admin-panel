@@ -6,7 +6,6 @@ use App\Models\AdminPanel\DataExchange;
 use App\Services\AdminPanel\DataEchange1C;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -44,9 +43,9 @@ class ExchangeData1C implements ShouldQueue
 
             $m->update([
                 'status' => 'complete',
-                'message' => $message . $this->getTime($timeStart, $timeEnd)[1],
+                'message' => $message,
                 'date_end' => Carbon::now()->format('Y-m-d H:i:s'),
-                'time_spent' => $this->getTime($timeStart, $timeEnd)[0],
+                'time_spent' => $this->getTime($timeStart, $timeEnd),
             ]);
 
         } catch (\Throwable $th) {
@@ -55,7 +54,7 @@ class ExchangeData1C implements ShouldQueue
                 'status' => 'error',
                 'message' => $th->getMessage(),
                 'date_end' => $timeEnd,
-                'time_spent' => $this->getTime($timeStart, $timeEnd)[0],
+                'time_spent' => $this->getTime($timeStart, $timeEnd),
             ]);
         }
     }
@@ -65,6 +64,6 @@ class ExchangeData1C implements ShouldQueue
         $to = Carbon::createFromFormat('Y-m-d H:i:s', $start);
         $from = Carbon::createFromFormat('Y-m-d H:i:s', $end);
 
-        return [$from->diff($to)->format('%H:%I:%S'), serialize($from->diff($to))];
+        return $from->diff($to)->format('%H:%I:%S');
     }
 }

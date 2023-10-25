@@ -71,6 +71,7 @@ class ProductCategoryPropertiesDataTable extends DataTable
         return [
             Column::make('id'),
             Column::make('name')->title('Название'),
+            Column::make('mark')->title('Пометка'),
             Column::make('created_at')->title('Дата создания'),
             Column::make('action')->title('Действия')->exportable(false)->printable(false)->sortable(false)->searchable(false)
 

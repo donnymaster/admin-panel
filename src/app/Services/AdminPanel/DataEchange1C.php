@@ -140,7 +140,7 @@ class DataEchange1C
             collect(((array) $xmlObjectOffers->info->items)['item'])
         );
 
-        dd($this->relationProductCategoryToProperty);
+        // dd($this->relationProductCategoryToProperty);
 
         $this->tieCategoryToProperty();
 
@@ -464,18 +464,18 @@ class DataEchange1C
                 ->first( fn ($items) => $items['sync_id'] == (string) $property->id);
 
             if ($dbProperty == null) continue;
-            dd($this->categoryPropertyids);
-            // $this->push_unique(
-            //     $this->relationProductCategoryToProperty[$dbCategory['db_id']],
-            //     $dbProperty['db_id']
-            // );
+            // dd($this->categoryPropertyids);
+            $this->push_unique(
+                $this->relationProductCategoryToProperty[$dbCategory['db_id']],
+                $dbProperty['db_id']
+            );
 
             //sync_id
-            $this->push_unique(
-                $this->relationProductCategoryToProperty[$dbCategory['sync_id']],
-                $dbProperty['db_id'],
-                [(string) $property->title, (string) $property->id]
-            );
+            // $this->push_unique(
+            //     $this->relationProductCategoryToProperty[$dbCategory['sync_id']],
+            //     $dbProperty['db_id'],
+            //     [(string) $property->title, (string) $property->id]
+            // );
 
             $variant->values()->updateOrCreate([
                 'product_category_property_id' => $dbProperty['db_id'],
@@ -484,13 +484,13 @@ class DataEchange1C
         }
     }
 
-    private function push_unique(&$array, $value, $otherData): void
+    private function push_unique(&$array, $value): void
     {
         $array ??= [];
 
-        if (array_key_exists($value, $array)) return;
+        if (in_array($value, $array)) return;
 
-        $array[$value] = $otherData;
+        $array[] = $value;
     }
 
     private function tieCategoryToProperty(): void

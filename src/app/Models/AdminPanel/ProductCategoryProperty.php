@@ -15,6 +15,7 @@ class ProductCategoryProperty extends Model
         'description',
         'slug',
         'sync_id',
+        'mark',
     ];
 
     public function values()

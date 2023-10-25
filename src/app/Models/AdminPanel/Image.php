@@ -6,25 +6,28 @@ use App\Traits\Model\DateFormatTimeZoneTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductVariantImage extends Model
+class Image extends Model
 {
     use HasFactory, DateFormatTimeZoneTrait;
 
     protected $fillable = [
-        'product_variant_id',
         'slug',
         'path',
         'name',
-        'parent_id'
+        'size',
+        'width',
+        'heigth',
+        'extension',
+        'parent_id',
     ];
-
-    public function productVariant()
-    {
-        return $this->belongsTo(Product::class);
-    }
 
     public function children()
     {
         return $this->hasMany(self::class, 'parent_id');
+    }
+
+    public function imageable()
+    {
+        return $this->morphTo();
     }
 }

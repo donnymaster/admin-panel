@@ -3,10 +3,12 @@
 use Carbon\Carbon;
 use App\Http\Controllers\AdminPanel\AccountController;
 use App\Http\Controllers\AdminPanel\ApplicationController;
+use App\Http\Controllers\AdminPanel\BlogArticleController;
 use App\Http\Controllers\AdminPanel\Catalog\CatalogController;
 use App\Http\Controllers\AdminPanel\Catalog\ProductController;
 use App\Http\Controllers\AdminPanel\CategoryController;
 use App\Http\Controllers\AdminPanel\DataExchangeController;
+use App\Http\Controllers\AdminPanel\ImageController;
 use App\Http\Controllers\AdminPanel\ImageProcessingProductVariantController;
 use App\Http\Controllers\AdminPanel\OrderController;
 use App\Http\Controllers\AdminPanel\PagesController;
@@ -90,16 +92,33 @@ Route::middleware(['auth', 'admin.visible'])->name('admin.')->prefix('admin')->g
     Route::get('/pages/{page}', [PagesController::class, 'edit'])->name('page.edit');
     Route::delete('/pages/statistics', [PagesController::class, 'removeStatistics'])->name('pages.statistics.remove');
 
+    /**
+     * Images
+     */
+    Route::post('/images', [ImageController::class, 'create'])->name('images.save');
+
+    /**
+     * Blog
+     */
+    Route::get('/articles', [BlogArticleController::class, 'index'])->name('articles');
+    Route::post('/articles', [BlogArticleController::class, 'store'])->name('articles.store');
+    Route::patch('/articles/{article}', [BlogArticleController::class, 'update'])->name('articles.update');
+    Route::delete('/articles/{article}', [BlogArticleController::class, 'delete'])->name('articles.delete');
+
     Route::prefix('/catalog')->group(function() {
         /**
          * Properties
          */
         Route::get('/properties', [ProductCategoryPropertyController::class, 'index'])->name('properties');
+        Route::post('/properties', [ProductCategoryPropertyController::class, 'store'])->name('properties.store');
+        Route::patch('/properties/{property}', [ProductCategoryPropertyController::class, 'update'])->name('properties.update');
+        Route::delete('/properties/{property}', [ProductCategoryPropertyController::class, 'delete'])->name('properties.delete');
         Route::get('/properties/ajax', [ProductCategoryPropertyController::class, 'ajax'])->name('properties.ajax');
 
         /**
          * Promocode
          */
+
         Route::get('/promocodes', [PromocodeController::class, 'index'])->name('promocode.index');
         Route::post('/promocodes', [PromocodeController::class, 'store'])->name('promocode.store');
         Route::delete('/promocodes/{promocode}', [PromocodeController::class, 'delete'])->name('promocode.delete');
@@ -191,7 +210,7 @@ Route::get('/test-2', function() {
 
 Route::get('routes', function () {
 
-    (new DataEchange1C())->exchange();
+    // (new DataEchange1C())->exchange();
 
     // $f = DataExchange::where('id', 5)->first();
 
@@ -229,5 +248,25 @@ Route::get('routes', function () {
         echo "</tr>";
     }
     echo "</table>";
+
+    echo "
+        <form action=\"". route('admin.images.save') ."\" enctype=\"multipart/form-data\" method=\"post\">
+            <input type=\"hidden\" name=\"_token\" value=\"". csrf_token() ."\">
+            <input type=\"file\" name=\"image\">
+            <div>
+            <span>Image name</span>
+            <input type=\"text\" name=\"image-name\">
+            </div>
+            <div>
+                <span>Model type</span>
+                <input type=\"text\" name=\"model-type\">
+            </div>
+            <div>
+                <span>Model id</span>
+                <input type=\"text\" name=\"model-id\">
+            </div>
+            <button type=\"submit\">Send</button>
+        </form>
+    ";
 });
 

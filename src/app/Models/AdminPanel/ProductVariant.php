@@ -44,7 +44,7 @@ class ProductVariant extends Model
 
     public function images()
     {
-        return $this->hasMany(ProductVariantImage::class, 'product_variant_id');
+        return $this->morphMany(Image::class, 'imageable');
     }
 
     public function promocode()

@@ -305,7 +305,11 @@
                                                 type="text" class="input"
                                                 value="{{ $property[1]->value }}"
                                             >
-
+                                            <input hidden id="properties[{{ $value['category']->id }}][{{ $loop->index }}][property-value-id]"
+                                                name="properties[{{ $value['category']->id }}][{{ $loop->index }}][property-value-id]"
+                                                type="text" class="input"
+                                                value="{{ $property[1]->id }}"
+                                            >
                                         </div>
                                     </div>
                                 @else
@@ -342,7 +346,10 @@
                                                 name="properties[{{ $value['category']->id }}][{{ $loop->index }}][property-value]"
                                                 type="text" class="input"
                                             >
-
+                                            <input hidden id="properties[{{ $value['category']->id }}][{{ $loop->index }}][property-value-id]"
+                                                name="properties[{{ $value['category']->id }}][{{ $loop->index }}][property-value-id]"
+                                                type="text" class="input"
+                                            >
                                         </div>
                                     </div>
                                 @endif
